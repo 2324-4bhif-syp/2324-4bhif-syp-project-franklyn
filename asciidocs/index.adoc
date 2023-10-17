@@ -1,0 +1,10 @@
+= Frankyln
+Aichinger Tobias, Cvijić Luka, Schludermann Julian, Schnalzenberger Arwed
+2023/24
+ifndef::imagesdir[:imagesdir: images]
+:icons: font
+:sectnums:
+:toc: left
+
+== Minutes of Meeting
+* link:mom/2023-10-17.adoc[2023-10-17]
