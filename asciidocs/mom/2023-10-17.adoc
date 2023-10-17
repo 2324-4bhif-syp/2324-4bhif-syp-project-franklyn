@@ -26,6 +26,9 @@ endif::backend-html5[]
 |Aberger C.
 |Aberger C.
 
+|Aichinger T.
+|Aichinger T.
+
 |Cvijić L.
 |Cvijić L.
 
