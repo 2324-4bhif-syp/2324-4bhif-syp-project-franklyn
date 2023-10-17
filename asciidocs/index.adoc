@@ -7,4 +7,4 @@ ifndef::imagesdir[:imagesdir: images]
 :toc: left
 
 == Minutes of Meeting
-* link:mom/2023-10-17.adoc[2023-10-17]
+<<./mom/2023-10-17.adoc#, 2023-10-17>>
