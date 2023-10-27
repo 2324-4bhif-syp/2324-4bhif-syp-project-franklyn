@@ -122,4 +122,11 @@
       </properties>
     </profile>
   </profiles>
+  <distributionManagement>
+    <repository>
+      <id>github</id>
+      <name>GitHub Packages</name>
+      <url>https://maven.pkg.github.com/2324-4bhif-syp/2324-4bhif-syp-project-franklyn</url>
+    </repository>
+  </distributionManagement>
 </project>
