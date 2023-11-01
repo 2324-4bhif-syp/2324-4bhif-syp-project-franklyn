@@ -1,1 +1,13 @@
 = Franklyn
+Aichinger Tobias, Cvijić Luka, Schludermann Julian, Schnalzenberger Arwed
+:icons: font
+:sectnums:
+:toc: left
+
+== Description
+
+Franklyn is an application that provides students with a professional working environment during assessments.
+
+Teachers will be given the opportunity to create test sessions. Students can log in to a session with a PIN or by first and last name. The student client takes screenshots at regular intervals, which the teacher can view.
+
+
