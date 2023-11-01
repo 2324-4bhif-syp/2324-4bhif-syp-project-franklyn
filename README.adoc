@@ -11,3 +11,7 @@ Franklyn is an application that provides students with a professional working en
 Teachers will be given the opportunity to create test sessions. Students can log in to a session with a PIN or by first and last name. The student client takes screenshots at regular intervals, which the teacher can view.
 
 
+== UCD
+image::http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/2324-4bhif-syp/2324-4bhif-syp-project-franklyn/main/plantuml/franklyn-ucd.puml[]
+
+
