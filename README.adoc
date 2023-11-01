@@ -15,3 +15,9 @@ Teachers will be given the opportunity to create test sessions. Students can log
 image::http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/2324-4bhif-syp/2324-4bhif-syp-project-franklyn/main/plantuml/franklyn-ucd.puml[]
 
 
+== Team Members
+
+* Aichinger Tobias
+* Cvijić Luka
+* Schludermann Julian
+* Schnalzenberger Arwed
