@@ -1,4 +1,4 @@
-package at.htl.franklyn;
+package at.htl.franklyn.boundary;
 
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
