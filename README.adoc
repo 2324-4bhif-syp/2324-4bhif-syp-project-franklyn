@@ -21,3 +21,18 @@ image::http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubuse
 * Cvijić Luka
 * Schludermann Julian
 * Schnalzenberger Arwed
+
+== Getting started
+
+=== Server
+
+* Open the "client"-folder in a terminal and type this command:
+
+.start command
+[source, bash]
+----
+./mvnw clean quarkus:dev
+----
+
+* Now open the site http://localhost:8080/ in your browser. Now you should be able to see a new image every time you reload the page.
+
