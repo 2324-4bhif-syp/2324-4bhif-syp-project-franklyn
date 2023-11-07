@@ -1,16 +1,15 @@
 package at.htl.franklyn.boundary;
 
 import at.htl.franklyn.Services.ScreenshotService;
+import io.quarkus.logging.Log;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.Response;
 
 import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 
 @Path("/screenshot")
 public class ScreenshotResource {
@@ -18,15 +17,17 @@ public class ScreenshotResource {
     @Produces("image/png")
     @GET
     public Response getScreenshot() {
-        BufferedImage image = ScreenshotService.getScreenshot();
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        var response = Response.serverError();
 
-        try {
-            ImageIO.write(image, "png", baos);
-        } catch (IOException e) {
-            return Response.serverError().build();
+        try (var byteArrayOutputStream = new ByteArrayOutputStream()) {
+            final var image = ScreenshotService.getScreenshot();
+
+            ImageIO.write(image, "png", byteArrayOutputStream);
+            response = Response.ok(new ByteArrayInputStream(byteArrayOutputStream.toByteArray()));
+        } catch (Exception e) {
+            Log.error("FAILED: to write image", e);
         }
 
-        return Response.ok(new ByteArrayInputStream(baos.toByteArray())).build();
+        return response.build();
     }
 }
