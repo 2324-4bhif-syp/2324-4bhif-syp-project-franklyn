@@ -1,4 +1,4 @@
-package at.htl.franklyn.Services;
+package at.htl.franklyn.services;
 
 import java.awt.Robot;
 import java.awt.Toolkit;
