@@ -20,9 +20,6 @@ endif::backend-html5[]
 |===
 |anwesend |Verteiler
 
-|Nachname Vorname
-|
-
 |Aberger C.
 |Aberger C.
 
