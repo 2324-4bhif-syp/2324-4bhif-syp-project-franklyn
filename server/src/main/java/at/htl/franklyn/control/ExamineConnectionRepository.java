@@ -3,6 +3,8 @@ package at.htl.franklyn.control;
 import jakarta.enterprise.context.ApplicationScoped;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
 @ApplicationScoped
@@ -10,10 +12,24 @@ public class ExamineConnectionRepository {
     // ConcurrentHashmap with the Ip-Adress as the key
     private ConcurrentHashMap<String, LocalDateTime> connectedExamines = new ConcurrentHashMap<>();
 
-    private long connectionTimeInMinutes = 2;
-
     public ConcurrentHashMap<String, LocalDateTime> getConnectedExamines() {
         return connectedExamines;
+    }
+
+    public List<String> getAllExpiredExamines(long addTimeInSeconds) {
+        List<String> ipAdresses = new ArrayList<>();
+
+        for (String ipAdress : connectedExamines.keySet()) {
+            LocalDateTime maxSurvivalTime = connectedExamines
+                    .get(ipAdress)
+                    .plusSeconds(addTimeInSeconds);
+
+            if (LocalDateTime.now().isAfter(maxSurvivalTime)) {
+                ipAdresses.add(ipAdress);
+            }
+        }
+
+        return ipAdresses;
     }
 
     public boolean addConnection(String ipAdress) {
@@ -26,6 +42,10 @@ public class ExamineConnectionRepository {
         }
 
         return validIpAdress;
+    }
+
+    public void removeConnection(String ipAdress) {
+        connectedExamines.remove(ipAdress);
     }
 
 }
