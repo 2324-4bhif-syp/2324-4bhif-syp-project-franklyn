@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Path("/connection")
-public class ExamineeConnectionResource {
+public class ExamineConnectionResource {
     // ConcurrentHashmap with the Ip-Adress as the key
     private ConcurrentHashMap<String, LocalDateTime> connectedExamines = new ConcurrentHashMap<>();
     private final String jsonIpObjectName = "ip-adress";
