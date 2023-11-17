@@ -1,0 +1,57 @@
+= Franklyn-Quarkus
+:revealjs_theme: white
+:customcss: css/presentation.css
+ifndef::imagesdir[:imagesdir: ../images]
+
+[.font-xx-large]
+== Team
+* Tobias Aichinger
+* Luka Cvijić
+* Julian Schludermann
+* Arwed Schnalzenberger
+
+[.font-xx-large]
+== Was ist Franklyn
+* Ermöglicht lebensnahes Arbeiten bei Leistungsfeststellungen
+* Besonders: Recherche im Internet
+** z.B. Stack Overflow, Dokumentation
+* Gleichzeitige Sicherheit für Lehrpersonen
+** einhalten von Regeln
+*** keine Kommunikation zwischen den Schülern
+*** kein Kopieren von fertigen Programmen/Lösungen
+
+=== Architektur
+plantuml::./plantuml/architecture.puml[]
+
+[.font-xx-large]
+=== [.margin-b-10]#Terminologie#
+* *OpenBox*: Applikation auf dem Rechner der Schüler
+** Warum OpenBox?
+*** Für den Prüfer ist der Rechner des Schülers wie eine undurchsichtige Box
+*** Mit der Franklyn Applikation kann diese Box geöffnet und daraus Informationen gewonnen werden
+**** z.B. screenshot
+** *Heartbeat*: Periodische Anfrage an den Server
+*** Signalisiert, dass die Box noch aktiv ist
+* *Server*: Quarkus backend zum Verwalten von Boxen
+* *Frontend*: Quarkus client mit Qute zum Anzeigen der aus den Boxen gewonnenen Daten
+
+=== Konfiguration
+* Eigener Hotspot
+** WLAN der Schule blockiert Anfragen
+* Ab nächstem Sprint Oravm
+
+=== Live Demo
+
+=== Aufgaben
+
+=== Tobias Aichinger
+* TODO
+
+=== Luka Cvijić
+* TODO
+
+=== Julian Schludermann
+* TODO
+
+=== Arwed Schnalzenberger
+* TODO

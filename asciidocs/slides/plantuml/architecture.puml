@@ -1,0 +1,22 @@
+@startuml
+package Examinees {
+    [OpenBox1] -- "getScreenshot  "
+    [OpenBox2] -- "getScreenshot"
+    [OpenBox3] -- "getScreenshot "
+}
+
+cloud {
+    [Server] -- "connect"
+    [Server] -right- "getExaminees" : "           "
+}
+
+node Examiners {
+    [Frontend]
+}
+
+[OpenBox1] -up-> "connect" : "heartbeat"
+[OpenBox2] -up-> "connect"
+[OpenBox3] -up-> "connect"
+[Frontend] -left-> "getExaminees" : "               "
+[Frontend] -down-> "getScreenshot  "
+@enduml
