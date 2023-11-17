@@ -10,7 +10,7 @@ import java.util.List;
 @ApplicationScoped
 public class ConnectedExaminesBean {
     @Inject
-    ExamineConnectionRepository examineConnectionRepository;
+    ExamineeConnectionRepository examineeConnectionRepository;
 
     private final long maxLiveTimeOfConnectionInSeconds = 120;
     private final String schedulerTime = maxLiveTimeOfConnectionInSeconds + "s";
@@ -21,10 +21,10 @@ public class ConnectedExaminesBean {
 
     @Scheduled(every = schedulerTime)
     public void removeExpiredExamineConnections() {
-        List<String> expiredExamineIpAdress = examineConnectionRepository.getAllExpiredExamines(maxLiveTimeOfConnectionInSeconds);
+        List<String> expiredExamineIpAdress = examineeConnectionRepository.getAllExpiredExamines(maxLiveTimeOfConnectionInSeconds);
 
         for (String ipAdress : expiredExamineIpAdress) {
-            examineConnectionRepository.removeConnection(ipAdress);
+            examineeConnectionRepository.removeConnection(ipAdress);
         }
 
         if (expiredExamineIpAdress.size() == 1) {
