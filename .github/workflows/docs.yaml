@@ -7,27 +7,26 @@ on:
     paths:
       - asciidocs/**
   workflow_dispatch:
-
+permissions:
+  contents: write
 jobs:
   build:
     name: Build & Publish 🚀
     runs-on: ubuntu-latest
     env:
       INPUTPATH: asciidocs
-      OUTPUTPATH: dist
       SLIDES: true
       BRANCH: gh-pages
     steps:
       - uses: actions/checkout@v4
-      - name: Build
-        uses: quirinecker/asciidoctor-convert-action@main
-        with:
-          slides: ${{ env.SLIDES }}
-          inputPath: ${{ env.INPUTPATH }}
-          outputPath: ${{ env.OUTPUTPATH }}
+
+      - name: run docker
+        run: |
+          sudo ${{ env.INPUTPATH }}/scripts/docker-convert.sh ${{ env.INPUTPATH }} ${{ env.SLIDES }}
+          tree
+
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@releases/v4
         with:
-          GITHUB_TOKEN: ${{ github.TOKEN }}
-          BRANCH: ${{ env.BRANCH }}
-          FOLDER: ${{ env.OUTPUTPATH }}
+          branch: ${{ env.BRANCH }}
+          folder: ${{ env.INPUTPATH }}

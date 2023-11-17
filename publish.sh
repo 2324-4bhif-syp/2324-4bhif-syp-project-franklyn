@@ -1,10 +1,11 @@
 #!/usr/bin/env bash
 
-source config.sh
+source ./local-convert.sh
 
-./convert.sh $1 $2 $3
-
-sudo chown ${USER}:${USER} dist
+echo $SLIDES
+echo $INPUTPATH
+echo $OUTPUTPATH
+# sudo chown ${USER}:${USER} dist
 
 remote=$(git remote get-url origin)
 cd "$OUTPUTPATH" || exit
@@ -17,7 +18,7 @@ git add .
 
 git commit -m "updating github pages"
 
-git branch gh-pages
+git switch -c gh-pages
 
 git remote add origin "$remote"
 
