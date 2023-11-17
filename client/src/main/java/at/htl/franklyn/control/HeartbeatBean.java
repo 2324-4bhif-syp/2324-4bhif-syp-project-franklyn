@@ -12,7 +12,7 @@ public class HeartbeatBean {
     @RestClient
     HeartbeatService heartbeatService;
 
-    @Scheduled(every = "30s")
+    @Scheduled(every = "{heartbeat.interval}")
     void sendBeat() {
         Log.info("Sending heartbeat");
         heartbeatService.sendHeartbeat();
