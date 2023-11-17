@@ -12,16 +12,12 @@ public class ConnectedExaminesBean {
     @Inject
     ExamineeConnectionRepository examineeConnectionRepository;
 
-    private final long maxLiveTimeOfConnectionInSeconds = 120;
-    private final String schedulerTime = maxLiveTimeOfConnectionInSeconds + "s";
+    private static final long MAX_LIVE_TIME_OF_CONNECTION_IN_SECONDS = 120;
+    private static final String SCHEDULER_TIME = MAX_LIVE_TIME_OF_CONNECTION_IN_SECONDS + "s";
 
-    public long getMaxLiveTimeOfExamineConnections() {
-        return maxLiveTimeOfConnectionInSeconds;
-    }
-
-    @Scheduled(every = schedulerTime)
-    public void removeExpiredExamineConnections() {
-        List<String> expiredExamineIpAdress = examineeConnectionRepository.getAllExpiredExamines(maxLiveTimeOfConnectionInSeconds);
+    @Scheduled(every = SCHEDULER_TIME)
+    public void removeExpiredExamineeConnections() {
+        List<String> expiredExamineIpAdress = examineeConnectionRepository.getAllExpiredExamines(MAX_LIVE_TIME_OF_CONNECTION_IN_SECONDS);
 
         for (String ipAdress : expiredExamineIpAdress) {
             examineeConnectionRepository.removeConnection(ipAdress);

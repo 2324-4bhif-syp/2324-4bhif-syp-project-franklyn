@@ -26,8 +26,7 @@ public class ExamineeConnectionResource {
             response = Response.noContent().build();
         } else {
             response = Response
-                    .status(Response.Status.NOT_ACCEPTABLE)
-                    .header("CONNECTION-NOT-ACCEPTED", "Please send a valid IPv4-Adress.")
+                    .status(Response.Status.BAD_REQUEST)
                     .build();
         }
 
