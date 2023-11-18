@@ -58,4 +58,7 @@ plantuml::./plantuml/architecture.puml[]
 ** Quarkus schedules
 
 === Arwed Schnalzenberger
-* TODO
+* Server Endpoint, der die IP-Adressen speichert und diese für eine bestimmte Zeit behält, bevor sie gelöscht werden.
+** Resource für die Requests
+** Service mit ConcurrentHashmap für IP-Adressen
+** Bean löscht alle IP-Adressen die älter als eine gewisse Zeit sind
