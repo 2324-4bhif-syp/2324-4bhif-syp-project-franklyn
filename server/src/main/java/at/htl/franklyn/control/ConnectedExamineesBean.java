@@ -14,20 +14,20 @@ public class ConnectedExamineesBean {
     ExamineeConnectionRepository examineeConnectionRepository;
 
     @ConfigProperty(name = "connectedexamineesbean.lifetime")
-    String MAX_LIVE_TIME_OF_CONNECTION_IN_SECONDS;
+    long MAX_LIVE_TIME_OF_CONNECTION_IN_SECONDS;
 
     @Scheduled(every = "{connectedexamineesbean.interval}")
     public void removeExpiredExamineeConnections() {
-        List<String> expiredExamineIpAdress = examineeConnectionRepository.getAllExpiredExamines(Long.parseLong(MAX_LIVE_TIME_OF_CONNECTION_IN_SECONDS));
+        List<String> expiredExamineIpAddress = examineeConnectionRepository.getAllExpiredExamines(MAX_LIVE_TIME_OF_CONNECTION_IN_SECONDS);
 
-        for (String ipAdress : expiredExamineIpAdress) {
-            examineeConnectionRepository.removeConnection(ipAdress);
+        for (String ipAddress : expiredExamineIpAddress) {
+            examineeConnectionRepository.removeConnection(ipAddress);
         }
 
-        if (expiredExamineIpAdress.size() == 1) {
-            Log.info("Removed " + expiredExamineIpAdress.size() + " connected client.");
+        if (expiredExamineIpAddress.size() == 1) {
+            Log.info("Removed " + expiredExamineIpAddress.size() + " connected client.");
         } else {
-            Log.info("Removed " + expiredExamineIpAdress.size() + " connected clients.");
+            Log.info("Removed " + expiredExamineIpAddress.size() + " connected clients.");
         }
     }
 }
