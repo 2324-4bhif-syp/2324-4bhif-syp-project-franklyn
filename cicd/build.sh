@@ -2,10 +2,10 @@
 
 set -e
 
-pushd client
+pushd openbox
 	mvn clean package
 popd
 
 mkdir -p dist
 
-cp client/target/*-runner.jar dist/FranklynClient.jar
+cp openbox/target/*-runner.jar dist/FranklynClient.jar
