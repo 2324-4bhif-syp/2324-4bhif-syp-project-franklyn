@@ -48,7 +48,9 @@ plantuml::./plantuml/architecture.puml[]
 * TODO
 
 === Luka Cvijić
-* TODO
+* Frontend
+** HTML Seite
+** Klasse, die mit dem HTML verbunden ist
 
 === Julian Schludermann
 * Architektur
