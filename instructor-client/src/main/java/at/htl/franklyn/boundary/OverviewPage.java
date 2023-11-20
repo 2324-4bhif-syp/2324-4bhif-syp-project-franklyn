@@ -1,7 +1,6 @@
 package at.htl.franklyn.boundary;
 
 import at.htl.franklyn.services.ExamineesService;
-import io.quarkus.logging.Log;
 import io.quarkus.qute.Template;
 import io.quarkus.qute.TemplateInstance;
 
@@ -9,32 +8,29 @@ import jakarta.inject.Inject;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
-import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.MediaType;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 
 import static java.util.Objects.requireNonNull;
 
-@Path("/some-page")
-public class SomePage {
+@Path("/overview")
+public class OverviewPage {
     @Inject
     @RestClient
     ExamineesService examineesService;
 
-    private final Template page;
+    private final Template overview;
 
-    public SomePage(Template page) {
-        this.page = requireNonNull(page, "page is required");
+    public OverviewPage(Template overview) {
+        this.overview = requireNonNull(overview, "page is required");
     }
 
     @GET
     @Produces(MediaType.TEXT_HTML)
     @io.smallrye.common.annotation.Blocking
-    public TemplateInstance get(@QueryParam("name") String name) {
-        // Example usage of examineesService:
+    public TemplateInstance get() {
 
-        Log.info(examineesService.getExaminees());
-        return page.data("name", examineesService.getExaminees().get(0));
+        return overview.data("examinees", examineesService.getExaminees());
     }
 
 }

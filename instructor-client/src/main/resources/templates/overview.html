@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Franklyn</title>
+    <style>
+        body {
+            background-color: #171717;
+            color: #ffffff;
+        }
+        h1 {
+            color: #ffffff;
+        }
+    </style>
+</head>
+<h1>Examinees</h1>
+<body>
+    <ul>
+        {#for examinee in examinees}
+            <li>
+            <a href="http://{examinee}:8081">{examinee}</a>
+            </li>
+        {/for}
+    </ul>
+</body>
+</html>
