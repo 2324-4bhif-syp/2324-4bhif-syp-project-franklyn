@@ -3,9 +3,7 @@ package at.htl.franklyn.boundary;
 import at.htl.franklyn.control.ExamineeConnectionRepository;
 import io.vertx.ext.web.RoutingContext;
 import jakarta.inject.Inject;
-import jakarta.ws.rs.Consumes;
-import jakarta.ws.rs.POST;
-import jakarta.ws.rs.Path;
+import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
@@ -17,8 +15,15 @@ public class ExamineeConnectionResource {
     @Inject
     RoutingContext context;
 
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getConnections() {
+        return Response.ok(examineeConnectionRepository.getConnectedExamines()).build();
+    }
+
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
     public Response connect() {
         Response response;
 
