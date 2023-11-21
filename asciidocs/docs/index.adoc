@@ -9,4 +9,7 @@ ifndef::imagesdir[:imagesdir: images]
 == Minutes of Meeting
 <<./mom/2023-10-17.adoc#, 2023-10-17>>
 
-<<./mom/2023-11-07.adoc#, 2023-11-97>>
+<<./mom/2023-11-07.adoc#, 2023-11-07>>
+
+
+<<./mom/2023-11-21.adoc#, 2023-11-21>>
