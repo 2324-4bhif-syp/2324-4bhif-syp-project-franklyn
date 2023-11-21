@@ -12,7 +12,7 @@ Teachers will be given the opportunity to create test sessions. Students can log
 
 
 == UCD
-image::http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/2324-4bhif-syp/2324-4bhif-syp-project-franklyn/main/plantuml/franklyn-ucd.puml[]
+image::http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/2324-4bhif-syp/2324-4bhif-syp-project-franklyn/main/asciidocs/docs/plantuml/franklyn-ucd.puml[]
 
 
 == Team Members

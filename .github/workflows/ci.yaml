@@ -1,11 +1,14 @@
 name: Quarkus packaging
 
 on:
-  push:
+  push: 
+    paths:
+      - 'openbox/**'
+      - 'server/**'
     branches: [ main ]
   pull_request:
     branches: [ main ]
-
+    
 env:
   REGISTRY: "ghcr.io"
 

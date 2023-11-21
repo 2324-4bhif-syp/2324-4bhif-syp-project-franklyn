@@ -45,7 +45,11 @@ plantuml::./plantuml/architecture.puml[]
 === Aufgaben
 
 === Tobias Aichinger
-* TODO
+* Architektur
+** UML, Terminologie
+* Instructor RestClient zum erhalten der Examinee ips vom Server
+* Server Endpunkt zum versenden aller Examinee ips
+* Umstellung zu neuen Asciidoc github workflow
 
 === Luka Cvijić
 * Frontend
