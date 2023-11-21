@@ -42,29 +42,23 @@ plantuml::./plantuml/architecture.puml[]
 
 === Live Demo
 
-=== Aufgaben
+[.font-x-large]
+=== [.margin-b-10]#Aufgaben#
+[cols=4*,options=header]
+|===
+| Aichinger Tobias
+| Cvijić Luka
+| Schludermann Julian
+| Schnalzenberger Arwed
 
-=== Tobias Aichinger
-* Architektur
-** UML, Terminologie
-* Instructor RestClient zum erhalten der Examinee ips vom Server
-* Server Endpunkt zum versenden aller Examinee ips
-* Umstellung zu neuen Asciidoc github workflow
+| Umstellung auf den neuen Asciidoc Workflow
+| HTML Frontend für den Instruktor
+| Erstellen des Architekturdiagramms
+| Erstellen des REST Endpunkts am Server für den "Heartbeat"
 
-=== Luka Cvijić
-* Frontend
-** HTML Seite
-** Klasse, die mit dem HTML verbunden ist
+| Verknüpfung von Server und Instructor REST Client: Endpunkt und REST-Service
+| Verknüpfung von HTML und Quarkus-RestClient mit Qute
+| Arbeit an der OpenBox: Periodische Signale an den Server (heartbeat)
+| Verwaltung der IP-Adressen: Automatische Aussortierung von inaktiven "OpenBoxen"
 
-=== Julian Schludermann
-* Architektur
-** UML, Terminologie
-* Periodische Signale (heartbeat) der Box an den Server
-** Quarkus rest client
-** Quarkus schedules
-
-=== Arwed Schnalzenberger
-* Server Endpoint, der die IP-Adressen speichert und diese für eine bestimmte Zeit behält, bevor sie gelöscht werden.
-** Resource für die Requests
-** Service mit ConcurrentHashmap für IP-Adressen
-** Bean löscht alle IP-Adressen die älter als eine gewisse Zeit sind
+|===
