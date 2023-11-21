@@ -10,7 +10,7 @@ cloud {
     [Server] -right- "getExaminees" : "           "
 }
 
-node Examiners {
+node Instructors {
     [Frontend]
 }
 
