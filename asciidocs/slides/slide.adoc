@@ -1,4 +1,4 @@
-= Franklyn-Quarkus
+= Franklyn
 :revealjs_theme: white
 :customcss: css/presentation.css
 ifndef::imagesdir[:imagesdir: ../images]
