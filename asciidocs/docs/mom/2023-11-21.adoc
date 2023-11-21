@@ -53,20 +53,25 @@ endif::backend-html5[]
 == Besprochene Themen
 
 * Bewertung
-** Praesentation:
-** Inhalt:
+** Aichinger: 1
+** Cvijić: 2
+** Schludermann: 1
+** Schnalzenberger: 2
 
 === 2. Sprint
 
 * Sprint review.
-
+** Gutes Architektur-Diagramm
+** Gute Benennung
 
 * Code Review nach dem ersten Sprint:
-
+** Var ist nur gut bei generischen Listen (Erwähnung vom Professor Stütz. Es war bei uns okay.)
 
 === 3. Sprint
 
-*
+* Domain soll erstellt werden
+** 1-er Port sollte gehen
+* Screenshots sollen werden(Server) und die Namen(Datenbank)
 
 * Sprintdauer
 ** bis *05.12.2023*
