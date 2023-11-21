@@ -6,7 +6,7 @@ import jakarta.ws.rs.Produces;
 import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
 
 @Path("/screenshot")
-@RegisterRestClient(baseUri = "")
+@RegisterRestClient(baseUri = "https://localhost:8080")
 public interface ScreenshotService {
     @GET
     @Produces("image/png")
