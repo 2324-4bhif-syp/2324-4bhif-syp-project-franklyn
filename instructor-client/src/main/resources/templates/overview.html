@@ -1,26 +1,36 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Franklyn</title>
     <style>
-        body {
-            background-color: #171717;
-            color: #ffffff;
+        .column {
+            float: left;
+            width: 20%;
         }
-        h1 {
-            color: #ffffff;
+
+        .row:after {
+            content: "";
+            display: table;
+            clear: both;
         }
     </style>
 </head>
 <h1>Examinees</h1>
 <body>
-    <ul>
-        {#for examinee in examinees}
-            <li>
-            <a href="http://{examinee}:8081">{examinee}</a>
-            </li>
-        {/for}
-    </ul>
+    <div class="row">
+        <div class="column">
+            <ul>
+                {#for examinee in examinees}
+                    <li><a href="/overview/screenshot/{examinee}" role="button">{examinee}</a></li>
+                {/for}
+            </ul>
+        </div>
+        <div class="column">
+            {#if image != ""}
+                <image src="data:image/png;base64,{image}" width="1200"></image>
+            {/if}
+        </div>
+    </div>
 </body>
 </html>
