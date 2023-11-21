@@ -23,6 +23,8 @@ public class OverviewPage {
     ExamineesService examineesService;
 
     private final Template overview;
+    private ScreenshotService screenshotService;
+    private String ip;
 
     public OverviewPage(Template overview) {
         this.overview = requireNonNull(overview, "page is required");
@@ -33,12 +35,15 @@ public class OverviewPage {
     @Produces(MediaType.TEXT_HTML)
     @io.smallrye.common.annotation.Blocking
     public TemplateInstance updateScreenshot(@PathParam("ip") String ip) {
-        ScreenshotService screenshotService = RestClientBuilder.newBuilder()
-                .baseUri(URI.create(String.format("http://%s:8080", ip)))
-                .build(ScreenshotService.class);
+        if ((this.ip == null || !this.ip.equals(ip)) || screenshotService == null) {
+            this.screenshotService = RestClientBuilder.newBuilder()
+                    .baseUri(URI.create(String.format("http://%s:8080", ip)))
+                    .build(ScreenshotService.class);
+            this.ip = ip;
+        }
 
         return this.overview.data("examinees", examineesService.getExaminees())
-                .data("image", Base64.getEncoder().encodeToString(screenshotService.getScreenshot()));
+                .data("image", Base64.getEncoder().encodeToString(this.screenshotService.getScreenshot()));
     }
 
     @GET
