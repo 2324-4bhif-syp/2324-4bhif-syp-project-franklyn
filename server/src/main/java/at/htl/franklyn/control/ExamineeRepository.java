@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 
 @ApplicationScoped
 public class ExamineeRepository {
-    // Key: Ip address, Val: Examinee instance
+    // Key: Ip address
     private final ConcurrentHashMap<String, Examinee> examinees = new ConcurrentHashMap<>();
 
     public void save(Examinee examinee) {
