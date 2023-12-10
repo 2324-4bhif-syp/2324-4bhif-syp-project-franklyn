@@ -1,2 +1,2 @@
-### POST IPv4 Adress
-POST http://localhost:8080/connection
+### GET all examinees
+GET http://localhost:8080/examinees
