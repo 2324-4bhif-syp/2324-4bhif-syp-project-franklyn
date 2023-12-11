@@ -26,7 +26,6 @@ import static java.util.Objects.requireNonNull;
 
 @Path("/saves")
 public class Saves {
-
     @RestClient
     ExamineesService examineesService;
     @RestClient
