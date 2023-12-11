@@ -2,12 +2,12 @@
 
 <table>
   <tr>
-    <td class="examine-list">
+    <td class="examinee-list">
       <b>Examinees:</b>
-      <app-examine-list></app-examine-list>
+      <app-examinee-list></app-examinee-list>
     </td>
-    <td class="examine-patrol px-auto">
-      <app-examine [examine]="examineRepo.getPatrolExamine()" [showImage]="true"></app-examine>
+    <td class="examinee-patrol px-auto">
+      <app-examinee [examinee]="examineeRepo.getPatrolExaminee()" [showImage]="true"></app-examinee>
     </td>
   </tr>
 </table>

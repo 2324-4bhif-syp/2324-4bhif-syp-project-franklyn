@@ -1,4 +1,4 @@
-export class Examine {
+export class Examinee {
   constructor(userName: string, ipAddress: string, connected:boolean) {
     this.userName = userName;
     this.ipAddress = ipAddress;

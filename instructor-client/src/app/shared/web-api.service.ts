@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
-import {Examine} from "./entity/Examine";
+import {Examinee} from "./entity/Examinee";
 import {environment} from "../../environment/environment";
 
 @Injectable({
@@ -11,6 +11,6 @@ export class WebApiService {
   constructor(private http: HttpClient) { }
 
   public getClientsFromServer() {
-    return this.http.get<Examine[]>(environment.serverBaseUrl, {headers: this.headers});
+    return this.http.get<Examinee[]>(environment.serverBaseUrl, {headers: this.headers});
   }
 }

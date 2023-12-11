@@ -1,11 +1,11 @@
 import {Component, Injectable} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
-import {ExamineComponent} from "./component/examine/examine.component";
-import ExamineDataService from "./shared/repository/examine-data.service";
-import {ExamineListComponent} from "./component/examine-list/examine-list.component";
+import {ExamineeComponent} from "./component/examinee/examinee.component";
+import ExamineeDataService from "./shared/repository/examinee-data.service";
+import {ExamineeListComponent} from "./component/examinee-list/examinee-list.component";
 import {environment} from "../environment/environment";
-import {Examine} from "./shared/entity/Examine";
+import {Examinee} from "./shared/entity/Examinee";
 
 @Injectable({
   providedIn: 'root'
@@ -13,14 +13,14 @@ import {Examine} from "./shared/entity/Examine";
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, ExamineComponent, ExamineListComponent],
+  imports: [CommonModule, RouterOutlet, ExamineeComponent, ExamineeListComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
 export class AppComponent {
-  constructor(protected examineRepo: ExamineDataService) {
+  constructor(protected examineeRepo: ExamineeDataService) {
     setInterval(() => {
-      examineRepo.getAllExaminesFromServer();
+      examineeRepo.getAllExamineesFromServer();
     }, environment.nextClientScheduleTime);
   }
 }
