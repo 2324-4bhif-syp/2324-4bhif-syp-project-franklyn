@@ -1,22 +1,30 @@
 @startuml
-package Examinees {
-    [OpenBox1] -- "getScreenshot  "
-    [OpenBox2] -- "getScreenshot"
-    [OpenBox3] -- "getScreenshot "
+package LAN {
+    package Examinees {
+        [OpenBox1] -- "getScreenshot  "
+        [OpenBox2] -- "getScreenshot"
+        [OpenBox3] -- "getScreenshot "
+    }
+
+    node Instructors {
+        [Frontend]
+    }
+
+    node Recorder
 }
 
 cloud {
-    [Server] -- "connect"
-    [Server] -right- "getExaminees" : "           "
+    [Server] -left- "examinee" : "                           "
+    [Server] -right- "getExaminees"  : "                           "
 }
 
-node Instructors {
-    [Frontend]
-}
+[OpenBox1] -up-> "examinee" : "via websocket"
+[OpenBox2] -up-> "examinee"
+[OpenBox3] -up-> "examinee"
 
-[OpenBox1] -up-> "connect" : "heartbeat"
-[OpenBox2] -up-> "connect"
-[OpenBox3] -up-> "connect"
-[Frontend] -left-> "getExaminees" : "               "
-[Frontend] -down-> "getScreenshot  "
+[Frontend] -left-> "getExaminees"
+[Frontend] -left-> "getScreenshot  " : "low quality       "
+
+Recorder --> "getExaminees"
+Recorder -down-> "getScreenshot  " : "high quality"
 @enduml

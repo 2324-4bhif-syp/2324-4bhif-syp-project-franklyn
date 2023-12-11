@@ -12,10 +12,10 @@ ifndef::imagesdir[:imagesdir: ../images]
 
 [.font-xx-large]
 == Was ist Franklyn
-* Ermöglicht lebensnahes Arbeiten bei Leistungsfeststellungen
+* Ermöglicht praxisnahes Arbeiten bei Leistungsfeststellungen
 * Besonders: Recherche im Internet
 ** z.B. Stack Overflow, Dokumentation
-* Gleichzeitige Sicherheit für Lehrpersonen
+* Gleichzeitige Gewissheit für Lehrpersonen
 ** einhalten von Regeln
 *** keine Kommunikation zwischen den Schülern
 *** kein Kopieren von fertigen Programmen/Lösungen
@@ -28,17 +28,19 @@ plantuml::./plantuml/architecture.puml[]
 * *OpenBox*: Applikation auf dem Rechner der Schüler
 ** Warum OpenBox?
 *** Für den Prüfer ist der Rechner des Schülers wie eine undurchsichtige Box
-*** Mit der Franklyn Applikation kann diese Box geöffnet und daraus Informationen gewonnen werden
-**** z.B. screenshot
-** *Heartbeat*: Periodische Anfrage an den Server
-*** Signalisiert, dass die Box noch aktiv ist
+*** Mit der Franklyn Applikation kann diese Box geöffnet und daraus Informationen gewonnen werden (z.B. screenshot)
 * *Server*: Quarkus backend zum Verwalten von Boxen
 * *Frontend*: Quarkus client mit Qute zum Anzeigen der aus den Boxen gewonnenen Daten
+* *Recorder*: Applikation zum Persistieren der Screenshots und erstellung einer Aufnahme
+
+=== Derzeitige Probleme der Architektur
+* Server im Internet -> Ip Adressen der Boxen können nicht gewonnen werden
+* Aufzeichnungen (Recorder) im LAN -> Lehrpersonen können Bildschirmaufzeichnungen schwer zu Hause anschauen.
 
 === Konfiguration
 * Eigener Hotspot
 ** WLAN der Schule blockiert Anfragen
-* Ab nächstem Sprint Oravm
+** Server auf Oravm funktioniert nicht
 
 === Live Demo
 
@@ -51,14 +53,13 @@ plantuml::./plantuml/architecture.puml[]
 | Schludermann Julian
 | Schnalzenberger Arwed
 
-| Umstellung auf den neuen Asciidoc Workflow
-| HTML Frontend für den Instruktor
-| Erstellen des Architekturdiagramms
-| Erstellen des REST Endpunkts am Server für den "Heartbeat"
+|
+|
+| Server-Client Verbindung auf WebSockets migrieren
+|
 
-| Verknüpfung von Server und Instructor REST Client: Endpunkt und REST-Service
-| Verknüpfung von HTML und Quarkus-RestClient mit Qute
-| Arbeit an der OpenBox: Periodische Signale an den Server (heartbeat)
-| Verwaltung der IP-Adressen: Automatische Aussortierung von inaktiven "OpenBoxen"
-
+|
+|
+| Architekturdiagramm überarbeiten
+|
 |===
