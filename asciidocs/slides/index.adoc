@@ -53,12 +53,12 @@ plantuml::./plantuml/architecture.puml[]
 | Schludermann Julian
 | Schnalzenberger Arwed
 
-|
+| Client-Server Verbindung auf Websockets migrieren
 |
 | Server-Client Verbindung auf WebSockets migrieren
 |
 
-|
+| Automatisches wiederverbinden, wenn der Server ausfällt
 |
 | Architekturdiagramm überarbeiten
 |
