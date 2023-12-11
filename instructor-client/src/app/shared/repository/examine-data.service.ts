@@ -39,7 +39,7 @@ export default class ExamineDataService {
   }
 
   private newPatrolExamine() {
-    let examinees: Examine[] = this.get();
+    let examinees: Examine[] = this.get(e => e.connected && e.ipAddress !== this.patrolExamine?.ipAddress);
 
     if (examinees.length === 0 && this.items.length === 0) {
       this.patrolExamine = undefined;
