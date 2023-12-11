@@ -3,10 +3,9 @@ package at.htl.franklyn.services;
 import at.htl.franklyn.boundary.Client;
 import io.quarkus.logging.Log;
 import io.quarkus.scheduler.Scheduled;
-import jakarta.websocket.ContainerProvider;
-import jakarta.websocket.Session;
+import jakarta.inject.Inject;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
-
+import jakarta.websocket.ContainerProvider;
 import java.net.URI;
 
 public class ReconnectService {
@@ -15,13 +14,15 @@ public class ReconnectService {
     @ConfigProperty(name = "websocket.url")
     String url;
 
-    @Scheduled(every = "10s", skipExecutionIf = ConnectionService.class)
-    void tryReconnect() {
-        Log.info("Tryin to reconnect");
+    @Inject
+    ConnectionService connectionService;
+
+    @Scheduled(every = "{websocket.reconnection.interval}", skipExecutionIf = ConnectionService.class)
+    void tryToEstablishConnection() {
         final URI uri = URI.create(String.format("%s/examinee/%s", url, username));
 
-        try (Session session = ContainerProvider.getWebSocketContainer().connectToServer(Client.class, uri)) {
-            Log.infof("CONNECTION: %s connected", username);
+        try {
+            connectionService.setSession(ContainerProvider.getWebSocketContainer().connectToServer(Client.class, uri));
         } catch (Exception ignored){}
     }
 }
