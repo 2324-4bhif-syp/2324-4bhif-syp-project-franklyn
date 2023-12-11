@@ -65,7 +65,10 @@ public class Saves {
                 ImageIO.write(
                         ImageIO.read(bis),
                         "png",
-                        new File(String.format("%s/%s-%s.png", directory.getPath(), examine.getIpAddress(), new SimpleDateFormat(timestampPattern).format(new Date())))
+                        new File(String.format("%s/%s-%s.png", 
+                            directory.getPath(), 
+                            examine.getIpAddress(), 
+                            new SimpleDateFormat(timestampPattern).format(new Date())))
                 );
             } catch (IOException e) {
                 throw new RuntimeException(e);
