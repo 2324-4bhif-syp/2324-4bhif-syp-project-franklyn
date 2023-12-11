@@ -1,6 +1,5 @@
 package at.htl.franklyn.boundary;
 
-
 import at.htl.franklyn.services.ConnectionService;
 import jakarta.inject.Inject;
 import jakarta.websocket.*;
