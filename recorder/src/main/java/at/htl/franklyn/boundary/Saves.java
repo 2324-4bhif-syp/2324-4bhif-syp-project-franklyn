@@ -50,7 +50,6 @@ public class Saves {
             }
 
             try {
-
                 File directory = new File(String.format("screenshots/%s-%s", examine.getIpAddress(), examine.getUserName()));
 
                 if(!directory.exists()){
