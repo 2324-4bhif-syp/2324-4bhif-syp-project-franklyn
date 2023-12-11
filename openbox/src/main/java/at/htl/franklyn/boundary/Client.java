@@ -13,7 +13,7 @@ public class Client {
     ConnectionService connectionService;
 
     @OnOpen
-    public void open() {
+    public void onOpen() {
         connectionService.setConnected(true);
     }
 
