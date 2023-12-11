@@ -4,6 +4,8 @@ import { RouterOutlet } from '@angular/router';
 import {ExamineComponent} from "./component/examine/examine.component";
 import ExamineDataService from "./shared/repository/examine-data.service";
 import {ExamineListComponent} from "./component/examine-list/examine-list.component";
+import {environment} from "../environment/environment";
+import {Examine} from "./shared/entity/Examine";
 
 @Injectable({
   providedIn: 'root'
@@ -17,5 +19,8 @@ import {ExamineListComponent} from "./component/examine-list/examine-list.compon
 })
 export class AppComponent {
   constructor(protected examineRepo: ExamineDataService) {
+    setInterval(() => {
+      examineRepo.getAllExaminesFromServer();
+    }, environment.nextClientScheduleTime);
   }
 }

@@ -1,8 +1,12 @@
-import {Component, Input} from '@angular/core';
+import {Component, Injectable, Input} from '@angular/core';
 import {Examine} from "../../shared/entity/Examine";
 import {CommonModule} from "@angular/common";
 import {environment} from "../../../environment/environment";
+import ExamineDataService from "../../shared/repository/examine-data.service";
 
+@Injectable({
+  providedIn: 'root'
+})
 @Component({
   selector: 'app-examine',
   standalone: true,
@@ -11,6 +15,9 @@ import {environment} from "../../../environment/environment";
   styleUrl: './examine.component.css'
 })
 export class ExamineComponent {
+  constructor(protected examineRepo: ExamineDataService) {
+  }
+
   @Input() examine: Examine | undefined;
   @Input() showImage: boolean = false;
 
@@ -22,6 +29,10 @@ export class ExamineComponent {
     }
 
     return addressString;
+  }
+
+  getScreenshotAddress() {
+    return this.getAddress() + "/screenshot/?reloadNumber=" + this.examineRepo.getReloadNumber();
   }
 
   getActivity(): string {
