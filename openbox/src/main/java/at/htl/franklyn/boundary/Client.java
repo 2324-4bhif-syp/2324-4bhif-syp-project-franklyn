@@ -18,7 +18,7 @@ public class Client {
     }
 
     @OnClose
-    public void close() throws IOException {
+    public void onClose() throws IOException {
         connectionService.setConnected(false);
         connectionService.getSession().close();
     }
