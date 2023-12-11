@@ -5,22 +5,23 @@ import at.htl.franklyn.services.ExamineesService;
 import at.htl.franklyn.services.ScreenshotService;
 import io.quarkus.logging.Log;
 import io.quarkus.qute.Template;
-import io.quarkus.qute.TemplateInstance;
 
 import io.quarkus.scheduler.Scheduled;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.eclipse.microprofile.rest.client.RestClientBuilder;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 
 import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
-import java.util.Base64;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 import static java.util.Objects.requireNonNull;
@@ -33,8 +34,9 @@ public class Saves {
     @RestClient
     ScreenshotService screenshotService;
 
+    @ConfigProperty(name = "timestamp.pattern")
+    String timestampPattern;
     private final Template saves;
-    private String ip;
 
     private int counter = 0;
 
@@ -60,6 +62,12 @@ public class Saves {
 
             try {
 
+                File directory = new File(String.format("screenshots/%s-%s", examine.getIpAddress(), examine.getUserName()));
+
+                if(!directory.exists()){
+                    directory.mkdirs();
+                }
+
                 screenshotService = RestClientBuilder.newBuilder()
                         .baseUri(URI.create(String.format("http://%s:8081", examine.getIpAddress())))
                         .build(ScreenshotService.class);
@@ -69,7 +77,7 @@ public class Saves {
                 ImageIO.write(
                         ImageIO.read(bis),
                         "png",
-                        new File(String.format("%s.%d.png", examine.getIpAddress(), counter))
+                        new File(String.format("%s/%s-%s.png", directory.getPath(), examine.getIpAddress(), new SimpleDateFormat(timestampPattern).format(new Date())))
                 );
 
                 counter++;
