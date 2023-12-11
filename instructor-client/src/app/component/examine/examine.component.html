@@ -1,5 +1,2 @@
-<div *ngIf="examine">
-  <a href="{{getAddress()}}" target="_blank">{{examine.ipAddress}}</a>
-
-  <img src="{{getAddress()}}/screenshot/image/png">
-</div>
+{{getActivity()}} <a *ngIf="examine" href="{{getAddress()}}" target="_blank">{{examine.userName}}</a>
+<img *ngIf="examine && showImage" src="{{getAddress()}}/screenshot" alt="Screenshot of the clients screen">

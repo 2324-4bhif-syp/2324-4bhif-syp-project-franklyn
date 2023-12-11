@@ -18,9 +18,21 @@ export class ExamineComponent {
     let addressString: string = "";
 
     if (this.examine) {
-      addressString =  "http://" + this.examine.ipAddress + environment.clientPort;
+      addressString =  "http://" + this.examine.ipAddress + ":" + environment.clientPort;
     }
 
     return addressString;
+  }
+
+  getActivity(): string {
+    let activity: string = "";
+
+    if (this.examine && !this.showImage && this.examine.connected) {
+      activity =  "🟢";
+    } else if (this.examine && !this.showImage){
+      activity = "🔴";
+    }
+
+    return activity
   }
 }

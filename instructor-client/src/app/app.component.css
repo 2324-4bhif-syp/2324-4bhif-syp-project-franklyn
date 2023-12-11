@@ -1,11 +1,16 @@
 table {
   width: 100%;
+  margin-top: 2%;
 }
 
 .examine-list {
   width: 20%;
+  padding: 2%;
+  vertical-align: top;
+  background: lightgrey;
 }
 
 .examine-patrol {
-  width: 100%;
+  width: 80%;
+  padding: 2%;
 }
