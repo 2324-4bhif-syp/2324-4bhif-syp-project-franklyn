@@ -3,8 +3,6 @@ package at.htl.franklyn.boundary;
 import at.htl.franklyn.entity.Examinee;
 import at.htl.franklyn.services.ExamineesService;
 import at.htl.franklyn.services.ScreenshotService;
-import io.quarkus.logging.Log;
-import io.quarkus.qute.Template;
 
 import io.quarkus.scheduler.Scheduled;
 import jakarta.ws.rs.*;
@@ -36,13 +34,6 @@ public class Saves {
 
     @ConfigProperty(name = "timestamp.pattern")
     String timestampPattern;
-    private final Template saves;
-
-    private int counter = 0;
-
-    public Saves(Template saves) {
-        this.saves = requireNonNull(saves, "page is required");
-    }
 
     @Path("/examinees")
     public Response getExaminees(){
@@ -80,7 +71,6 @@ public class Saves {
                         new File(String.format("%s/%s-%s.png", directory.getPath(), examine.getIpAddress(), new SimpleDateFormat(timestampPattern).format(new Date())))
                 );
 
-                counter++;
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
