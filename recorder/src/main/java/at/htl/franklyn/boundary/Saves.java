@@ -44,7 +44,6 @@ public class Saves {
         List<Examinee> examinees = examineesService.getExaminees();
 
         for(Examinee examine: examinees){
-
             if(!examine.isConnected()){
                 continue;
             }
