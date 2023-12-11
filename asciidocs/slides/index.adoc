@@ -56,10 +56,10 @@ plantuml::./plantuml/architecture.puml[]
 | Client-Server Verbindung auf Websockets migrieren
 |
 | Server-Client Verbindung auf WebSockets migrieren
-|
+| Changed from the quarkus instructor client frontend to an angular-frontend
 
 | Automatisches wiederverbinden, wenn der Server ausfällt
 |
 | Architekturdiagramm überarbeiten
-|
+| Added the patrol mode (shows a different examine screen every x seconds)
 |===
