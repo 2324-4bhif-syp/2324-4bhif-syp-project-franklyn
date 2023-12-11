@@ -41,7 +41,6 @@ public class Saves {
 
     @Scheduled(every = "{update.interval}")
     public void update(){
-
         List<Examinee> examinees = examineesService.getExaminees();
 
         for(Examinee examine: examinees){
