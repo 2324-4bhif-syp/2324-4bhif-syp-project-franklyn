@@ -10,10 +10,8 @@ Franklyn is an application that provides students with a professional working en
 
 Teachers will be given the opportunity to create test sessions. Students can log in to a session with a PIN or by first and last name. The student client takes screenshots at regular intervals, which the teacher can view.
 
-
 == UCD
 image::http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/2324-4bhif-syp/2324-4bhif-syp-project-franklyn/main/asciidocs/docs/plantuml/franklyn-ucd.puml[]
-
 
 == Team Members
 
@@ -22,17 +20,15 @@ image::http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubuse
 * Schludermann Julian
 * Schnalzenberger Arwed
 
-== Getting started
+== Slides
+Revealjs Slides can be found https://2324-4bhif-syp.github.io/2324-4bhif-syp-project-franklyn/slides[here]
 
-=== Server
+== For developers
+=== Subprojects
+* *openbox*: application running on the students' computer. Connected with a WebSocket connection to the *server*. Provides a REST interface for gathering Data (e.g. screenshots)
+* *server*: application managing *boxes*. meaning: storing username, ipaddress and connection states (connected, disconnected) and providing an REST Endpoint for other applications to get this data.
+* *recorder*: application periodically fetching high quality screenshots from active *boxes* and persisting them.
+* *instructor-client*: frontend displaying information (connection state, screenshot, ...) about *boxes* (students) to the examiner/instructor.
 
-* Open the "client"-folder in a terminal and type this command:
-
-.start command
-[source, bash]
-----
-./mvnw clean quarkus:dev
-----
-
-* Now open the site http://localhost:8080/ in your browser. You should be able to see a new image of your current screen every time you reload the page.
-
+=== Getting started: an example
+* TODO
