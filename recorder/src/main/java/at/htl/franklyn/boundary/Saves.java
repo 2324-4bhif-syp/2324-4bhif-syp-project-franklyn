@@ -1,13 +1,16 @@
 package at.htl.franklyn.boundary;
 
+import at.htl.franklyn.entity.Examinee;
 import at.htl.franklyn.services.ExamineesService;
 import at.htl.franklyn.services.ScreenshotService;
+import io.quarkus.logging.Log;
 import io.quarkus.qute.Template;
 import io.quarkus.qute.TemplateInstance;
 
 import io.quarkus.scheduler.Scheduled;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
 import org.eclipse.microprofile.rest.client.RestClientBuilder;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 
@@ -39,41 +42,26 @@ public class Saves {
         this.saves = requireNonNull(saves, "page is required");
     }
 
-    @GET
-    @Path("screenshot/{ip}")
-    @Produces(MediaType.TEXT_HTML)
-    @io.smallrye.common.annotation.Blocking
-    public TemplateInstance updateScreenshot(@PathParam("ip") String ip) {
-
-        if ((this.ip == null || !this.ip.equals(ip)) || screenshotService == null) {
-            screenshotService = RestClientBuilder.newBuilder()
-                    .baseUri(URI.create(String.format("http://%s:8081", ip)))
-                    .build(ScreenshotService.class);
-            this.ip = ip;
-        }
-
-        return this.saves.data("examinees", examineesService.getExaminees())
-                .data("image", Base64.getEncoder().encodeToString(screenshotService.getScreenshot()));
-    }
-
-    @GET
-    @Produces(MediaType.TEXT_HTML)
-    @io.smallrye.common.annotation.Blocking
-    public TemplateInstance get() {
-        return saves.data("examinees", examineesService.getExaminees())
-                .data("image", "");
+    @Path("/examinees")
+    public Response getExaminees(){
+        return Response.ok().entity(examineesService.getExaminees()).build();
     }
 
     @Scheduled(every = "{update.interval}")
     public void update(){
 
-        List<String> examinees = examineesService.getExaminees();
+        List<Examinee> examinees = examineesService.getExaminees();
 
-        for(String examine: examinees){
+        for(Examinee examine: examinees){
+
+            if(!examine.isConnected()){
+                continue;
+            }
+
             try {
 
                 screenshotService = RestClientBuilder.newBuilder()
-                        .baseUri(URI.create(String.format("http://%s:8081", examine)))
+                        .baseUri(URI.create(String.format("http://%s:8081", examine.getIpAddress())))
                         .build(ScreenshotService.class);
 
                 ByteArrayInputStream bis = new ByteArrayInputStream(screenshotService.getScreenshot());
@@ -81,7 +69,7 @@ public class Saves {
                 ImageIO.write(
                         ImageIO.read(bis),
                         "png",
-                        new File(String.format("%s.png", examine + counter))
+                        new File(String.format("%s.%d.png", examine.getIpAddress(), counter))
                 );
 
                 counter++;
