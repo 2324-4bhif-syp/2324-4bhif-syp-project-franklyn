@@ -46,4 +46,8 @@ export class ExamineeComponent {
 
     return activity
   }
+
+  selectExaminee() {
+    this.examineeRepo.newPatrolExaminee(this.examinee);
+  }
 }

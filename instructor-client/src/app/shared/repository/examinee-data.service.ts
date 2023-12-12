@@ -13,6 +13,7 @@ export default class ExamineeDataService {
   protected items: Examinee[] = [];
   protected patrolExaminee: Examinee | undefined;
   protected reloadNumber: number = 0;
+  patrolModeOn: boolean = false;
 
   //updates the list of examinees via the server
   getAllExamineesFromServer(): void {
@@ -22,7 +23,6 @@ export default class ExamineeDataService {
       },
       error: (err) => console.error(err),
     });
-    this.newPatrolExaminee();
   }
 
   get(predicate?: ((item: Examinee) => boolean) | undefined): Examinee[] {
@@ -38,19 +38,27 @@ export default class ExamineeDataService {
     return this.patrolExaminee;
   }
 
-  private newPatrolExaminee() {
-    let examinees: Examinee[] = this.get(e => e?.connected && e.ipAddress !== this.patrolExaminee?.ipAddress);
+  newPatrolExaminee(examinee?: Examinee) {
+    if (examinee !== undefined && examinee.connected) {
+      this.patrolModeOn = false;
+      this.patrolExaminee = examinee;
+    } else if (this.patrolModeOn) {
+      let examinees: Examinee[] = this.get(e => e?.connected && e.ipAddress !== this.patrolExaminee?.ipAddress);
+
+      if (this.items.length !== 0) {
+        if (examinees.length === 0) {
+          this.patrolExaminee = this.items[0];
+        } else {
+          this.patrolExaminee = examinees[Math.floor(Math.random() * examinees.length)];
+        }
+      }
+    }
 
     if (this.items.length === 0) {
       this.patrolExaminee = undefined;
-    } else {
-      if (examinees.length === 0) {
-        this.patrolExaminee = this.items[0];
-      } else {
-        this.patrolExaminee = examinees[Math.floor(Math.random() * examinees.length)];
-      }
-      this.reloadNumber++;
     }
+
+    this.reloadNumber++;
   }
 
   getReloadNumber(): number {
