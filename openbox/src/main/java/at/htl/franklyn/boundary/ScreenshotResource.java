@@ -4,6 +4,7 @@ import at.htl.franklyn.services.ScreenshotService;
 import io.quarkus.logging.Log;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
+import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.Response.ResponseBuilder;
@@ -23,6 +24,24 @@ public class ScreenshotResource {
 
         try (ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream()) {
             final BufferedImage image = ScreenshotService.getScreenshot();
+
+            ImageIO.write(image, "png", byteArrayOutputStream);
+            response = Response.ok(new ByteArrayInputStream(byteArrayOutputStream.toByteArray()));
+        } catch (Exception e) {
+            Log.error("FAILED: to write image", e);
+        }
+
+        return response.build();
+    }
+
+    @Produces("image/png")
+    @Path("/{width}/{height}")
+    @GET
+    public Response getScaledScreenshot(@PathParam("width") int width, @PathParam("height") int height) {
+        ResponseBuilder response = Response.serverError();
+
+        try (ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream()) {
+            final BufferedImage image = ScreenshotService.getScreenshot(width, height);
 
             ImageIO.write(image, "png", byteArrayOutputStream);
             response = Response.ok(new ByteArrayInputStream(byteArrayOutputStream.toByteArray()));
