@@ -22,13 +22,15 @@ public class ExamineePingPongSchedule {
     @Scheduled(every = "{websocket.ping.interval}")
     public void sendPing() {
         examineeRepository.findAll().forEach(e -> {
-            Log.infof("Sending ping to %s", e.getUserName());
-            ByteBuffer x = ByteBuffer.allocate(3);
-            x.put(new byte[]{ 4, 2, 0 });
-            try {
-                e.getSession().getBasicRemote().sendPing(x);
-            } catch (IOException ex) {
-                Log.error(ex);
+            if (e.isConnected() && e.getSession().isOpen()) {
+                Log.infof("Sending ping to %s", e.getUserName());
+                ByteBuffer x = ByteBuffer.allocate(3);
+                x.put(new byte[]{ 4, 2, 0 });
+                try {
+                    e.getSession().getBasicRemote().sendPing(x);
+                } catch (IOException ex) {
+                    Log.error(ex);
+                }
             }
         });
     }
@@ -36,7 +38,10 @@ public class ExamineePingPongSchedule {
     @Scheduled(every = "{websocket.cleanup.interval}")
     public void checkPing() {
         examineeRepository.findAll().forEach(e -> {
-            if(e.getLastPingTimestamp().isBefore(LocalDateTime.now().minusSeconds(clientTimeoutSeconds))) {
+            if(e.isConnected()
+                    && e.getLastPingTimestamp().isBefore(LocalDateTime.now().minusSeconds(clientTimeoutSeconds))
+                    && e.getSession().isOpen()
+            ) {
                 Log.infof("Disconnecting: %s", e.getUserName());
                 examineeRepository.disconnect(e.getIpAddress());
             }

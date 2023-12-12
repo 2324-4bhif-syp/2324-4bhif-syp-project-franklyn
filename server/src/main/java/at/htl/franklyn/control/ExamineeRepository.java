@@ -40,7 +40,6 @@ public class ExamineeRepository {
         if (e == null) {
             e = new Examinee();
             e.setIpAddress(ipAddress);
-            e.setLastPingTimestamp(LocalDateTime.now());
         }
 
         // Also update userName in case it changed
@@ -48,6 +47,7 @@ public class ExamineeRepository {
         e.setUserName(userName);
         e.setSession(session);
         e.setConnected(true);
+        e.setLastPingTimestamp(LocalDateTime.now());
 
         this.save(e);
     }
@@ -55,6 +55,7 @@ public class ExamineeRepository {
     public void refresh(String ipAddress, Session session) {
         Examinee e = this.findByIpAddress(ipAddress);
         e.setSession(session);
+        e.setConnected(true);
         e.setLastPingTimestamp(LocalDateTime.now());
     }
 }
