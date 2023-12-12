@@ -31,4 +31,48 @@ Revealjs Slides can be found https://2324-4bhif-syp.github.io/2324-4bhif-syp-pro
 * *instructor-client*: frontend displaying information (connection state, screenshot, ...) about *boxes* (students) to the examiner/instructor.
 
 === Getting started: an example
-* TODO
+
+In the property-files one can set different values for the application.
+
+For example one can set the application port for the quarkus applications (Server, Recorder, Openbox).
+
+==== Server
+
+.start the server
+[source, bash]
+----
+./mvnw clean quarkus:dev
+----
+
+link:./server/src/main/resources/application.properties[Properties]
+
+==== Instructor-client
+
+.start the angular instructor frontend
+[source, bash]
+----
+ng serve --open <.>
+----
+<.> "--open" directly opens the website after it finished loading
+
+link:./instructor-client/src/environment/environment.ts[Properties]
+
+==== Recorder
+
+.start the recorder
+[source, bash]
+----
+./mvnw clean quarkus:dev
+----
+
+link:./recorder/src/main/resources/application.properties[Properties]
+
+==== Openbox (Examinees)
+
+.start the openbox
+[source, bash]
+----
+./mvnw clean quarkus:dev
+----
+
+link:./openbox/src/main/resources/application.properties[Properties]
