@@ -45,30 +45,36 @@ endif::backend-html5[]
 |SYP-Unterricht
 
 |von-bis
-|Di. 12.12.2023, . und . EH
+|Di. 12.12.2023, 5. und 6. EH
+
 |Dauer
-| min
+| 30 min
 |===
 
 == Besprochene Themen
 
-* Bewertung
-** Aichinger:
-** Cvijić:
-** Schludermann:
-** Schnalzenberger:
-
 === 3. Sprint
 
 * Sprint review.
-**
+** Teammitglieder (und ähnliches) am Schluss
+** Openbox schickt die Ip-Addresse mit
+*** Security-Probleme
 
 === 4. Sprint
 
-* a
+* Polishing
+** Schülergerechtes Client-starten (einsetzbar)
+*** Username mit https://quarkus.io/guides/config-reference#environment-variables[.env] File
+*** ./mvnw clean package -> target folder -> java -jar something.runner.jar
+*** Quarkus banner (Student-Client)
+**** mit Ascii-art
+***** Ascii-art Generator mit lesbarer Schriftart
+** Scanner, der den Namen abfragt
+
+* Problem sprint 3 (öffentliche IP-Addresse wird mitgeschickt anstatt der Lan-IP-Addresse, wenn der Server nicht im gleichen Lan ist) fixen
 
 * Sprintdauer
-** bis *05.12.2023*
+** bis nach Weihnachten 2023
 
 == Vereinbarungen und Entscheidungen
 
@@ -78,7 +84,11 @@ endif::backend-html5[]
 |wer |macht was |bis wann
 
 |TODO
-|
-|
+|Polishing
+|bis nach Weihnachten 2023
+
+|TODO
+|Fixen des Problems im 3. Sprint (Server nicht im gleichen Lan)
+|bis nach Weihnachten 2023
 
 |===
