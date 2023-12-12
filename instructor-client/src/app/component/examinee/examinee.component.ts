@@ -32,7 +32,7 @@ export class ExamineeComponent {
   }
 
   getScreenshotAddress() {
-    return this.getAddress() + "/screenshot/?reloadNumber=" + this.examineeRepo.getReloadNumber();
+    return this.getAddress() + "/screenshot/" + environment.imageWidth + "/" + environment.imageHeight + "?reloadNumber=" + this.examineeRepo.getReloadNumber();
   }
 
   getActivity(): string {
