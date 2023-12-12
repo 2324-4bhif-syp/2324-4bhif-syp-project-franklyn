@@ -24,7 +24,6 @@ import java.util.List;
 
 import static java.util.Objects.requireNonNull;
 
-@Path("/saves")
 public class Saves {
     @RestClient
     ExamineesService examineesService;
@@ -33,11 +32,6 @@ public class Saves {
 
     @ConfigProperty(name = "timestamp.pattern")
     String timestampPattern;
-
-    @Path("/examinees")
-    public Response getExaminees(){
-        return Response.ok().entity(examineesService.getExaminees()).build();
-    }
 
     @Scheduled(every = "{update.interval}")
     public void update(){
