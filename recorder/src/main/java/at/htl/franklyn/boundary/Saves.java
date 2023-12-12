@@ -5,9 +5,6 @@ import at.htl.franklyn.services.ExamineesService;
 import at.htl.franklyn.services.ScreenshotService;
 
 import io.quarkus.scheduler.Scheduled;
-import jakarta.ws.rs.*;
-import jakarta.ws.rs.core.MediaType;
-import jakarta.ws.rs.core.Response;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.eclipse.microprofile.rest.client.RestClientBuilder;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
@@ -18,11 +15,8 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
-
-import static java.util.Objects.requireNonNull;
 
 public class Saves {
     @RestClient
