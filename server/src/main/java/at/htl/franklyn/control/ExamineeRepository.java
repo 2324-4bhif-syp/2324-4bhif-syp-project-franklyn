@@ -2,6 +2,7 @@ package at.htl.franklyn.control;
 
 import at.htl.franklyn.entity.Examinee;
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.websocket.Session;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -33,19 +34,27 @@ public class ExamineeRepository {
         this.save(e);
     }
 
-    public void connect(String userName, String ipAddress) {
+    public void connect(String userName, String ipAddress, Session session) {
         Examinee e = this.findByIpAddress(ipAddress);
 
         if (e == null) {
             e = new Examinee();
             e.setIpAddress(ipAddress);
+            e.setLastPingTimestamp(LocalDateTime.now());
         }
 
         // Also update userName in case it changed
         // (examinees switched computer or restarted franklyn and entered a different userName)
         e.setUserName(userName);
+        e.setSession(session);
         e.setConnected(true);
 
         this.save(e);
+    }
+
+    public void refresh(String ipAddress, Session session) {
+        Examinee e = this.findByIpAddress(ipAddress);
+        e.setSession(session);
+        e.setLastPingTimestamp(LocalDateTime.now());
     }
 }
