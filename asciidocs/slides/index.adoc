@@ -54,12 +54,12 @@ plantuml::./plantuml/architecture.puml[]
 | Schnalzenberger Arwed
 
 | Client-Server Verbindung auf Websockets migrieren
-|
+| Recorder erstellt (Speichern der Screenshots aller Openboxes im 10s Takt)
 | Server-Client Verbindung auf WebSockets migrieren
 | Changed from the quarkus instructor client frontend to an angular-frontend
 
 | Automatisches wiederverbinden, wenn der Server ausfällt
-|
+| Methode für skalierbare Screenshots hinzugefügt
 | Architekturdiagramm überarbeiten
 | Added the patrol mode (shows a different examine screen every x seconds)
 |===
