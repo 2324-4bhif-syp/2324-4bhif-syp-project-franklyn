@@ -23,7 +23,7 @@ public class ExamineePingPongSchedule {
     public void sendPing() {
         examineeRepository.findAll().forEach(e -> {
             if (e.isConnected() && e.getSession().isOpen()) {
-                Log.infof("Sending ping to %s", e.getUserName());
+                // Log.infof("Sending ping to %s", e.getUserName());
                 ByteBuffer x = ByteBuffer.allocate(3);
                 x.put(new byte[]{ 4, 2, 0 });
                 try {
@@ -42,7 +42,7 @@ public class ExamineePingPongSchedule {
                     && e.getLastPingTimestamp().isBefore(LocalDateTime.now().minusSeconds(clientTimeoutSeconds))
                     && e.getSession().isOpen()
             ) {
-                Log.infof("Disconnecting: %s", e.getUserName());
+                Log.infof("Disconnecting: %s (reason: timed out)", e.getUserName());
                 examineeRepository.disconnect(e.getIpAddress());
             }
         });

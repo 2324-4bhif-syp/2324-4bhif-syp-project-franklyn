@@ -31,7 +31,7 @@ public class ExamineeSocket {
 
     @OnMessage
     public void onPongMessage(Session session, PongMessage message) {
-        Log.infof("received ping");
+        // Log.infof("received ping");
         examineeRepository.refresh(getIpFromSession((session)), session);
     }
 
