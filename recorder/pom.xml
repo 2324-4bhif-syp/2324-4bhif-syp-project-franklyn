@@ -54,6 +54,18 @@
       <groupId>io.quarkus</groupId>
       <artifactId>quarkus-scheduler</artifactId>
     </dependency>
+    <!-- https://mvnrepository.com/artifact/org.openpnp/opencv -->
+    <dependency>
+      <groupId>org.openpnp</groupId>
+      <artifactId>opencv</artifactId>
+      <version>4.9.0-0</version>
+    </dependency>
+    <!-- https://mvnrepository.com/artifact/org.bytedeco/ffmpeg -->
+    <dependency>
+      <groupId>org.bytedeco</groupId>
+      <artifactId>ffmpeg</artifactId>
+      <version>6.0-1.5.9</version>
+    </dependency>
   </dependencies>
   <build>
     <plugins>
