@@ -12,14 +12,14 @@ public class InitBean {
     String url;
 
     @ConfigProperty(name = "websocket.username")
-    String userName;
+    String username;
 
     @ConfigProperty(name = "quarkus.http.port")
     int port;
 
     void startUp(@Observes StartupEvent startupEvent) {
         Log.infof("Connecting to server: %s", url);
-        Log.infof("User Name: %s", userName);
+        Log.infof("User Name: %s", username);
         Log.infof("Listening on port: %d", port);
     }
 }

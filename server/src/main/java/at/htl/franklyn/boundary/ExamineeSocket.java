@@ -40,8 +40,6 @@ public class ExamineeSocket {
     public void onMessage(String message, Session session, @PathParam("username") String username) {
         IpMessageDto ipMessage = IpMessageDto.fromJsonString(message);
 
-        Log.infof("%s", ipMessage); // TOOD: remove
-
         if (ipMessage != null) {
             examineeRepository.updateIpAddresses(decodeUsername(username), ipMessage.ipAddresses());
         }
