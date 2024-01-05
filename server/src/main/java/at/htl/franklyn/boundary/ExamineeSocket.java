@@ -22,21 +22,18 @@ public class ExamineeSocket {
     ExamineeRepository examineeRepository;
 
     @OnOpen
-    @Encoded
     public void onOpen(Session session, @PathParam("username") String username) {
         Log.infof("%s connected", username);
         examineeRepository.connect(username, username, session);
     }
 
     @OnClose
-    @Encoded
     public void onClose(Session session, @PathParam("username") String username) {
         Log.infof("%s disconnected", username);
         examineeRepository.disconnect(username);
     }
 
     @OnMessage
-    @Encoded
     public void onMessage(String message, Session session, @PathParam("username") String username) {
         IpMessageDto ipMessage = IpMessageDto.fromJsonString(message);
 
@@ -48,13 +45,11 @@ public class ExamineeSocket {
     }
 
     @OnMessage
-    @Encoded
     public void onPongMessage(Session session, @PathParam("username") String username, PongMessage message) {
         examineeRepository.refresh(username, session);
     }
 
     @OnError
-    @Encoded
     public void onError(Session session, @PathParam("username") String username, Throwable throwable) {
         examineeRepository.disconnect(username);
     }
