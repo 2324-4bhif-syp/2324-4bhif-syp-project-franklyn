@@ -33,7 +33,7 @@ public class ExamineeRepository {
         this.save(e);
     }
 
-    public void connect(String username, String ipAddress, Session session) {
+    public void connect(String username, Session session) {
         Examinee e = this.findByUsername(username);
 
         if (e == null) {
