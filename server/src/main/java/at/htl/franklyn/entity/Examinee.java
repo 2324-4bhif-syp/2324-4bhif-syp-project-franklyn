@@ -1,54 +1,55 @@
 package at.htl.franklyn.entity;
 
-import com.aayushatharva.brotli4j.common.annotations.Local;
 import jakarta.websocket.Session;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Examinee {
-    private String userName;
-    private String ipAddress;
-    private boolean isConnected;
+    private String username;
+    private List<String> ipAddresses;
+    private ExamineeState connectionState;
     private LocalDateTime lastPingTimestamp;
     private Session session;
 
     public Examinee() {
+        this.ipAddresses = new ArrayList<>();
     }
 
     public Examinee(String userName,
-                    String ipAddress,
-                    boolean isConnected,
+                    ExamineeState connectionState,
                     LocalDateTime lastPingTimestamp,
                     Session session) {
-        this.userName = userName;
-        this.ipAddress = ipAddress;
-        this.isConnected = isConnected;
+        this();
+        this.username = userName;
+        this.connectionState = connectionState;
         this.lastPingTimestamp = lastPingTimestamp;
         this.session = session;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getUsername() {
+        return username;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
-    public String getIpAddress() {
-        return ipAddress;
+    public List<String> getIpAddresses() {
+        return ipAddresses;
     }
 
-    public void setIpAddress(String ipAddress) {
-        this.ipAddress = ipAddress;
+    public void setIpAddresses(List<String> ipAddresses) {
+        this.ipAddresses = ipAddresses;
     }
 
-    public boolean isConnected() {
-        return isConnected;
+    public ExamineeState getConnectionState() {
+        return connectionState;
     }
 
-    public void setConnected(boolean connected) {
-        isConnected = connected;
+    public void setConnectionState(ExamineeState connectionState) {
+        this.connectionState = connectionState;
     }
 
     public LocalDateTime getLastPingTimestamp() {

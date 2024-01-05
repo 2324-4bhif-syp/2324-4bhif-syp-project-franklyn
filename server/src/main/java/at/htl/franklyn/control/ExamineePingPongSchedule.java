@@ -1,6 +1,6 @@
 package at.htl.franklyn.control;
 
-import at.htl.franklyn.entity.Examinee;
+import at.htl.franklyn.entity.ExamineeState;
 import io.quarkus.logging.Log;
 import io.quarkus.scheduler.Scheduled;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -22,8 +22,7 @@ public class ExamineePingPongSchedule {
     @Scheduled(every = "{websocket.ping.interval}")
     public void sendPing() {
         examineeRepository.findAll().forEach(e -> {
-            if (e.isConnected() && e.getSession().isOpen()) {
-                // Log.infof("Sending ping to %s", e.getUserName());
+            if (e.getConnectionState() == ExamineeState.CONNECTED && e.getSession().isOpen()) {
                 ByteBuffer x = ByteBuffer.allocate(3);
                 x.put(new byte[]{ 4, 2, 0 });
                 try {
@@ -38,12 +37,12 @@ public class ExamineePingPongSchedule {
     @Scheduled(every = "{websocket.cleanup.interval}")
     public void checkPing() {
         examineeRepository.findAll().forEach(e -> {
-            if(e.isConnected()
+            if(e.getConnectionState() == ExamineeState.CONNECTED
                     && e.getLastPingTimestamp().isBefore(LocalDateTime.now().minusSeconds(clientTimeoutSeconds))
                     && e.getSession().isOpen()
             ) {
-                Log.infof("Disconnecting: %s (reason: timed out)", e.getUserName());
-                examineeRepository.disconnect(e.getIpAddress());
+                Log.infof("Disconnecting: %s (reason: timed out)", e.getUsername());
+                examineeRepository.disconnect(e.getUsername());
             }
         });
     }
