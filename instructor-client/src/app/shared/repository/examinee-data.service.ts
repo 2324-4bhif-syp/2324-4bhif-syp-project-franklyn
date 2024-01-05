@@ -1,25 +1,40 @@
 import { Injectable } from "@angular/core";
 import { Examinee } from "../entity/Examinee";
 import {WebApiService} from "../web-api.service";
+import {ExamineeDto} from "../entity/ExamineeDto";
+import {ExamineeDtoFilterService} from "./examinee-dto-filter.service";
 
 @Injectable({
   providedIn: 'root'
 })
 export default class ExamineeDataService {
-  constructor(private webApi: WebApiService) {
+  constructor(private webApi: WebApiService, private examineeDtoService: ExamineeDtoFilterService) {
     this.getAllExamineesFromServer();
   }
 
-  protected items: Examinee[] = [];
-  protected patrolExaminee: Examinee | undefined;
-  protected reloadNumber: number = 0;
+  private items: Examinee[] = [];
+  private patrolExaminee: Examinee | undefined;
+  private examineeMap: Map<string, Examinee> = new Map();
+
   patrolModeOn: boolean = false;
 
   //updates the list of examinees via the server
   getAllExamineesFromServer(): void {
     this.webApi.getClientsFromServer().subscribe({
-      next: (examinees) => {
-        this.items = examinees;
+      next: (examineeDtos) => {
+        for (const examineeDto of examineeDtos) {
+          if (!this.examineeMap.get(examineeDto.username)) {
+            this.examineeDtoService.determineIpForExaminees(examineeDto).subscribe({
+              next: (examinee) => {
+                if (examinee) {
+                  this.examineeMap.set(examinee.username, examinee);
+                  this.items.push(examinee);
+                }
+              },
+              error: (err) => console.error(err),
+            })
+          }
+        }
       },
       error: (err) => console.error(err),
     });
@@ -57,11 +72,5 @@ export default class ExamineeDataService {
     if (this.items.length === 0) {
       this.patrolExaminee = undefined;
     }
-
-    this.reloadNumber++;
-  }
-
-  getReloadNumber(): number {
-    return this.reloadNumber
   }
 }

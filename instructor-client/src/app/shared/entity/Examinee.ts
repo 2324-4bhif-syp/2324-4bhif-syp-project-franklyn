@@ -1,11 +1,11 @@
 export class Examinee {
-  constructor(userName: string, ipAddress: string, connected:boolean) {
-    this.userName = userName;
+  username: string;
+  ipAddress: string;
+  connected: boolean;
+
+  constructor(username: string, ipAddress: string, connected: boolean) {
+    this.username = username;
     this.ipAddress = ipAddress;
     this.connected = connected;
   }
-
-  userName: string;
-  ipAddress: string;
-  connected:boolean;
 }

@@ -1,3 +1,3 @@
-{{getActivity()}} <button *ngIf="examinee && !showImage" (click)="selectExaminee()">{{examinee.userName}}</button>
-<p *ngIf="examinee && showImage">{{examinee.userName}}</p>
-<img *ngIf="examinee && showImage" src="{{getScreenshotAddress()}}" alt="Screenshot of {{examinee.userName}}'s screen">
+{{getActivity()}} <button *ngIf="examinee && !showImage" (click)="selectExaminee()">{{examinee.username}}</button>
+<p *ngIf="examinee && showImage">{{examinee.username}}</p>
+<img *ngIf="examinee && showImage" src="{{getScreenshotAddress()}}" alt="Screenshot of {{examinee.username}}'s screen">

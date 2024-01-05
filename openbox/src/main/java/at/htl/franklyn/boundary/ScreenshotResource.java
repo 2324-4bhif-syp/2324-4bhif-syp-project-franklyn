@@ -6,6 +6,7 @@ import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.Response.ResponseBuilder;
 
@@ -16,6 +17,12 @@ import java.io.ByteArrayOutputStream;
 
 @Path("/screenshot")
 public class ScreenshotResource {
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/health")
+    @GET
+    public Response getHealthCheck() {
+        return Response.ok("42").build();
+    }
 
     @Produces("image/png")
     @GET
@@ -33,6 +40,7 @@ public class ScreenshotResource {
 
         return response.build();
     }
+
 
     @Produces("image/png")
     @Path("/{width}/{height}")
