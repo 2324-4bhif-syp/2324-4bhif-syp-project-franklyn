@@ -1,7 +1,7 @@
 import {Component, Injectable, Input} from '@angular/core';
 import {Examinee} from "../../shared/entity/Examinee";
 import {CommonModule} from "@angular/common";
-import {environment} from "../../../environment/environment";
+import {environment} from "../../../../env/environment";
 import ExamineeDataService from "../../shared/repository/examinee-data.service";
 
 @Injectable({

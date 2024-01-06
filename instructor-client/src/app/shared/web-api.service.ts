@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
-import {environment} from "../../environment/environment";
 import {ExamineeDto} from "./entity/ExamineeDto";
 import {timeout} from "rxjs/operators";
+import {environment} from "../../../env/environment";
 
 @Injectable({
   providedIn: 'root'
