@@ -52,7 +52,7 @@ public class Saves {
                 ImageIO.write(
                         ImageIO.read(bis),
                         "png",
-                        new File(String.format("%s/%s-%s.png", 
+                        new File(String.format("%s/%s-%s.png",
                             directory.getPath(), 
                             examine.getIpAddress(), 
                             new SimpleDateFormat(timestampPattern).format(new Date())))
