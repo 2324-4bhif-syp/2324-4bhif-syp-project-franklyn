@@ -17,11 +17,15 @@ import java.io.ByteArrayOutputStream;
 
 @Path("/screenshot")
 public class ScreenshotResource {
+    /**
+     * This endpoint is used by the instructor client to check the different ip addresses
+     * @return an empty ok response
+     */
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/health")
     @GET
     public Response getHealthCheck() {
-        return Response.ok("42").build();
+        return Response.ok().build();
     }
 
     @Produces("image/png")

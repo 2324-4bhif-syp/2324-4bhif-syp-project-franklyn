@@ -17,6 +17,9 @@ export class WebApiService {
   }
 
   public getOpenBoxImage(ip: string) {
-    return this.http.get<number[]>(`http://${ip}:${environment.openboxPort}/${environment.openboxImageUrl}/health`, {headers: this.headers});
+    return this.http.get<number[]>(
+      `http://${ip}:${environment.openboxPort}/${environment.openboxImageUrl}/health`,
+      {headers: this.headers}
+    ).pipe(timeout(2000));
   }
 }

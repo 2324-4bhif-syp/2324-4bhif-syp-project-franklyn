@@ -3,6 +3,7 @@ import { Examinee } from "../entity/Examinee";
 import {WebApiService} from "../web-api.service";
 import {ExamineeDto} from "../entity/ExamineeDto";
 import {ExamineeDtoFilterService} from "./examinee-dto-filter.service";
+import {connectable} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +15,7 @@ export default class ExamineeDataService {
 
   private items: Examinee[] = [];
   private patrolExaminee: Examinee | undefined;
-  private examineeMap: Map<string, Examinee> = new Map();
+  private examineeIpCache: Map<string, [Examinee, number]> = new Map();
 
   patrolModeOn: boolean = false;
 
@@ -22,22 +23,62 @@ export default class ExamineeDataService {
   getAllExamineesFromServer(): void {
     this.webApi.getClientsFromServer().subscribe({
       next: (examineeDtos) => {
-        for (const examineeDto of examineeDtos) {
-          if (!this.examineeMap.get(examineeDto.username)) {
-            this.examineeDtoService.determineIpForExaminees(examineeDto).subscribe({
-              next: (examinee) => {
-                if (examinee) {
-                  this.examineeMap.set(examinee.username, examinee);
-                  this.items.push(examinee);
-                }
-              },
-              error: (err) => console.error(err),
-            })
-          }
-        }
+        this.handleExamineeDtos(examineeDtos);
       },
       error: (err) => console.error(err),
     });
+  }
+
+  findExaminee(username: string): number {
+    for (let i: number = 0; i < this.items.length; i++) {
+      if (this.items[i].username === username) {
+        return i;
+      }
+    }
+
+    return -1;
+  }
+
+  addExamineeIpToCache(examineeDto: ExamineeDto, idx: number): void {
+    this.examineeDtoService.determineIpForExaminees(examineeDto).subscribe({
+      next: (examinee) => {
+        if (examinee) {
+          // Add to the list as well if it is not contained
+          if (idx == -1) {
+            idx = this.items.length
+            this.items.push(examinee);
+          }
+
+          this.examineeIpCache.set(examinee.username, [examinee, idx]);
+          this.items[idx].connected = examinee.connected;
+        }
+      },
+      error: (_) => _,
+    })
+  }
+
+  handleExamineeDtos(examineeDtos: ExamineeDto[]): void {
+    for (const examineeDto of examineeDtos) {
+      // [0] Examinee, [1] idx
+      const cached = this.examineeIpCache.get(examineeDto.username);
+
+      console.log(examineeDto);
+
+      // In cache but disconnected => so it has to be in the list, therefore update connected state
+      if (cached && !examineeDto.connected) {
+        this.items[cached[1]].connected = false;
+
+      // not in cache and not disconnected => check if it is in the list if not insert
+      } else if (!cached && !examineeDto.connected) {
+        if (this.findExaminee(examineeDto.username) == -1) {
+          this.items.push(new Examinee(examineeDto.username, "null", false));
+        }
+
+      // not in cache but connected => update cache
+      } else if (examineeDto.connected && (!cached || cached && !this.items[cached[1]].connected)) {
+        this.addExamineeIpToCache(examineeDto, this.findExaminee(examineeDto.username));
+      }
+    }
   }
 
   get(predicate?: ((item: Examinee) => boolean) | undefined): Examinee[] {
