@@ -33,10 +33,6 @@ plantuml::./plantuml/architecture.puml[]
 * *Frontend*: Quarkus client mit Qute zum Anzeigen der aus den Boxen gewonnenen Daten
 * *Recorder*: Applikation zum Persistieren der Screenshots und erstellung einer Aufnahme
 
-=== Derzeitige Probleme der Architektur
-* Server im Internet -> Ip Adressen der Boxen können nicht gewonnen werden
-* Aufzeichnungen (Recorder) im LAN -> Lehrpersonen können Bildschirmaufzeichnungen schwer zu Hause anschauen.
-
 === Konfiguration
 * Eigener Hotspot
 ** WLAN der Schule blockiert Anfragen
@@ -53,13 +49,8 @@ plantuml::./plantuml/architecture.puml[]
 | Schludermann Julian
 | Schnalzenberger Arwed
 
-| Client-Server Verbindung auf Websockets migrieren
-| Recorder erstellt (Speichern der Screenshots aller Openboxes im 10s Takt)
-| Server-Client Verbindung auf WebSockets migrieren
-| Changed from the quarkus instructor client frontend to an angular-frontend
-
-| Automatisches wiederverbinden, wenn der Server ausfällt
-| Methode für skalierbare Screenshots hinzugefügt
-| Architekturdiagramm überarbeiten
-| Added the patrol mode (shows a different examine screen every x seconds)
+|
+|
+| OpenBox und Server erweitern: OpenBox sendet nun alle Ip Adressen an den Server.
+|
 |===
