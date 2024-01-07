@@ -25,14 +25,14 @@ export class ExamineeComponent {
     let addressString: string = "";
 
     if (this.examinee) {
-      addressString =  "http://" + this.examinee.ipAddress + ":" + environment.clientPort;
+      addressString =  `http://${this.examinee.ipAddress}:${environment.openboxPort}`;
     }
 
     return addressString;
   }
 
   getScreenshotAddress() {
-    return this.getAddress() + "/screenshot/" + environment.imageWidth + "/" + environment.imageHeight + "?reloadNumber=" + this.examineeRepo.getReloadNumber();
+    return `${this.getAddress()}/${environment.openboxImageUrl}/${environment.imageWidth}/${environment.imageWidth}`;
   }
 
   getActivity(): string {

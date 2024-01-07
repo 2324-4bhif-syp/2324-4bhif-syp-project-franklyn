@@ -1,4 +1,6 @@
 package at.htl.franklyn.boundary.Dto;
 
-public record ExamineeDto(String userName, String ipAddress, boolean connected) {
+import java.util.List;
+
+public record ExamineeDto(String username, List<String> ipAddresses, boolean connected) {
 }
