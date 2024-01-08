@@ -25,6 +25,7 @@ public class AppLifecycleBean {
                     userService.setUserName(name);
                     Log.info("Username: " + userService.getUserName() + "\n");
                     isValidName = true;
+                    userService.setInitialized(true);
                 } else {
                     Log.warn("Please enter a valid name.");
                 }

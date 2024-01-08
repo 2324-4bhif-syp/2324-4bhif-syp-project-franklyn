@@ -20,10 +20,12 @@ public class ReconnectService {
 
     @Scheduled(every = "{websocket.reconnection.interval}", skipExecutionIf = ConnectionService.class)
     void tryToEstablishConnection() {
-        final URI uri = UriBuilder.fromPath(String.format("%s/examinee/%s", url, userService.getUserName())).build();
+        if(userService.isInitialized()) {
+            final URI uri = UriBuilder.fromPath(String.format("%s/examinee/%s", url, userService.getUserName())).build();
 
-        try {
-            connectionService.setSession(ContainerProvider.getWebSocketContainer().connectToServer(Client.class, uri));
-        } catch (Exception ignored){}
+            try {
+                connectionService.setSession(ContainerProvider.getWebSocketContainer().connectToServer(Client.class, uri));
+            } catch (Exception ignored){}
+        }
     }
 }

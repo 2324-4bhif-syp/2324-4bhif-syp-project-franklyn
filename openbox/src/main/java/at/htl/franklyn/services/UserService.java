@@ -9,6 +9,7 @@ public class UserService {
     String usernameProperty;
 
     private String userName;
+    private boolean isInitialized = false;
 
     public String getUserName() {
         String returnString = userName;
@@ -22,5 +23,13 @@ public class UserService {
 
     public void setUserName(String userName) {
         this.userName = userName;
+    }
+
+    public boolean isInitialized() {
+        return isInitialized;
+    }
+
+    public void setInitialized(boolean initialized) {
+        isInitialized = initialized;
     }
 }
