@@ -4,13 +4,6 @@
 ifndef::imagesdir[:imagesdir: ../images]
 
 [.font-xx-large]
-== Team
-* Tobias Aichinger
-* Luka Cvijić
-* Julian Schludermann
-* Arwed Schnalzenberger
-
-[.font-xx-large]
 == Was ist Franklyn
 * Ermöglicht praxisnahes Arbeiten bei Leistungsfeststellungen
 * Besonders: Recherche im Internet
@@ -52,5 +45,12 @@ plantuml::./plantuml/architecture.puml[]
 |
 |
 | OpenBox und Server erweitern: OpenBox sendet nun alle Ip Adressen an den Server.
-|
+| User-freundlichere Gestaltung der Openbox, des Servers, des Frontends und des Recorders.
 |===
+
+[.font-xx-large]
+== Team
+* Tobias Aichinger
+* Luka Cvijić
+* Julian Schludermann
+* Arwed Schnalzenberger
