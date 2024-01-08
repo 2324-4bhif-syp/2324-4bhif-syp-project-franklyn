@@ -4,7 +4,7 @@ import { RouterOutlet } from '@angular/router';
 import {ExamineeComponent} from "./component/examinee/examinee.component";
 import ExamineeDataService from "./shared/repository/examinee-data.service";
 import {ExamineeListComponent} from "./component/examinee-list/examinee-list.component";
-import {environment} from "../environment/environment";
+import {environment} from "../../env/environment";
 import {Examinee} from "./shared/entity/Examinee";
 import {FormsModule} from "@angular/forms";
 
