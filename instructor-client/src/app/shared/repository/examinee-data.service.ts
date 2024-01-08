@@ -35,7 +35,7 @@ export default class ExamineeDataService {
         if (examinee) {
           // Add to the list as well if it is not contained
           if (idx == -1) {
-            idx = this.items.length
+            idx = this.items.length;
             this.items.push(examinee);
           }
 
@@ -51,20 +51,21 @@ export default class ExamineeDataService {
     for (const examineeDto of examineeDtos) {
       // [0] Examinee, [1] idx
       const cached = this.examineeIpCache.get(examineeDto.username);
-      
+
       // In cache but disconnected => so it has to be in the list, therefore update connected state
       if (cached && !examineeDto.connected) {
         this.items[cached[1]].connected = false;
 
       // not in cache and not disconnected => check if it is in the list if not insert
       } else if (!cached && !examineeDto.connected) {
-        if (this.findExaminee(examineeDto.username) == -1) {
+        if (this.items.findIndex((e) => e.username === examineeDto.username) == -1) {
           this.items.push(new Examinee(examineeDto.username, "null", false));
         }
 
       // not in cache but connected => update cache
       } else if (examineeDto.connected && (!cached || cached && !this.items[cached[1]].connected)) {
-        this.addExamineeIpToCache(examineeDto, this.items.findIndex((e) => e.username === examineeDto.username));
+        const idx: number = this.items.findIndex((e) => e.username === examineeDto.username);
+        this.addExamineeIpToCache(examineeDto, idx);
       }
     }
   }
