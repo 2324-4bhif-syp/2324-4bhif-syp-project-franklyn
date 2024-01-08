@@ -15,13 +15,20 @@ public class AppLifecycleBean {
 
     void onStart(@Observes StartupEvent ev) {
         if (LaunchMode.current() == LaunchMode.NORMAL) {
-            Log.info("Enter your name: ");
-            String name = System.console().readLine();
+            boolean isValidName = false;
 
-            if (!name.isBlank()) {
-                userService.setUserName(name);
-                Log.info("Username: " + userService.getUserName() + "\n");
-            }
+            do {
+                Log.info("Enter your name: ");
+                String name = System.console().readLine();
+
+                if (!name.isBlank()) {
+                    userService.setUserName(name);
+                    Log.info("Username: " + userService.getUserName() + "\n");
+                    isValidName = true;
+                } else {
+                    Log.warn("Please enter a valid name.");
+                }
+            } while (!isValidName);
         }
     }
 
