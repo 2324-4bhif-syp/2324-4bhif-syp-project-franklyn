@@ -3,7 +3,6 @@ package at.htl.franklyn.control;
 import at.htl.franklyn.entity.Examinee;
 import jakarta.enterprise.context.ApplicationScoped;
 
-import javax.crypto.ExemptionMechanism;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -22,8 +21,8 @@ public class ExamineeCacheRepository {
 
         for(Examinee newExaminee : examinees) {
             // Remove examinee from cache in case any attributes have changed
-            if(!newExaminee.equals(allExaminees.get(newExaminee.getUserName()))) {
-                cachedExaminees.remove(newExaminee.getUserName());
+            if(!newExaminee.equals(allExaminees.get(newExaminee.getUsername()))) {
+                cachedExaminees.remove(newExaminee.getUsername());
                 hasChanged = true;
             }
         }
@@ -31,7 +30,7 @@ public class ExamineeCacheRepository {
         // clear examinees and refill
         allExaminees.clear();
         for(Examinee newExaminee : examinees) {
-            allExaminees.put(newExaminee.getUserName(), newExaminee);
+            allExaminees.put(newExaminee.getUsername(), newExaminee);
         }
 
         return hasChanged;

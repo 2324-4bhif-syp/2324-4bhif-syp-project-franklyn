@@ -3,8 +3,6 @@ package at.htl.franklyn.control;
 import at.htl.franklyn.entity.Examinee;
 import at.htl.franklyn.services.ExamineesService;
 import at.htl.franklyn.services.PingService;
-import at.htl.franklyn.services.ScreenshotService;
-import io.quarkus.logging.Log;
 import io.quarkus.scheduler.Scheduled;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -15,7 +13,6 @@ import org.eclipse.microprofile.rest.client.inject.RestClient;
 import java.net.URI;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-
 
 @ApplicationScoped
 public class ExamineeCacheBean {
@@ -44,7 +41,7 @@ public class ExamineeCacheBean {
                             .toCompletableFuture()
                             .orTimeout(1000, TimeUnit.MILLISECONDS)
                             .thenAcceptAsync((response) -> {
-                                examineeCacheRepository.saveToCache(examinee.getUserName(), ip);
+                                examineeCacheRepository.saveToCache(examinee.getUsername(), ip);
                             });
                 }
             }
