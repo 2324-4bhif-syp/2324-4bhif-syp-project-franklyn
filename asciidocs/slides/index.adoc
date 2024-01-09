@@ -43,7 +43,7 @@ plantuml::./plantuml/architecture.puml[]
 | Schnalzenberger Arwed
 
 |
-|
+|Recorder Endpoint, der die Screenshots zu einem Video macht
 | OpenBox und Server erweitern: OpenBox sendet nun alle Ip Adressen an den Server.
 | User-freundlichere Gestaltung der Openbox, des Servers, des Frontends und des Recorders.
 |===

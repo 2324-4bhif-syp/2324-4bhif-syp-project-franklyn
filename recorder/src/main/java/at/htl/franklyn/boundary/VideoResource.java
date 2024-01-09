@@ -5,11 +5,8 @@ import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
-import jakarta.ws.rs.core.Response;
-import jakarta.ws.rs.core.Response.*;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.awt.image.DataBufferByte;
 import java.io.*;
 import java.util.Arrays;
 import java.util.Objects;
@@ -108,7 +105,7 @@ public class VideoResource {
             recorder.release();
         }
         catch (Exception e) {
-          e.printStackTrace();
+            Log.error(e.getMessage());
         }
     }
 }
