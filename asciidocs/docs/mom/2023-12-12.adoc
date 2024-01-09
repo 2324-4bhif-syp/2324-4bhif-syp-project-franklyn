@@ -1,5 +1,5 @@
-= Erstes Sprint-Planning 2023-12-12
-Julian Schludermann
+= Viertes Sprint-Planning 2023-12-12
+Arwed Schnalzenberger
 1.0, 2023-12-12: sprint planning
 ifndef::imagesdir[:imagesdir: images]
 :icons: font
