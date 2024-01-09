@@ -45,10 +45,10 @@ endif::backend-html5[]
 |SYP-Unterricht
 
 |von-bis
-|Di. 01.09.2024, 5. und 6. EH
+|Di. 01.09.2024, 5. EH
 
 |Dauer
-| 12:00 min
+| 45 min
 |===
 
 == Besprochene Themen
@@ -56,11 +56,28 @@ endif::backend-html5[]
 === 4. Sprint
 
 * Sprint review.
-**
+** Bessere commit-messages
+*** Geht auch mit ai sehr gut
+** User-Stories direkt in die Titel der Swimlanes
+** Code reviews mit ai wären eine Möglichkeit
+** Besser darauf eingehen, was wir gemacht haben
+*** Man soll in Github hineingehen und direkt sehen können, was erledigt wurde
+** Zeit eintragen, wie viel wir denken, dass wir Zeit für den Task brauchen und wie viel wir dann wirklich brauchen (Franklyn)
+
+** Code Review:
+*** Netmaske wird nicht benötigt, da wir nur von einem Timeout reden und da wir asynchron arbeiten.
 
 === 5. Sprint
 
-
+* Abspielen des Films im Frontend
+* Story Points mitschreiben (Franklyn)
+** Kann man sich rechts oben in Franklyn ansehen
+* Fertigstellung
+** MVP(Minimum Viable Product)
+** Damit es gut bei einem Test verwendet werden kann.
+** Downloadmöglichkeit der Openbox
+** Einlogmöglichkeit für Schüler
+** Instructions
 
 == Vereinbarungen und Entscheidungen
 
