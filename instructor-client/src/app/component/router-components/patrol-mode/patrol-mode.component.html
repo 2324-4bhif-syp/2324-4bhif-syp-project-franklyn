@@ -1,0 +1,13 @@
+<input (click)="console.log(examineeRepo.patrolModeOn)" type="checkbox" [(ngModel)]="examineeRepo.patrolModeOn"> Patrol-mode
+
+<table>
+  <tr>
+    <td class="examinee-list">
+      <b>Examinees:</b>
+      <app-examinee-list></app-examinee-list>
+    </td>
+    <td class="examinee-patrol px-auto">
+      <app-examinee [examinee]="examineeRepo.getPatrolExaminee()" [showImage]="true"></app-examinee>
+    </td>
+  </tr>
+</table>
