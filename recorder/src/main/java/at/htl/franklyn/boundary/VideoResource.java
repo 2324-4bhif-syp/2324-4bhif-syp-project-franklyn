@@ -31,14 +31,14 @@ public class VideoResource {
             // Parent-folder
             File screenshotFolder = new File("screenshots");
             // Input/Output-folder
-            File targetDirectory = Objects.requireNonNull(
-                    screenshotFolder.listFiles((f, name) -> name.startsWith(ip))
-            )[0];
+            File[] targetDirectories = screenshotFolder.listFiles((f, name) -> name.startsWith(ip));
 
             // Return if folder with this user does not exist
-            if(targetDirectory == null){
+            if(targetDirectories == null || targetDirectories.length == 0 ){
                 return null;
             }
+
+            File targetDirectory = targetDirectories[0];
 
             // Get all images
             File[] screenshots = targetDirectory.listFiles();
