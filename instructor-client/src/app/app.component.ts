@@ -1,12 +1,9 @@
 import {Component, Injectable} from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterOutlet } from '@angular/router';
-import {ExamineeComponent} from "./component/examinee/examinee.component";
-import ExamineeDataService from "./shared/repository/examinee-data.service";
-import {ExamineeListComponent} from "./component/examinee-list/examinee-list.component";
-import {environment} from "../../env/environment";
-import {Examinee} from "./shared/entity/Examinee";
-import {FormsModule} from "@angular/forms";
+import {RouterLinkActive, RouterOutlet, RouterModule, Router} from '@angular/router';
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {PatrolModeComponent} from "./component/router-components/patrol-mode/patrol-mode.component";
+import {VideoViewerComponent} from "./component/router-components/video-viewer/video-viewer.component";
 
 @Injectable({
   providedIn: 'root'
@@ -14,15 +11,30 @@ import {FormsModule} from "@angular/forms";
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, ExamineeComponent, ExamineeListComponent, FormsModule],
+  imports: [
+    CommonModule,
+    RouterOutlet,
+    FormsModule,
+    RouterModule,
+    RouterLinkActive,
+    PatrolModeComponent,
+    VideoViewerComponent,
+    ReactiveFormsModule
+  ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
 export class AppComponent {
-  constructor(protected examineeRepo: ExamineeDataService) {
-    setInterval(() => {
-      examineeRepo.getAllExamineesFromServer();
-      examineeRepo.newPatrolExaminee();
-    }, environment.nextClientScheduleTime);
+  public patrolModeActive: boolean = true;
+  public videoViewerActive: boolean = false;
+
+  public changeRoutePatrolMode() {
+    this.patrolModeActive = true;
+    this.videoViewerActive = false;
+  }
+
+  public changeRouteVideoViewer() {
+    this.patrolModeActive = false;
+    this.videoViewerActive = true;
   }
 }
