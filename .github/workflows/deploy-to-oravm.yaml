@@ -30,7 +30,9 @@ jobs:
           cache-dependency-path: '**/package-lock.json'
 
       - name: npm install, build
-        run: ./cicd/build-instructor-client.sh
+        run: |
+          ./cicd/prod-patch-instructor-client.sh
+          ./cicd/build-instructor-client.sh
 
       - name: Setup ssh
         run: source ./cicd/setup-ssh.sh ${{github.workspace}} ${{secrets.SSH_USERNAME}} ${{secrets.SSH_HOST}}
