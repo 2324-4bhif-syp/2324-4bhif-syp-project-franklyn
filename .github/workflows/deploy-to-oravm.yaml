@@ -22,6 +22,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Enter frontend directory
+        run: |
+          cd instructor-client
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -30,7 +34,6 @@ jobs:
 
       - name: npm install, build
         run: |
-          cd instructor-client
           npm install
           npx ng build instructor-client
 
