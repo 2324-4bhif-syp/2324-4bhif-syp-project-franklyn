@@ -22,18 +22,16 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Enter frontend directory
-        run: |
-          cd instructor-client
-
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '21.6.1'
           cache: 'npm'
+          cache-dependency-path: '**/package-lock.json'
 
       - name: npm install, build
         run: |
+          cd instructor-client
           npm install
           npx ng build instructor-client
 
