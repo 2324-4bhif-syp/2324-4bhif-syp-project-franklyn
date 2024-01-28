@@ -30,20 +30,10 @@ jobs:
           cache-dependency-path: '**/package-lock.json'
 
       - name: npm install, build
-        run: |
-          cd instructor-client
-          npm install
-          npx ng build instructor-client
+        run: ./cicd/build-instructor-client.sh
 
       - name: Setup ssh
-        run: |
-          mkdir -p ~/.ssh
-          echo "$SSH_PRIVATE_KEY" > ${{github.workspace}}/private.key
-          sudo chmod 600 ${{github.workspace}}/private.key
-          echo "$SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
-          echo "SSH_KEY_PATH=${{github.workspace}}/private.key" >> "$GITHUB_ENV"
-          echo "SSH_USER=${{secrets.SSH_USERNAME}}" >> "$GITHUB_ENV"
-          echo "SSH_HOST=${{secrets.SSH_HOST}}" >> "$GITHUB_ENV"
+        run: source ./cicd/setup-ssh.sh
         shell: bash
         env:
           SSH_PRIVATE_KEY: ${{secrets.SSH_PRIVATE_KEY}}
