@@ -33,7 +33,7 @@ jobs:
         run: ./cicd/build-instructor-client.sh
 
       - name: Setup ssh
-        run: source ./cicd/setup-ssh.sh
+        run: source ./cicd/setup-ssh.sh ${{github.workspace}} {{secrets.SSH_USERNAME}} {{secrets.SSH_HOST}}
         shell: bash
         env:
           SSH_PRIVATE_KEY: ${{secrets.SSH_PRIVATE_KEY}}
@@ -42,6 +42,6 @@ jobs:
       - name: Deploy build
         run: |
           ssh -i $SSH_KEY_PATH $SSH_USER@$SSH_HOST "rm -f ~/www/*"
-          scp -i $SSH_KEY_PATH instructor-client/dist/instructor-client/browser/* $SSH_USER@$SSH_HOST:~/www/
+          scp -i $SSH_KEY_PATH dist/instructor-client/* $SSH_USER@$SSH_HOST:~/www/
           ssh -i $SSH_KEY_PATH $SSH_USER@$SSH_HOST "sudo systemctl restart nginx"
         shell: bash
