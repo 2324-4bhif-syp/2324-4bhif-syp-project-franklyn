@@ -1,8 +1,8 @@
 export const environment = {
   nextClientScheduleTime: 10000,
-  serverBaseUrl: "http://localhost:8080/examinees",
+  serverBaseUrl: "/api/examinees",
   openboxImageUrl: "screenshot",
   openboxPort: "8081",
-  imageWidth: 1024,
-  imageHeight: 567,
+  imageWidth: 1920,
+  imageHeight: 1080,
 }
