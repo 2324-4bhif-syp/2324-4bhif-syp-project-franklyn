@@ -33,7 +33,7 @@ jobs:
         run: ./cicd/build-instructor-client.sh
 
       - name: Setup ssh
-        run: source ./cicd/setup-ssh.sh ${{github.workspace}} {{secrets.SSH_USERNAME}} {{secrets.SSH_HOST}}
+        run: source ./cicd/setup-ssh.sh ${{github.workspace}} ${{secrets.SSH_USERNAME}} ${{secrets.SSH_HOST}}
         shell: bash
         env:
           SSH_PRIVATE_KEY: ${{secrets.SSH_PRIVATE_KEY}}
