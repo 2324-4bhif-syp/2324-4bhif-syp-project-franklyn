@@ -1,0 +1,55 @@
+name: Deploy to oravm
+
+concurrency: production # allow maximum of one running and pending job
+
+on:
+  push:
+    paths:
+      - 'server/**'
+      - 'instructor-client/**'
+    branches:
+      - main
+      - feat/cicd # TODO: remove
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build-deploy-frontend:
+    name: Build and Deploy angular frontend
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '21.6.1'
+          cache: 'npm'
+
+      - name: npm install, build
+        run: |
+          cd instructor-client
+          npm install
+          npx ng build instructor-client
+
+      - name: Setup ssh
+        run: |
+          mkdir -p ~/.ssh/
+          echo "$SSH_PRIVATE_KEY" > ../private.key
+          sudo chmod 600 ../private.key
+          echo "$SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
+        shell: bash
+        env:
+          SSH_PRIVATE_KEY: ${{secrets.SSH_PRIVATE_KEY}}
+          SSH_KNOWN_HOSTS: ${{secrets.SSH_KNOWN_HOSTS}}
+          SSH_KEY_PATH: ${{ github.workspace }}/../private.key
+          SSH_USER: ${{secrets.SSH_USERNAME}}
+          SSH_HOST: ${{secrets.SSH_HOST}}
+
+      - name: Deploy build
+        run: |
+          ssh -i $SSH_KEY_PATH $SSH_USER@$SSH_HOST "touch hello"
+          scp -i $SSH_KEY_PATH dist/instructor-client/browser/* $SSH_USER@$SSH_HOST:~/www/
+          ssh -i $SSH_KEY_PATH $SSH_USER@$SSH_HOST "sudo systemctl restart nginx"
