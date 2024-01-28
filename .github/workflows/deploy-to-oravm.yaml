@@ -37,20 +37,21 @@ jobs:
 
       - name: Setup ssh
         run: |
-          mkdir -p ~/.ssh/
+          mkdir -p ~/.ssh
           echo "$SSH_PRIVATE_KEY" > ../private.key
           sudo chmod 600 ../private.key
           echo "$SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
+          echo "SSH_KEY_PATH=${{github.workspace}}/private.key" >> "$GITHUB_ENV"
+          echo "SSH_USER=${{secrets.SSH_USERNAME}}" >> "$GITHUB_ENV"
+          echo "SSH_HOST=${{secrets.SSH_HOST}}" >> "$GITHUB_ENV"
         shell: bash
         env:
           SSH_PRIVATE_KEY: ${{secrets.SSH_PRIVATE_KEY}}
           SSH_KNOWN_HOSTS: ${{secrets.SSH_KNOWN_HOSTS}}
-          SSH_KEY_PATH: ${{ github.workspace }}/../private.key
-          SSH_USER: ${{secrets.SSH_USERNAME}}
-          SSH_HOST: ${{secrets.SSH_HOST}}
 
       - name: Deploy build
         run: |
           ssh -i $SSH_KEY_PATH $SSH_USER@$SSH_HOST "touch hello"
           scp -i $SSH_KEY_PATH dist/instructor-client/browser/* $SSH_USER@$SSH_HOST:~/www/
           ssh -i $SSH_KEY_PATH $SSH_USER@$SSH_HOST "sudo systemctl restart nginx"
+        shell: bash
