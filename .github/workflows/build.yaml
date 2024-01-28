@@ -7,7 +7,6 @@ on:
       - 'recorder/**'
     branches:
       - main
-      - feat/cicd # TODO: remove
   pull_request:
     branches:
       - main

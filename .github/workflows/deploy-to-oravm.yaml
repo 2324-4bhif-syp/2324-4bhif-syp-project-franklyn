@@ -9,10 +9,6 @@ on:
       - 'instructor-client/**'
     branches:
       - main
-      - feat/cicd # TODO: remove
-  pull_request:
-    branches:
-      - main
   workflow_dispatch:
 
 jobs:
