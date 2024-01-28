@@ -51,7 +51,7 @@ jobs:
 
       - name: Deploy build
         run: |
-          ssh -i $SSH_KEY_PATH $SSH_USER@$SSH_HOST "touch hello"
-          scp -i $SSH_KEY_PATH dist/instructor-client/browser/* $SSH_USER@$SSH_HOST:~/www/
+          pwd
+          scp -i $SSH_KEY_PATH ${{github.workspace}}/instructor-client/dist/instructor-client/browser/* $SSH_USER@$SSH_HOST:~/www/
           ssh -i $SSH_KEY_PATH $SSH_USER@$SSH_HOST "sudo systemctl restart nginx"
         shell: bash
