@@ -2,19 +2,20 @@
 <ul class="nav nav-tabs">
   <li class="nav-item"
     routerLinkActive="active"
-    [routerLinkActiveOptions]="{exact:true}">
+    [routerLinkActiveOptions]="{exact:true}"
+    (click)="changeRoute()">
     <a class="nav-link"
        [class.active]="patrolModeActive"
        routerLink="/"
-       (click)="changeRoutePatrolMode()">
+       (click)="changeRoute()">
       Patrol-Mode
     </a>
   </li>
-  <li class="nav-item" routerLinkActive="active">
+  <li class="nav-item" routerLinkActive="active" (click)="changeRoute()">
     <a class="nav-link"
-       [class.active]="videoViewerActive"
+       [class.active]="!patrolModeActive"
        routerLink="video-viewer"
-       (click)="changeRouteVideoViewer()">
+       (click)="changeRoute()">
       Video-Viewer
     </a>
   </li>

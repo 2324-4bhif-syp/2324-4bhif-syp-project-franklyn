@@ -1,0 +1,5 @@
+<b *ngIf="examinee">{{examinee.username}}</b>
+<br>
+<a href="{{getDownloadUrl()}}" download="{{examinee?.username}}.mp4">Download</a>
+<br>
+<button (click)="showVideoOfExaminee()">Show Video</button>
