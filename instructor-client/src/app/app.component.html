@@ -1,14 +1,25 @@
 <h1>Franklyn</h1>
-<input type="checkbox" [(ngModel)]="examineeRepo.patrolModeOn"> Patrol-mode
+<ul class="nav nav-tabs">
+  <li class="nav-item"
+    routerLinkActive="active"
+    [routerLinkActiveOptions]="{exact:true}"
+    (click)="changeRoute()">
+    <a class="nav-link"
+       [class.active]="patrolModeActive"
+       routerLink="/"
+       (click)="changeRoute()">
+      Patrol-Mode
+    </a>
+  </li>
+  <li class="nav-item" routerLinkActive="active" (click)="changeRoute()">
+    <a class="nav-link"
+       [class.active]="!patrolModeActive"
+       routerLink="video-viewer"
+       (click)="changeRoute()">
+      Video-Viewer
+    </a>
+  </li>
+</ul>
+<hr>
 
-<table>
-  <tr>
-    <td class="examinee-list">
-      <b>Examinees:</b>
-      <app-examinee-list></app-examinee-list>
-    </td>
-    <td class="examinee-patrol px-auto">
-      <app-examinee [examinee]="examineeRepo.getPatrolExaminee()" [showImage]="true"></app-examinee>
-    </td>
-  </tr>
-</table>
+<router-outlet></router-outlet>

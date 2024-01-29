@@ -32,7 +32,7 @@ export class ExamineeComponent {
   }
 
   getScreenshotAddress() {
-    return `${this.getAddress()}/${environment.openboxImageUrl}/${environment.imageWidth}/${environment.imageWidth}`;
+    return `${this.getAddress()}/${environment.openboxImageUrl}/${environment.imageWidth}/${environment.imageHeight}`;
   }
 
   getActivity(): string {

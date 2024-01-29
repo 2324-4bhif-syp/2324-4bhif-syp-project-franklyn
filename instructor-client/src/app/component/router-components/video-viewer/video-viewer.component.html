@@ -1,0 +1,12 @@
+<table>
+  <tr>
+    <td class="examinee-list">
+      <b>Examinees:</b>
+      <br>
+      <app-examinee-download-list></app-examinee-download-list>
+    </td>
+    <td class="examinee-patrol px-auto">
+      <app-examinee-video [examinee]="examineeRepo.getPatrolExaminee()"></app-examinee-video>
+    </td>
+  </tr>
+</table>

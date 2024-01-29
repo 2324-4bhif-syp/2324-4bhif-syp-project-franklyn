@@ -83,6 +83,10 @@ export default class ExamineeDataService {
     return this.patrolExaminee;
   }
 
+  unsetPatrolExaminee() {
+    this.patrolExaminee = undefined;
+  }
+
   newPatrolExaminee(examinee?: Examinee) {
     if (examinee !== undefined && examinee.connected) {
       this.patrolModeOn = false;
