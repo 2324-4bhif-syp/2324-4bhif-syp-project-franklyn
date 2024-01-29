@@ -1,4 +1,4 @@
-name: Build Openbox, Recorder
+name: Build Openbox and Recorder
 
 on:
   push:
