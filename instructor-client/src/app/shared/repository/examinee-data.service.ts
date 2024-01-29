@@ -22,52 +22,51 @@ export default class ExamineeDataService {
   //updates the list of examinees via the server
   getAllExamineesFromServer(): void {
     this.webApi.getClientsFromServer().subscribe({
-      next: (examineeDtos) => {
-        this.handleExamineeDtos(examineeDtos);
-      },
+      next: (dtos) => this.handleExamineeDtos(dtos),
       error: (err) => console.error(err),
     });
+  }
+
+  handleExamineeDtos(dtos: ExamineeDto[]): void {
+    for (const dto of dtos) {
+      //    cached = [0] Examinee, [1] idx
+      const cached = this.examineeIpCache.get(dto.username);
+
+      if (cached) {
+        this.handleCachedExaminee(cached[0], cached[1], dto);
+      } else if (dto.connected) {
+        this.addExamineeIpToCache(dto, this.items.findIndex(e => e.username === dto.username));
+      } else if (!this.items.find(e => e.username === dto.username)) {
+        this.items.push({username: dto.username, ipAddress: "", connected: false});
+      }
+    }
+  }
+
+  handleCachedExaminee(examinee: Examinee, idx: number, dto: ExamineeDto) {
+    if (examinee.connected && !dto.connected) {
+      this.items[idx].connected = false;
+      this.items[idx].ipAddress = "";
+      this.examineeIpCache.delete(examinee.username);
+    }
   }
 
   addExamineeIpToCache(examineeDto: ExamineeDto, idx: number): void {
     this.examineeDtoService.determineIpForExaminees(examineeDto).subscribe({
       next: (examinee) => {
-        if (examinee) {
-          // Add to the list as well if it is not contained
-          if (idx == -1) {
-            idx = this.items.length;
-            this.items.push(examinee);
-          }
-
-          this.examineeIpCache.set(examinee.username, [examinee, idx]);
-          this.items[idx].connected = examinee.connected;
+        if (!examinee || this.examineeIpCache.get(examinee.username)) {
+          return;
         }
+
+        if (idx == -1) {
+          idx = this.items.length;
+          this.items.push(examinee);
+        }
+
+        this.examineeIpCache.set(examinee.username, [examinee, idx]);
+        this.items[idx] = examinee;
       },
       error: (_) => _,
     })
-  }
-
-  handleExamineeDtos(examineeDtos: ExamineeDto[]): void {
-    for (const examineeDto of examineeDtos) {
-      // [0] Examinee, [1] idx
-      const cached = this.examineeIpCache.get(examineeDto.username);
-
-      // In cache but disconnected => so it has to be in the list, therefore update connected state
-      if (cached && !examineeDto.connected) {
-        this.items[cached[1]].connected = false;
-
-      // not in cache and not disconnected => check if it is in the list if not insert
-      } else if (!cached && !examineeDto.connected) {
-        if (this.items.findIndex((e) => e.username === examineeDto.username) == -1) {
-          this.items.push(new Examinee(examineeDto.username, "null", false));
-        }
-
-      // not in cache but connected => update cache
-      } else if (examineeDto.connected && (!cached || cached && !this.items[cached[1]].connected)) {
-        const idx: number = this.items.findIndex((e) => e.username === examineeDto.username);
-        this.addExamineeIpToCache(examineeDto, idx);
-      }
-    }
   }
 
   get(predicate?: ((item: Examinee) => boolean) | undefined): Examinee[] {
