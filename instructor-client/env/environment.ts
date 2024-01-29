@@ -4,6 +4,6 @@ export const environment = {
   recorderBaseUrl: "http://localhost:8083/",
   openboxImageUrl: "screenshot",
   openboxPort: "8081",
-  imageWidth: 1024,
-  imageHeight: 567,
+  imageWidth: 1920,
+  imageHeight: 1080,
 }

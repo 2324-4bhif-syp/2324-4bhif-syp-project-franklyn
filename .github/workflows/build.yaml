@@ -1,0 +1,62 @@
+name: Build Openbox and Recorder
+
+on:
+  push:
+    paths:
+      - 'openbox/**'
+      - 'recorder/**'
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build-openbox:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+          cache: 'maven'
+          cache-dependency-path: 'openbox/pom.xml'
+
+      - name: Build with maven
+        run: |
+          ./cicd/prod-patch-openbox.sh
+          ./cicd/build-openbox.sh
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: 'student-client'
+          path: 'dist/openbox/franklyn-student-client.jar'
+
+  build-recorder:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+          cache: 'maven'
+          cache-dependency-path: 'recorder/pom.xml'
+
+      - name: Build with maven
+        run: |
+          ./cicd/prod-patch-recorder.sh
+          ./cicd/build-recorder.sh
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: 'recorder'
+          path: 'dist/recorder/franklyn-recorder.jar'

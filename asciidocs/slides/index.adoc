@@ -13,6 +13,27 @@ ifndef::imagesdir[:imagesdir: ../images]
 *** keine Kommunikation zwischen den Schülern
 *** kein Kopieren von fertigen Programmen/Lösungen
 
+[.font-xx-large]
+=== Sprint 5: Aufgabenstellung
+* Instruktor-client (Frontend) Erweiterung für das Abspielen von erstellen Videos
+* Projekt in einsatzbereiten Zustand befördern
+** Konfiguration, Binaries zum Download, ...
+
+[.font-x-large]
+=== Durchgeführte Arbeiten
+* Bugfixes
+* Recorder
+** Neue Video Endpunkte
+*** Download single / all videos
+* Instructor-Client
+** Wiedergabe / download von recorder Videos
+** Wechseln zwischen patrol- und view-mode
+** Examinee IP-Cache rework
+* CI/CD
+** Automatisches deployment zur OraVM (Server, Instructor-Client)
+** Vorkonfigurierte build Artefakte (OpenBox, Recorder)
+
+
 === Architektur
 plantuml::./plantuml/architecture.puml[]
 
@@ -27,26 +48,11 @@ plantuml::./plantuml/architecture.puml[]
 * *Recorder*: Applikation zum Persistieren der Screenshots und erstellung einer Aufnahme
 
 === Konfiguration
+* OraVM
 * Eigener Hotspot
 ** WLAN der Schule blockiert Anfragen
-** Server auf Oravm funktioniert nicht
 
 === Live Demo
-
-[.font-x-large]
-=== [.margin-b-10]#Aufgaben#
-[cols=4*,options=header]
-|===
-| Aichinger Tobias
-| Cvijić Luka
-| Schludermann Julian
-| Schnalzenberger Arwed
-
-| Instructor-client die Ip addressen validieren und einen neuen endpunkt in der OpenBox
-| Recorder Endpoint, der die Screenshots zu einem Video macht
-| OpenBox und Server erweitern: OpenBox sendet nun alle Ip Adressen an den Server.
-| User-freundlichere Gestaltung der Openbox, des Servers, des Frontends und des Recorders.
-|===
 
 [.font-xx-large]
 == Team
