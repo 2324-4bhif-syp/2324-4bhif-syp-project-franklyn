@@ -1,0 +1,77 @@
+name: Deploy to oravm
+
+concurrency: production # allow maximum of one running and pending job
+
+on:
+  push:
+    paths:
+      - 'server/**'
+      - 'instructor-client/**'
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build-deploy-frontend:
+    name: Build and Deploy angular frontend
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '21.6.1'
+          cache: 'npm'
+          cache-dependency-path: '**/package-lock.json'
+
+      - name: npm install, build
+        run: |
+          ./cicd/prod-patch-instructor-client.sh
+          ./cicd/build-instructor-client.sh
+
+      - name: Setup ssh
+        run: source ./cicd/setup-ssh.sh ${{github.workspace}} ${{secrets.SSH_USERNAME}} ${{secrets.SSH_HOST}}
+        shell: bash
+        env:
+          SSH_PRIVATE_KEY: ${{secrets.SSH_PRIVATE_KEY}}
+          SSH_KNOWN_HOSTS: ${{secrets.SSH_KNOWN_HOSTS}}
+
+      - name: Deploy build
+        run: |
+          ssh -i $SSH_KEY_PATH $SSH_USER@$SSH_HOST "rm -f ~/www/*"
+          scp -i $SSH_KEY_PATH dist/instructor-client/* $SSH_USER@$SSH_HOST:~/www/
+          ssh -i $SSH_KEY_PATH $SSH_USER@$SSH_HOST "sudo systemctl restart nginx"
+        shell: bash
+
+  build-deploy-server:
+    name: Build and Deploy Franklyn Server
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+          cache: 'maven'
+          cache-dependency-path: 'server/pom.xml'
+
+      - name: Build with maven
+        run: ./cicd/build-server.sh
+
+      - name: Setup ssh
+        run: source ./cicd/setup-ssh.sh ${{github.workspace}} ${{secrets.SSH_USERNAME}} ${{secrets.SSH_HOST}}
+        shell: bash
+        env:
+          SSH_PRIVATE_KEY: ${{secrets.SSH_PRIVATE_KEY}}
+          SSH_KNOWN_HOSTS: ${{secrets.SSH_KNOWN_HOSTS}}
+
+      - name: Deploy build
+        run: |
+          ssh -i $SSH_KEY_PATH $SSH_USER@$SSH_HOST "sudo systemctl stop franklyn.service"
+          ssh -i $SSH_KEY_PATH $SSH_USER@$SSH_HOST "rm -f ~/franklyn-server/*"
+          scp -i $SSH_KEY_PATH dist/server/* $SSH_USER@$SSH_HOST:~/franklyn-server/
+          ssh -i $SSH_KEY_PATH $SSH_USER@$SSH_HOST "sudo systemctl start franklyn.service"
+        shell: bash
