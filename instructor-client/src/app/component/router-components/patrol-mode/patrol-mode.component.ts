@@ -25,6 +25,4 @@ export class PatrolModeComponent {
       examineeRepo.newPatrolExaminee();
     }, environment.nextClientScheduleTime);
   }
-
-  protected readonly console = console;
 }
