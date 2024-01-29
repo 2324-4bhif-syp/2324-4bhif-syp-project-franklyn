@@ -39,10 +39,18 @@ public class VideoResource {
                 return null;
             }
 
-            FileOutputStream fos = new FileOutputStream("screenshots/compressed.zip");
-            ZipOutputStream zipOut = new ZipOutputStream(fos);
+            return returnZipFile(targetDirectories, "screenshots/compressed.zip");
+        }
+        catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 
-            List<File> allVideos = new ArrayList<File>();
+    private File returnZipFile(File[] targetDirectories, String zipPath){
+
+        try {
+            FileOutputStream fos = new FileOutputStream(zipPath);
+            ZipOutputStream zipOut = new ZipOutputStream(fos);
 
             for(File files : targetDirectories){
                 String[] fileName = files.getName().split("-");
@@ -67,18 +75,54 @@ public class VideoResource {
             zipOut.close();
             fos.close();
 
-            return new File("screenshots/compressed.zip");
+            return new File(zipPath);
         }
-        catch (Exception e) {
+        catch (Exception e){
             throw new RuntimeException(e);
         }
     }
 
     @Path("/download/{ip}")
-    @Produces("video/avi")
+    @Produces("file/zip")
     @GET
     public File downloadOneVideo(@PathParam("ip") String ip){
-        return getVideo(ip);
+        try{
+            // Parent-folder
+            File screenshotFolder = new File("screenshots");
+            // Input/Output-folder
+            File[] targetDirectories = screenshotFolder.listFiles((f, name) -> name.startsWith(ip));
+
+            // Return if folder with this user does not exist
+            if(targetDirectories == null || targetDirectories.length == 0 ){
+                return null;
+            }
+
+            File targetDirectory = targetDirectories[0];
+
+            FileOutputStream fos = new FileOutputStream(String.format("%s/%s.zip", targetDirectory.getPath(), ip));
+            ZipOutputStream zipOut = new ZipOutputStream(fos);
+
+            File fileToZip = getVideo(ip);
+            FileInputStream fis = new FileInputStream(fileToZip);
+            ZipEntry zipEntry = new ZipEntry(fileToZip.getName());
+            zipOut.putNextEntry(zipEntry);
+
+            byte[] bytes = new byte[1024];
+            int length;
+            while((length = fis.read(bytes)) >= 0) {
+                zipOut.write(bytes, 0, length);
+            }
+
+            zipOut.close();
+            fis.close();
+            fos.close();
+
+            //String.format("%s/%s.mp4", targetDirectory.getPath(), ip)
+            return new File(String.format("%s/%s.zip", targetDirectory.getPath(), ip));
+        }
+        catch (Exception e){
+            throw new RuntimeException(e);
+        }
     }
 
     @Path("/{ip}")
