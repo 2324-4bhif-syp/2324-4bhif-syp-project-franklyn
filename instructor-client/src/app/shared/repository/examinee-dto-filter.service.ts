@@ -8,15 +8,14 @@ import {Examinee} from "../entity/Examinee";
   providedIn: 'root'
 })
 export class ExamineeDtoFilterService {
-  private examinee = new Subject<Examinee | undefined>();
+  private examinee = new Subject<[Examinee, number] | undefined>();
 
   constructor(private webApi: WebApiService) {}
 
-  public determineIpForExaminees(examineeDto: ExamineeDto) {
+  public determineIpForExaminees(examineeDto: ExamineeDto, idx: number) {
     for (const ip of examineeDto.ipAddresses) {
       this.webApi.getOpenBoxImage(ip).subscribe({
-          next: () => this.examinee.next(new Examinee(examineeDto.username, ip, examineeDto.connected)),
-          error: (_) => _,
+          next: () => this.examinee.next([new Examinee(examineeDto.username, ip, examineeDto.connected), idx]),
       })
     }
 
