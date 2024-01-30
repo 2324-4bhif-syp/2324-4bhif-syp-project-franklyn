@@ -52,7 +52,7 @@ export default class ExamineeDataService {
   addExamineeIpToCache(examineeDto: ExamineeDto, idx: number): void {
     this.examineeDtoService.determineIpForExaminees(examineeDto, idx).subscribe({
       next: (result) => {
-        if (!result|| this.examineeIpCache.get(result[0].username)) {
+        if (!result || this.examineeIpCache.get(result[0].username)) {
           return;
         }
         let [examinee, idx] = result;
