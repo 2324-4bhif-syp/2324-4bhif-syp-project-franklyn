@@ -3,7 +3,6 @@ import {CommonModule} from "@angular/common";
 import {ExamineeListComponent} from "../../examinee-list/examinee-list.component";
 import {FormsModule} from "@angular/forms";
 import ExamineeDataService from "../../../shared/repository/examinee-data.service";
-import {environment} from "../../../../../env/environment";
 import {ExamineeComponent} from "../../examinee/examinee.component";
 import {ExamineeDownloadListComponent} from "../../examinee-download-list/examinee-download-list.component";
 import {ExamineeVideoComponent} from "../../examinee-video/examinee-video.component";

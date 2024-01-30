@@ -1,6 +1,6 @@
-import {Component, Injectable, OnChanges, OnInit, SimpleChanges} from '@angular/core';
-import { CommonModule } from '@angular/common';
-import {RouterLinkActive, RouterOutlet, RouterModule, Router, NavigationStart} from '@angular/router';
+import {Component, Injectable} from '@angular/core';
+import { CommonModule, Location } from '@angular/common';
+import {RouterLinkActive, RouterOutlet, RouterModule} from '@angular/router';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {PatrolModeComponent} from "./component/router-components/patrol-mode/patrol-mode.component";
 import {VideoViewerComponent} from "./component/router-components/video-viewer/video-viewer.component";
@@ -26,18 +26,16 @@ import ExamineeDataService from "./shared/repository/examinee-data.service";
   styleUrl: './app.component.css'
 })
 export class AppComponent{
-  constructor(private examineeRepo: ExamineeDataService, private router: Router) {
+  constructor(private examineeRepo: ExamineeDataService, private location: Location) {
     this.changeRoute(); // call it for initialization in case of for example a page reload
   }
 
   public patrolModeActive: boolean = false;
 
   public changeRoute() {
-    if (this.router.url === "/video-viewer") {
+    if (this.location.path() === "/video-viewer") {
       this.patrolModeActive = false;
-    }
-
-    if (this.router.url === "/patrol-mode" || this.router.url === "/") {
+    } else {
       this.patrolModeActive = true;
     }
 

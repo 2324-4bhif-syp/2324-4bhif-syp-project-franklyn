@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {Examinee} from "../../shared/entity/Examinee";
 import {CommonModule} from "@angular/common";
 import {environment} from "../../../../env/environment";
