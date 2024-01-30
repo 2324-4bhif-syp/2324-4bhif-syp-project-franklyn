@@ -28,90 +28,43 @@ export default class ExamineeDataService {
   }
 
   handleExamineeDtos(dtos: ExamineeDto[]): void {
-    for (let e of this.items) {
-      console.log(`Examinee: ${e.username}`);
-    }
     for (const dto of dtos) {
       //    cached = [0] Examinee, [1] idx
       const cached = this.examineeIpCache.get(dto.username);
-      console.log("NEXT");
-      console.log("====");
-      console.log("|");
-      console.log("v");
-      console.log(dto);
 
       if (cached) {
         this.handleCachedExaminee(cached[0], cached[1], dto);
       } else if (dto.connected) {
-        const idx = this.items.findIndex((e) => e.username === dto.username);
-        let i = 0;
-        console.log("cur: " + idx);
-        console.log("dto");
-        console.log(dto);
-        for (const e of this.items) {
-          console.log(++i + ": " + e.username);
-        }
-        console.log();
-        console.log("IDX: " + idx);
-        this.addExamineeIpToCache(dto, idx);
-      } else if (!this.items.find((e) => e.username === dto.username)) {
-        console.log("DONT YOU DARE");
+        this.addExamineeIpToCache(dto, this.items.findIndex(e => e.username === dto.username));
+      } else if (!this.items.find(e => e.username === dto.username)) {
         this.items.push({username: dto.username, ipAddress: "", connected: false});
-      } else {
-        console.log("nuthing burgur");
       }
     }
   }
 
   handleCachedExaminee(examinee: Examinee, idx: number, dto: ExamineeDto) {
-    console.log("RAND: " + idx);
-    console.log(this.items);
     if (examinee.connected && !dto.connected) {
-      this.items[idx].username = examinee.username;
-      this.items[idx].connected = false;
-      this.items[idx].ipAddress = "";
+      this.items[idx] = {username: examinee.username, connected: false, ipAddress: ""};
       this.examineeIpCache.delete(examinee.username);
     }
   }
 
   addExamineeIpToCache(examineeDto: ExamineeDto, idx: number): void {
-    console.log("FIRST LOG");
-    console.log(idx);
-
-    this.examineeDtoService.determineIpForExaminees(examineeDto).subscribe({
-      next: (examinee) => {
-        console.log("MED LOG");
-        console.log(idx);
-
-        console.log(examinee);
-
-        if (!examinee || this.examineeIpCache.get(examinee.username)) {
+    this.examineeDtoService.determineIpForExaminees(examineeDto, idx).subscribe({
+      next: (result) => {
+        if (!result|| this.examineeIpCache.get(result[0].username)) {
           return;
         }
+        let [examinee, idx] = result;
 
-        let nidx = this.items.findIndex(e => e.username === examinee.username);
-        console.log("LIST");
-        console.log(nidx);
-        console.log(this.items);
-        console.log();
-
-        console.log("SEC LOG");
-        console.log(idx);
-        if (nidx == -1) {
-          console.log("I am funny : " + idx);
-          nidx = this.items.length;
-          console.log("very very funny : " + idx);
+        if (idx == -1) {
+          idx = this.items.length;
           this.items.push(examinee);
         }
 
-        console.log("TO CACHE");
-        console.log(idx);
-        console.log(examinee);
-
-        this.examineeIpCache.set(examinee.username, [examinee, nidx]);
-        this.items[nidx] = examinee;
+        this.examineeIpCache.set(examinee.username, [examinee, idx]);
+        this.items[idx] = examinee;
       },
-      error: (_) => _,
     })
   }
 
