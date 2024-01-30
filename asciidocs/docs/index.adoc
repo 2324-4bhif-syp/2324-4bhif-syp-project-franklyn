@@ -17,5 +17,7 @@ ifndef::imagesdir[:imagesdir: images]
 
 <<./mom/2024-01-09.adoc#, 2024-01-09>>
 
+<<./mom/2024-01-30.adoc#, 2024-01-30>>
+
 == Slides
 RevealJs Slides can be found https://2324-4bhif-syp.github.io/2324-4bhif-syp-project-franklyn/slides[here^]
