@@ -1,8 +1,9 @@
-<div *ngIf="examinee !== undefined">
+<div *ngIf="showVideo()">
   <video id="videoTag"
          controls
          [defaultMuted]="true"
-        height="450px">
+        height="450px"
+        src="{{getVideoUrl()}}">
     <source id="videoSrcTag" src="{{getVideoUrl()}}" type="video/mp4">
     Your browser does not support the video tag.
   </video>
