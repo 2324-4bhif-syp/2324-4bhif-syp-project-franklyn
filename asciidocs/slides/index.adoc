@@ -15,9 +15,11 @@ ifndef::imagesdir[:imagesdir: ../images]
 
 [.font-xx-large]
 === Sprint 5: Aufgabenstellung
-* Instruktor-client (Frontend) Erweiterung für das Abspielen von erstellen Videos
+* Instruktor-client (Frontend) Erweiterung für das Abspielen von erstellten Videos
 * Projekt in einsatzbereiten Zustand befördern
 ** Konfiguration, Binaries zum Download, ...
+
+=== Live Demo
 
 [.font-x-large]
 === Durchgeführte Arbeiten
@@ -51,8 +53,6 @@ plantuml::./plantuml/architecture.puml[]
 * OraVM
 * Eigener Hotspot
 ** WLAN der Schule blockiert Anfragen
-
-=== Live Demo
 
 [.font-xx-large]
 == Team
