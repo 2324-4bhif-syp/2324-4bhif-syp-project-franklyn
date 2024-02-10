@@ -1,4 +1,4 @@
-= Viertes Sprint-Planning 2024-01-30
+= Sechstes Sprint-Planning 2024-01-30
 Arwed Schnalzenberger
 1.0, 2024-01-30: sprint planning
 ifndef::imagesdir[:imagesdir: images]
@@ -18,6 +18,9 @@ endif::backend-html5[]
 .Teilnehmer (alphabetisch)
 |===
 |anwesend |Verteiler
+
+|Aberger C.
+|Aberger C.
 
 |Aichinger T.
 |Aichinger T.
