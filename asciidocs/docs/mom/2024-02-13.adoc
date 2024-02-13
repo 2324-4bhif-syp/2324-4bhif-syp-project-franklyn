@@ -1,6 +1,6 @@
-= Notenbeschluss Zwischenmeeting 2024-02-06
+= Zwischenmeeting 2024-02-13
 Arwed Schnalzenberger
-1.0, 2024-02-06: Notenbeschluss Zwischenmeeting
+1.0, 2024-02-13: Notenbeschluss Zwischenmeeting
 :imagesdir: ../images
 ifndef::imagesdir[:imagesdir: images]
 :icons: font
@@ -19,9 +19,6 @@ endif::backend-html5[]
 .Teilnehmer (alphabetisch)
 |===
 |anwesend |Verteiler
-
-|Aberger C.
-|Aberger C.
 
 |Aichinger T.
 |Aichinger T.
@@ -49,27 +46,19 @@ endif::backend-html5[]
 |Di. 06.02.2024, 7. EH
 
 |Dauer
-| 60 min
+| 10 min
 |===
 
 == Besprochene Themen
 
+* Architektur, wie sie aussehen soll:
+image:server-architecture-as-of-2024-02-13.png[]
 
-* Franklyn logo stylen:
-** "Fran" markieren (blauer Hintergrund, weiße Schrift)
+* Openboxen senden Screenshots von sich aus?
+** Möglichkeit
+** Recorder eher schlecht? Man muss in seinem Lan einen eigenen Server starten. Ohne das wäre es viel einfacher
+** Serverentlastung:
+*** Datenmenge reduzieren: In Zukunft nur noch die differenz von Bildern senden (späterer Sprint)
+* Boxen müssen kein Server mehr sein. Weiter mit Quarkus, aber ohne Rest-Schnittstelle.
 
-* Patrol mode
-** Cashbuster query parameter dranhängen
 
-* Http-Https Problem auf OraVM
-** Variante: Der Server kümmert sich um den ganzen Verkehr
-
-image::screenshots-over-server-architecture.png[]
-
-** Variante: OpenVPN
-*** Brauchen Certificate für jede Openbox -> Löschen, wenn nicht mehr benötigt
-
-image::peer-to-peer-architecture.png[]
-
-**** Link Aichinger
-*** Automatisieren
