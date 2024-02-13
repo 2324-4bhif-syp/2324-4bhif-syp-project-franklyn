@@ -53,12 +53,25 @@ endif::backend-html5[]
 
 * Architektur, wie sie aussehen soll:
 image:server-architecture-as-of-2024-02-13.png[]
+image:2-server-archtiecture-as-of-2024-02-13.png[]
 
 * Openboxen senden Screenshots von sich aus?
-** Möglichkeit
+** Nein: Kontrolle sollte der Server haben
 ** Recorder eher schlecht? Man muss in seinem Lan einen eigenen Server starten. Ohne das wäre es viel einfacher
+*** Recorder in der Cloud
+*** Später dann überlegen, ob der Recorder überhaupt notwendig ist
 ** Serverentlastung:
 *** Datenmenge reduzieren: In Zukunft nur noch die differenz von Bildern senden (späterer Sprint)
-* Boxen müssen kein Server mehr sein. Weiter mit Quarkus, aber ohne Rest-Schnittstelle.
+
+== Variante Aberger:
+
+* Server hat Verzeichnis und für jede Openbox gibt es ein Unterverzeichnis:
+** Server gibt websocket den Takt vor und die Openbox schickt dann die neuen Bilder
+** Openbox sind kein eigener Server mehr (getScreenshot kann gelöscht werden)
+** Spätere Optimierung: Nur die Differenzen
+** Lösung:
+*** Braucht zwar hohe Bandbreite, aber für jetzt gelöst
+** Was tun, wenn Frontend einen Screenshot möchte:
+*** In Zukunft nochmal ansehen
 
 
