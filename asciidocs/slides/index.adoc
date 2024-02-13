@@ -39,6 +39,9 @@ ifndef::imagesdir[:imagesdir: ../images]
 === Architektur
 plantuml::./plantuml/architecture.puml[]
 
+=== Architektur
+plantuml::./plantuml/possible_architecture.puml[]
+
 [.font-xx-large]
 === [.margin-b-10]#Terminologie#
 * *OpenBox*: Applikation auf dem Rechner der Schüler

@@ -1,0 +1,32 @@
+@startuml
+left to right direction
+
+rectangle " " #line:transparent {
+    () uploadScreenshot
+    () "getExaminees"
+    () "getScreenshot"
+}
+
+cloud INET {
+    "uploadScreenshot" -- [Server]
+    "getExaminees" -- [Server]
+    "getScreenshot" -- [Server]
+}
+
+package LAN {
+    package Examinees {
+        [OpenBox1] -- "uploadScreenshot"
+        [OpenBox2] -- "uploadScreenshot"
+        [OpenBox3] -- "uploadScreenshot"
+    }
+
+    node Instructors {
+        [Frontend] <<browser>>
+    }
+}
+[Frontend] -- "getExaminees"
+[Frontend] -- "getScreenshot"
+
+" " -[hidden]- INET
+LAN -[hidden]- " "
+@enduml
