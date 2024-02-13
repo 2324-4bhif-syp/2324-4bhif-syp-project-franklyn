@@ -449,6 +449,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
 <li><a href="#_besprochene_themen">1. Besprochene Themen</a></li>
+<li><a href="#_variante_aberger">2. Variante Aberger:</a></li>
 </ul>
 </div>
 </div>
@@ -525,17 +526,28 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <ul>
 <li>
 <p>Architektur, wie sie aussehen soll:
-<span class="image"><img src="images/server-architecture-as-of-2024-02-13.png" alt="server architecture as of 2024 02 13"></span></p>
+<span class="image"><img src="images/server-architecture-as-of-2024-02-13.png" alt="server architecture as of 2024 02 13"></span>
+<span class="image"><img src="images/2-server-archtiecture-as-of-2024-02-13.png" alt="2 server archtiecture as of 2024 02 13"></span></p>
 </li>
 <li>
 <p>Openboxen senden Screenshots von sich aus?</p>
 <div class="ulist">
 <ul>
 <li>
-<p>Möglichkeit</p>
+<p>Nein: Kontrolle sollte der Server haben</p>
 </li>
 <li>
 <p>Recorder eher schlecht? Man muss in seinem Lan einen eigenen Server starten. Ohne das wäre es viel einfacher</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Recorder in der Cloud</p>
+</li>
+<li>
+<p>Später dann überlegen, ob der Recorder überhaupt notwendig ist</p>
+</li>
+</ul>
+</div>
 </li>
 <li>
 <p>Serverentlastung:</p>
@@ -550,8 +562,50 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </ul>
 </div>
 </li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_variante_aberger"><a class="anchor" href="#_variante_aberger"></a>2. Variante Aberger:</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
 <li>
-<p>Boxen müssen kein Server mehr sein. Weiter mit Quarkus, aber ohne Rest-Schnittstelle.</p>
+<p>Server hat Verzeichnis und für jede Openbox gibt es ein Unterverzeichnis:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Server gibt websocket den Takt vor und die Openbox schickt dann die neuen Bilder</p>
+</li>
+<li>
+<p>Openbox sind kein eigener Server mehr (getScreenshot kann gelöscht werden)</p>
+</li>
+<li>
+<p>Spätere Optimierung: Nur die Differenzen</p>
+</li>
+<li>
+<p>Lösung:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Braucht zwar hohe Bandbreite, aber für jetzt gelöst</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Was tun, wenn Frontend einen Screenshot möchte:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>In Zukunft nochmal ansehen</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
 </li>
 </ul>
 </div>
@@ -561,7 +615,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="footer">
 <div id="footer-text">
 Version 1.0<br>
-Last updated 2024-02-13 09:05:36 UTC
+Last updated 2024-02-13 10:41:51 UTC
 </div>
 </div>
 </body>
