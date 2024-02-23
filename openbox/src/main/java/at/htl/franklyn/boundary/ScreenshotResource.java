@@ -15,6 +15,9 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 
+
+// TODO: Remove
+
 @Path("/screenshot")
 public class ScreenshotResource {
     /**
