@@ -1,6 +1,5 @@
 package at.htl.franklyn.control;
 
-import at.htl.franklyn.entity.ExamineeState;
 import io.quarkus.logging.Log;
 import io.quarkus.scheduler.Scheduled;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -22,7 +21,8 @@ public class ExamineePingPongSchedule {
     @Scheduled(every = "{websocket.ping.interval}")
     public void sendPing() {
         examineeRepository.findAll().forEach(e -> {
-            if (e.getConnectionState() == ExamineeState.CONNECTED && e.getSession().isOpen()) {
+            if (e.isConnected() && e.getSession().isOpen()) {
+                // Allocate small data buffer for ping which is sent to the client
                 ByteBuffer x = ByteBuffer.allocate(3);
                 x.put(new byte[]{ 4, 2, 0 });
                 try {
@@ -37,7 +37,7 @@ public class ExamineePingPongSchedule {
     @Scheduled(every = "{websocket.cleanup.interval}")
     public void checkPing() {
         examineeRepository.findAll().forEach(e -> {
-            if(e.getConnectionState() == ExamineeState.CONNECTED
+            if(e.isConnected()
                     && e.getLastPingTimestamp().isBefore(LocalDateTime.now().minusSeconds(clientTimeoutSeconds))
                     && e.getSession().isOpen()
             ) {

@@ -1,7 +1,6 @@
 package at.htl.franklyn.control;
 
 import at.htl.franklyn.entity.Examinee;
-import at.htl.franklyn.entity.ExamineeState;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.websocket.Session;
 
@@ -29,7 +28,7 @@ public class ExamineeRepository {
 
     public void disconnect(String username) {
         Examinee e = this.findByUsername(username);
-        e.setConnectionState(ExamineeState.DISCONNECTED);
+        e.setConnected(false);
         this.save(e);
     }
 
@@ -42,26 +41,16 @@ public class ExamineeRepository {
         }
 
         e.setSession(session);
-        e.setConnectionState(ExamineeState.AWAITING_IP);
+        e.setConnected(true);
         e.setLastPingTimestamp(LocalDateTime.now());
 
         this.save(e);
     }
 
-    public void updateIpAddresses(String username, List<String> ipAddresses) {
-        Examinee e = this.findByUsername(username);
-
-        if (e != null) {
-            e.setIpAddresses(ipAddresses);
-            e.setConnectionState(ExamineeState.CONNECTED);
-            this.save(e);
-        }
-    }
-
     public void refresh(String username, Session session) {
         Examinee e = this.findByUsername(username);
         e.setSession(session);
-        e.setConnectionState(ExamineeState.CONNECTED);
+        e.setConnected(true);
         e.setLastPingTimestamp(LocalDateTime.now());
     }
 }

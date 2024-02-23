@@ -9,7 +9,7 @@ import java.util.List;
 public class Examinee {
     private String username;
     private List<String> ipAddresses;
-    private ExamineeState connectionState;
+    private boolean isConnected;
     private LocalDateTime lastPingTimestamp;
     private Session session;
 
@@ -18,12 +18,12 @@ public class Examinee {
     }
 
     public Examinee(String userName,
-                    ExamineeState connectionState,
+                    boolean isConnected,
                     LocalDateTime lastPingTimestamp,
                     Session session) {
         this();
         this.username = userName;
-        this.connectionState = connectionState;
+        this.isConnected = isConnected;
         this.lastPingTimestamp = lastPingTimestamp;
         this.session = session;
     }
@@ -44,12 +44,12 @@ public class Examinee {
         this.ipAddresses = ipAddresses;
     }
 
-    public ExamineeState getConnectionState() {
-        return connectionState;
+    public boolean isConnected() {
+        return isConnected;
     }
 
-    public void setConnectionState(ExamineeState connectionState) {
-        this.connectionState = connectionState;
+    public void setConnected(boolean connectionState) {
+        this.isConnected = connectionState;
     }
 
     public LocalDateTime getLastPingTimestamp() {
