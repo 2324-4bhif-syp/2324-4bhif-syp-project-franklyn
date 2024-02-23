@@ -1,7 +1,7 @@
-package at.htl.franklyn.boundary;
+package at.htl.franklyn.server.boundary;
 
-import at.htl.franklyn.boundary.Dto.ExamineeDto;
-import at.htl.franklyn.control.ExamineeRepository;
+import at.htl.franklyn.server.boundary.Dto.ExamineeDto;
+import at.htl.franklyn.server.control.ExamineeRepository;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;

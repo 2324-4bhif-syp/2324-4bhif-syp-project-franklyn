@@ -1,4 +1,4 @@
-package at.htl.franklyn.boundary.Dto;
+package at.htl.franklyn.server.boundary.Dto;
 
 import java.util.List;
 

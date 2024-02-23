@@ -1,6 +1,6 @@
-package at.htl.franklyn.control;
+package at.htl.franklyn.server.control;
 
-import at.htl.franklyn.entity.Examinee;
+import at.htl.franklyn.server.entity.Examinee;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.websocket.Session;
 

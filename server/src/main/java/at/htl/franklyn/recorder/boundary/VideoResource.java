@@ -1,4 +1,4 @@
-package at.htl.franklyn.boundary;
+package at.htl.franklyn.recorder.boundary;
 
 import io.quarkus.logging.Log;
 import jakarta.ws.rs.GET;
@@ -17,8 +17,7 @@ import org.bytedeco.ffmpeg.global.avcodec;
 import org.bytedeco.javacv.FFmpegFrameRecorder;
 import org.bytedeco.javacv.Frame;
 import org.bytedeco.javacv.OpenCVFrameConverter;
-
-import static org.bytedeco.opencv.global.opencv_imgcodecs.imread;
+import org.bytedeco.opencv.global.opencv_imgcodecs;
 
 @Path("/video")
 public class VideoResource {
@@ -216,7 +215,7 @@ public class VideoResource {
                 }
 
                 // Convert Mat type to Frame
-                Frame frame = converter.convert(imread(imageFile.getPath()));
+                Frame frame = converter.convert(opencv_imgcodecs.imread(imageFile.getPath()));
                 // Add frame to video
                 recorder.record(frame);
             }

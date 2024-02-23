@@ -1,4 +1,4 @@
-package at.htl.franklyn.entity;
+package at.htl.franklyn.server.entity;
 
 import jakarta.websocket.Session;
 

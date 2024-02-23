@@ -1,6 +1,6 @@
-package at.htl.franklyn.boundary;
+package at.htl.franklyn.server.boundary;
 
-import at.htl.franklyn.control.ExamineeRepository;
+import at.htl.franklyn.server.control.ExamineeRepository;
 import io.quarkus.logging.Log;
 import io.vertx.core.net.impl.URIDecoder;
 import jakarta.enterprise.context.ApplicationScoped;

@@ -1,4 +1,4 @@
-package at.htl.franklyn.control;
+package at.htl.franklyn.server.control;
 
 import io.quarkus.logging.Log;
 import io.quarkus.runtime.StartupEvent;
