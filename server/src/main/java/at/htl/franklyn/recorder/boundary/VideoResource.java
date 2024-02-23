@@ -60,8 +60,6 @@ public class VideoResource {
             for(File files : targetDirectories){
                 String fileName = files.getName();
 
-                Log.info(fileName);
-
                 if(fileName.endsWith("zip")){
                     continue;
                 }
@@ -97,7 +95,7 @@ public class VideoResource {
             // Parent-folder
             File screenshotFolder = new File("screenshots");
             // Input/Output-folder
-            File[] targetDirectories = screenshotFolder.listFiles((f, name) -> name.startsWith(username));
+            File[] targetDirectories = screenshotFolder.listFiles((f, name) -> name.equals(username));
 
             // Return if folder with this user does not exist
             if(targetDirectories == null || targetDirectories.length == 0 ){
@@ -147,7 +145,7 @@ public class VideoResource {
             // Parent-folder
             File screenshotFolder = new File("screenshots");
             // Input/Output-folder
-            File[] targetDirectories = screenshotFolder.listFiles((f, name) -> name.startsWith(username));
+            File[] targetDirectories = screenshotFolder.listFiles((f, name) -> name.equals(username));
 
             // Return if folder with this user does not exist
             if(targetDirectories == null || targetDirectories.length == 0 ){

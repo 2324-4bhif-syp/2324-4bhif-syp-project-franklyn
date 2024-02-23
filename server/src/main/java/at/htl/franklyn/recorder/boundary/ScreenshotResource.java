@@ -77,8 +77,6 @@ public class ScreenshotResource {
                 Comparator.comparing(File::getName)
             );
 
-            Log.info(newestScreenshot);
-
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
             BufferedImage image = ImageIO.read(newestScreenshot);
 
