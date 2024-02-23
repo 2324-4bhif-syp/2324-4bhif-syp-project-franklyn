@@ -1,17 +1,17 @@
 package at.htl.franklyn.recorder.boundary;
 
+import io.quarkus.logging.Log;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
+import org.jboss.resteasy.reactive.PartType;
+import org.jboss.resteasy.reactive.RestForm;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Collections;
@@ -26,8 +26,9 @@ public class ScreenshotResource {
 
     @POST
     @Path("{username}")
-    @Consumes("image/png")
-    public void takeScreenshot(@PathParam("username") String username, ByteArrayInputStream screenshot){
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    public void takeScreenshot(@PathParam("username") String username,
+                               @RestForm("image") @PartType(MediaType.APPLICATION_OCTET_STREAM) InputStream screenshot){
         try {
             File directory = new File(String.format("screenshots/%s", username));
 

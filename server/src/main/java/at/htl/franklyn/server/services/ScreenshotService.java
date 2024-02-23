@@ -5,8 +5,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 
 @ApplicationScoped
 public class ScreenshotService {
-
     public void requestScreenshot(Examinee examinee){
-
+        examinee.getSession().getAsyncRemote().sendText("{\"request\": \"getScreenshot\"}");
     }
 }
