@@ -8,17 +8,14 @@ import java.util.Objects;
 public class Examinee {
     @JsonProperty("username")
     private String username;
-    @JsonProperty("ipAddresses")
-    private String[] ipAddresses;
     @JsonProperty("connected")
     private boolean isConnected;
 
     public Examinee() {
     }
 
-    public Examinee(String username, String[] ipAddresses, boolean isConnected) {
+    public Examinee(String username, boolean isConnected) {
         this.username = username;
-        this.ipAddresses = ipAddresses;
         this.isConnected = isConnected;
     }
 
@@ -30,13 +27,6 @@ public class Examinee {
         this.username = username;
     }
 
-    public String[] getIpAddresses() {
-        return ipAddresses;
-    }
-
-    public void setIpAddresses(String[] ipAddresses) {
-        this.ipAddresses = ipAddresses;
-    }
 
     public boolean isConnected() {
         return isConnected;
@@ -51,6 +41,6 @@ public class Examinee {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Examinee examinee = (Examinee) o;
-        return isConnected == examinee.isConnected && Objects.equals(username, examinee.username) && Arrays.equals(ipAddresses, examinee.ipAddresses);
+        return isConnected == examinee.isConnected && Objects.equals(username, examinee.username);
     }
 }
