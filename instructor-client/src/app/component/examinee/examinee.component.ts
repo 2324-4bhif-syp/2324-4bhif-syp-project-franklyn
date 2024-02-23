@@ -21,18 +21,8 @@ export class ExamineeComponent {
   @Input() examinee: Examinee | undefined;
   @Input() showImage: boolean = false;
 
-  getAddress(): string {
-    let addressString: string = "";
-
-    if (this.examinee) {
-      addressString =  `http://${this.examinee.ipAddress}:${environment.openboxPort}`;
-    }
-
-    return addressString;
-  }
-
   getScreenshotAddress() {
-    return `${this.getAddress()}/${environment.openboxImageUrl}/${environment.imageWidth}/${environment.imageHeight}`;
+    return `${environment.serverBaseUrl}/screenshot/${this.examinee!.username}/${environment.imageWidth}/${environment.imageHeight}`;
   }
 
   getActivity(): string {

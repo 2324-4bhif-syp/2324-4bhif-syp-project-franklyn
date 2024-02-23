@@ -21,6 +21,6 @@ export class ExamineeDownloadListComponent {
   }
 
   getDownloadUrl(): string {
-    return `${environment.recorderBaseUrl}video/download`
+    return `${environment.serverBaseUrl}/video/download`
   }
 }
