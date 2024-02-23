@@ -58,13 +58,15 @@ public class VideoResource {
             ZipOutputStream zipOut = new ZipOutputStream(fos);
 
             for(File files : targetDirectories){
-                String[] fileName = files.getName().split("-");
+                String fileName = files.getName();
 
-                if(fileName.length != 2){
+                Log.info(fileName);
+
+                if(fileName.endsWith("zip")){
                     continue;
                 }
 
-                File fileToZip = getVideo(fileName[0]);
+                File fileToZip = getVideo(fileName);
                 FileInputStream fis = new FileInputStream(fileToZip);
                 ZipEntry zipEntry = new ZipEntry(fileToZip.getName());
                 zipOut.putNextEntry(zipEntry);
@@ -87,15 +89,15 @@ public class VideoResource {
         }
     }
 
-    @Path("/download/{ip}")
+    @Path("/download/{username}")
     @Produces("file/zip")
     @GET
-    public Response downloadOneVideo(@PathParam("ip") String ip){
+    public Response downloadOneVideo(@PathParam("username") String username){
         try{
             // Parent-folder
             File screenshotFolder = new File("screenshots");
             // Input/Output-folder
-            File[] targetDirectories = screenshotFolder.listFiles((f, name) -> name.startsWith(ip));
+            File[] targetDirectories = screenshotFolder.listFiles((f, name) -> name.startsWith(username));
 
             // Return if folder with this user does not exist
             if(targetDirectories == null || targetDirectories.length == 0 ){
@@ -104,12 +106,10 @@ public class VideoResource {
 
             File targetDirectory = targetDirectories[0];
 
-            String name = targetDirectory.getName().split("-")[1].replaceAll("\\s","");
-
-            FileOutputStream fos = new FileOutputStream(String.format("%s/%s.zip", targetDirectory.getPath(), name));
+            FileOutputStream fos = new FileOutputStream(String.format("%s/%s.zip", targetDirectory.getPath(), username));
             ZipOutputStream zipOut = new ZipOutputStream(fos);
 
-            File fileToZip = getVideo(ip);
+            File fileToZip = getVideo(username);
             FileInputStream fis = new FileInputStream(fileToZip);
             ZipEntry zipEntry = new ZipEntry(fileToZip.getName());
             zipOut.putNextEntry(zipEntry);
@@ -128,9 +128,9 @@ public class VideoResource {
                     .ok()
                     .header(
                             "Content-Disposition",
-                            String.format("attachment; filename=\"%s.zip\"", name)
+                            String.format("attachment; filename=\"%s.zip\"", username)
                     )
-                    .entity(new File(String.format("%s/%s.zip", targetDirectory.getPath(), name)))
+                    .entity(new File(String.format("%s/%s.zip", targetDirectory.getPath(), username)))
                     .build();
         }
         catch (Exception e){
@@ -138,16 +138,16 @@ public class VideoResource {
         }
     }
 
-    @Path("/{ip}")
+    @Path("/{username}")
     @Produces("video/mp4")
     @GET
-    public File getVideo(@PathParam("ip") String ip) {
+    public File getVideo(@PathParam("username") String username) {
 
         try {
             // Parent-folder
             File screenshotFolder = new File("screenshots");
             // Input/Output-folder
-            File[] targetDirectories = screenshotFolder.listFiles((f, name) -> name.startsWith(ip));
+            File[] targetDirectories = screenshotFolder.listFiles((f, name) -> name.startsWith(username));
 
             // Return if folder with this user does not exist
             if(targetDirectories == null || targetDirectories.length == 0 ){
@@ -155,8 +155,6 @@ public class VideoResource {
             }
 
             File targetDirectory = targetDirectories[0];
-
-            String name = targetDirectory.getName().split("-")[1].replaceAll("\\s","");
 
             // Get all images
             File[] screenshots = targetDirectory.listFiles();
@@ -170,12 +168,12 @@ public class VideoResource {
             Arrays.sort(screenshots);
 
             // Set path and size for recorder
-            FFmpegFrameRecorder recorder = getRecorder(screenshots[0], targetDirectory, name);
+            FFmpegFrameRecorder recorder = getRecorder(screenshots[0], targetDirectory, username);
 
             // record images
             record(recorder, screenshots);
 
-            return new File(String.format("%s/%s.mp4", targetDirectory.getPath(), name));
+            return new File(String.format("%s/%s.mp4", targetDirectory.getPath(), username));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

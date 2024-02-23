@@ -52,7 +52,7 @@ public class ScreenshotResource {
 
     @GET
     @Path("{username}")
-    @Produces(MediaType.APPLICATION_JSON)
+    @Produces("image/png")
     public Response getScreenshot(@PathParam("username") String username){
 
         File directory = new File(String.format("screenshots/%s", username));
@@ -70,7 +70,14 @@ public class ScreenshotResource {
         }
 
         try {
-            File newestScreenshot = Collections.max(Arrays.stream(files).toList(), Comparator.comparing(File::getName));
+            File newestScreenshot = Collections.max(
+                Arrays.stream(files)
+                        .filter(file -> file.getName().endsWith("png"))
+                        .toList(),
+                Comparator.comparing(File::getName)
+            );
+
+            Log.info(newestScreenshot);
 
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
             BufferedImage image = ImageIO.read(newestScreenshot);
