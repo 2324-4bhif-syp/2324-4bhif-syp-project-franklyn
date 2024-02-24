@@ -12,15 +12,11 @@ import org.eclipse.microprofile.config.inject.ConfigProperty;
 public class InitBean {
     @ConfigProperty(name = "websocket.url")
     String url;
-    @ConfigProperty(name = "quarkus.http.port")
-    int port;
 
     @Inject
     UserService userService;
 
     void startUp(@Observes StartupEvent startupEvent) {
         Log.infof("Connecting to server: %s", url);
-        Log.infof("User Name: %s", userService.getUserName());
-        Log.infof("Listening on port: %d", port);
     }
 }
