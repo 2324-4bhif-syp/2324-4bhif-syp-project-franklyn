@@ -18,10 +18,10 @@ export class ExamineeVideoComponent{
   @Input() examinee: Examinee | undefined;
 
   getVideoUrl(): string {
-    return `${environment.recorderBaseUrl}video/${this.examinee?.ipAddress}`; //examinee gets checked in the html
+    return `${environment.serverBaseUrl}/video/${this.examinee?.username}`; //examinee gets checked in the html
   }
 
   showVideo():boolean {
-    return this.examinee !== undefined && this.examineeRepo.getPatrolExaminee()?.ipAddress === this.examinee.ipAddress;
+    return this.examinee !== undefined && this.examineeRepo.getPatrolExaminee()?.username === this.examinee.username;
   }
 }

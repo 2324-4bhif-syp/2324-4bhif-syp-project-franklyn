@@ -22,6 +22,6 @@ export class DownloadExamineeComponent {
   }
 
   getDownloadUrl(): string {
-    return `${environment.recorderBaseUrl}video/download/${this.examinee?.ipAddress}`
+    return `${environment.serverBaseUrl}/video/download/${this.examinee?.username}`
   }
 }

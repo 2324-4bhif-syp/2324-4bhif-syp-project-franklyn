@@ -1,40 +1,69 @@
 package at.htl.franklyn.boundary;
 
-import at.htl.franklyn.boundary.Dto.IpMessageDto;
+import at.htl.franklyn.boundary.dto.MessageDto;
 import at.htl.franklyn.services.ConnectionService;
-import at.htl.franklyn.services.IpService;
+import at.htl.franklyn.services.ScreenshotService;
+import at.htl.franklyn.services.ScreenshotUploadService;
+import at.htl.franklyn.services.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectWriter;
 import io.quarkus.logging.Log;
 import jakarta.inject.Inject;
 import jakarta.websocket.*;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
+import org.eclipse.microprofile.rest.client.RestClientBuilder;
 
+import javax.imageio.ImageIO;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.net.Inet4Address;
-import java.net.InetAddress;
-import java.util.List;
+import java.net.URI;
 
 @ClientEndpoint
 public class Client {
     @Inject
-    ConnectionService connectionService;
+    UserService userService;
 
     @Inject
-    IpService ipService;
+    ConnectionService connectionService;
+
+    @ConfigProperty(name = "http.url")
+    String serverUrl;
 
     @OnOpen
-    public void onOpen(Session session) throws JsonProcessingException {
-        List<Inet4Address> address = ipService.getAllIp4Addresses();
-        ObjectMapper om = new ObjectMapper();
+    public void onOpen(Session session) {
+        connectionService.setConnected(true);
+    }
 
-        if(!address.isEmpty()) {
-            session.getAsyncRemote().sendText(
-                    om.writeValueAsString(IpMessageDto.fromAddressList(address))
-            );
-            connectionService.setConnected(true);
-        } else {
-            Log.error("Could not retrieve local ip addresses!");
+    @OnError
+    public void onError(Session session, Throwable throwable) throws IOException {
+        connectionService.setConnected(false);
+        connectionService.getSession().close();
+    }
+
+    @OnMessage
+    public void onMessage(String message) {
+        MessageDto dto = null;
+
+        try {
+            dto = MessageDto.fromJson(message);
+        } catch (JsonProcessingException ignored) {
+            // Invalid Request
+            return;
+        }
+
+        if (!dto.request().equals("getScreenshot")) {
+            return;
+        }
+
+        ScreenshotUploadService screenshotUploadService = RestClientBuilder.newBuilder()
+                .baseUri(URI.create(String.format("%s/screenshot/%s", serverUrl, userService.getUserName())))
+                .build(ScreenshotUploadService.class);
+
+        try (ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream()) {
+            ImageIO.write(ScreenshotService.getScreenshot(), "png", byteArrayOutputStream);
+            screenshotUploadService.uploadScreenshot(new ByteArrayInputStream(byteArrayOutputStream.toByteArray()));
+        } catch (Exception e) {
+            Log.error("FAILED: to write image", e);
         }
     }
 

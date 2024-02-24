@@ -1,30 +1,35 @@
 @startuml
+left to right direction
+
+cloud INET {
+    rectangle " " #line:transparent {
+        () uploadScreenshot
+        () "getExaminees"
+        () "getScreenshot"
+        () "downloadVideo"
+    }
+
+    "uploadScreenshot" -- [Server]
+    "getExaminees" -- [Server]
+    "getScreenshot" -- [Server]
+    "downloadVideo" -- [Server]
+}
+
 package LAN {
     package Examinees {
-        [OpenBox1] -- "getScreenshot  "
-        [OpenBox2] -- "getScreenshot"
-        [OpenBox3] -- "getScreenshot "
+        [OpenBox1] -- "uploadScreenshot"
+        [OpenBox2] -- "uploadScreenshot"
+        [OpenBox3] -- "uploadScreenshot"
     }
 
     node Instructors {
-        [Frontend]
+        [Frontend] <<browser>>
     }
-
-    node Recorder
 }
+[Frontend] -- "getExaminees"
+[Frontend] -- "getScreenshot"
+[Frontend] -- "downloadVideo"
 
-cloud {
-    [Server] -left- "examinee" : "                           "
-    [Server] -right- "getExaminees"  : "                           "
-}
-
-[OpenBox1] -up-> "examinee" : "via websocket"
-[OpenBox2] -up-> "examinee"
-[OpenBox3] -up-> "examinee"
-
-[Frontend] -left-> "getExaminees"
-[Frontend] -left-> "getScreenshot  " : "low quality       "
-
-Recorder --> "getExaminees"
-Recorder -down-> "getScreenshot  " : "high quality"
+" " -[hidden]- INET
+LAN -[hidden]- " "
 @enduml
