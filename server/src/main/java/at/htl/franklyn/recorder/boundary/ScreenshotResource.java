@@ -94,7 +94,7 @@ public class ScreenshotResource {
 
     @GET
     @Path("{username}/{width}/{height}")
-    @Produces(MediaType.APPLICATION_JSON)
+    @Produces("image/png")
     public Response getScreenshotWithSpecificDimensions(
             @PathParam("username") String username,
             @PathParam("width") int width,
