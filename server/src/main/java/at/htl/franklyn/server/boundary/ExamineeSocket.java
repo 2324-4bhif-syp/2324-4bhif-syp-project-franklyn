@@ -36,7 +36,9 @@ public class ExamineeSocket {
 
     @OnError
     public void onError(Session session, @PathParam("username") String username, Throwable throwable) {
-        examineeRepository.disconnect(decodeUsername(username));
+        String decodedUsername = decodeUsername(username);
+        Log.errorf("%s disconnected (Reason: %s)", decodedUsername, throwable);
+        examineeRepository.disconnect(decodedUsername);
     }
 
     public String decodeUsername(String encodedUsername) {

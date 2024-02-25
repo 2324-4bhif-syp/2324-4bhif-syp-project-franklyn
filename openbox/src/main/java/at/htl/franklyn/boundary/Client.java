@@ -36,6 +36,7 @@ public class Client {
 
     @OnError
     public void onError(Session session, Throwable throwable) throws IOException {
+        Log.errorf("Error on Websocket (disconnecting): %s", throwable);
         connectionService.setConnected(false);
         connectionService.getSession().close();
     }
