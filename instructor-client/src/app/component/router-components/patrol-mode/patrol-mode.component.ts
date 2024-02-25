@@ -20,9 +20,5 @@ import {CommonModule} from "@angular/common";
 })
 export class PatrolModeComponent {
   constructor(protected examineeRepo: ExamineeDataService) {
-    setInterval(() => {
-      examineeRepo.getAllExamineesFromServer();
-      examineeRepo.newPatrolExaminee();
-    }, environment.nextClientScheduleTime);
   }
 }
