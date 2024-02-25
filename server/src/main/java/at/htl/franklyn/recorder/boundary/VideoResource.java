@@ -66,7 +66,7 @@ public class VideoResource {
                 }
 
                 InputStream fis = getVideo(fileName);
-                ZipEntry zipEntry = new ZipEntry(fileName);
+                ZipEntry zipEntry = new ZipEntry(String.format("%s.mp4", fileName));
                 zipOut.putNextEntry(zipEntry);
 
                 byte[] bytes = new byte[1024];
