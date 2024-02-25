@@ -12,7 +12,6 @@ import java.util.Arrays;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
-import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import org.bytedeco.ffmpeg.global.avcodec;
 import org.bytedeco.javacv.FFmpegFrameRecorder;
@@ -138,7 +137,7 @@ public class VideoResource {
     @Path("/{username}")
     @Produces("video/mp4")
     @GET
-    public InputStream getVideo(@PathParam("username") String username) {
+    public FileInputStream getVideo(@PathParam("username") String username) {
         try {
             // Parent-folder
             File screenshotFolder = new File("screenshots");
@@ -155,7 +154,7 @@ public class VideoResource {
             // Get all images
             File[] screenshots = targetDirectory.listFiles();
 
-            // If there aro none return
+            // If there are none return
             if(screenshots == null){
                 return null;
             }

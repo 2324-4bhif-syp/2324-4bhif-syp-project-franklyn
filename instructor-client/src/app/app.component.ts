@@ -5,6 +5,7 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {PatrolModeComponent} from "./component/router-components/patrol-mode/patrol-mode.component";
 import {VideoViewerComponent} from "./component/router-components/video-viewer/video-viewer.component";
 import ExamineeDataService from "./shared/repository/examinee-data.service";
+import {environment} from "../../env/environment";
 
 @Injectable({
   providedIn: 'root'
@@ -28,6 +29,11 @@ import ExamineeDataService from "./shared/repository/examinee-data.service";
 export class AppComponent{
   constructor(private examineeRepo: ExamineeDataService, private location: Location) {
     this.changeRoute(); // call it for initialization in case of for example a page reload
+
+    setInterval(() => {
+      examineeRepo.getAllExamineesFromServer();
+      examineeRepo.newPatrolExaminee();
+    }, environment.nextClientScheduleTime);
   }
 
   public patrolModeActive: boolean = false;

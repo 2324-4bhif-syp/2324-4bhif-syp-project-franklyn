@@ -22,7 +22,7 @@ export class ExamineeComponent {
   @Input() showImage: boolean = false;
 
   getScreenshotAddress() {
-    return `${environment.serverBaseUrl}/screenshot/${this.examinee!.username}/${environment.imageWidth}/${environment.imageHeight}`;
+    return `${environment.serverBaseUrl}/screenshot/${this.examinee!.username}/${environment.imageWidth}/${environment.imageHeight}?cachebust=${this.examineeRepo.cacheBusterNumImg}`;
   }
 
   getActivity(): string {
