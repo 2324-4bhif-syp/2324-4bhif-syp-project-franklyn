@@ -19,6 +19,7 @@ export class DownloadExamineeComponent {
 
   showVideoOfExaminee() {
     this.examineeRepo.newPatrolExaminee(this.examinee);
+    this.examineeRepo.cacheBusterNum += 1;
   }
 
   getDownloadUrl(): string {

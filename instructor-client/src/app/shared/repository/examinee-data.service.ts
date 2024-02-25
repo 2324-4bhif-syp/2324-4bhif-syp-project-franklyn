@@ -12,6 +12,7 @@ export default class ExamineeDataService {
 
   private items: Examinee[] = [];
   private patrolExaminee: Examinee | undefined;
+  private cachebustNum: number = 0;
 
   patrolModeOn: boolean = false;
 
@@ -60,4 +61,13 @@ export default class ExamineeDataService {
       this.patrolExaminee = undefined;
     }
   }
+
+  get cacheBusterNum(): number {
+    return this.cachebustNum;
+  }
+
+  set cacheBusterNum(val: number) {
+    this.cachebustNum = val;
+  }
+
 }

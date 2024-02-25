@@ -138,41 +138,21 @@ public class VideoResource {
     @Path("/{username}")
     @Produces("video/mp4")
     @GET
-    public InputStream getVideo(@PathParam("username") String username) {
-        try {
-            // Parent-folder
-            File screenshotFolder = new File("screenshots");
-            // Input/Output-folder
-            File[] targetDirectories = screenshotFolder.listFiles((f, name) -> name.equals(username));
+    public Response getVideoResponse(@PathParam("username") String username) {
+        InputStream video = getVideo(username);
 
-            // Return if folder with this user does not exist
-            if(targetDirectories == null || targetDirectories.length == 0 ){
-                return null;
-            }
-
-            File targetDirectory = targetDirectories[0];
-
-            // Get all images
-            File[] screenshots = targetDirectory.listFiles();
-
-            // If there aro none return
-            if(screenshots == null){
-                return null;
-            }
-
-            // Make sure Files are in the right order
-            Arrays.sort(screenshots);
-
-            // Set path and size for recorder
-            FFmpegFrameRecorder recorder = getRecorder(screenshots[0], targetDirectory, username);
-
-            // record images
-            record(recorder, screenshots);
-
-            return new FileInputStream(String.format("%s/%s.mp4", targetDirectory.getPath(), username));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        if (video == null) {
+            return Response
+                    .status(Response.Status.NOT_FOUND)
+                    .build();
         }
+
+        return Response
+                .ok(video)
+                .header("Cache-Control", "no-cache, no-store, must-revalidate")
+                .header("Pragma", "no-cache")
+                .header("Expires", "-1")
+                .build();
     }
 
     private FFmpegFrameRecorder getRecorder(File sample, File targetDirectory, String ip) throws IOException{
@@ -224,6 +204,43 @@ public class VideoResource {
         }
         catch (Exception e) {
             Log.error(e.getMessage());
+        }
+    }
+
+    public InputStream getVideo(String username) {
+        try {
+            // Parent-folder
+            File screenshotFolder = new File("screenshots");
+            // Input/Output-folder
+            File[] targetDirectories = screenshotFolder.listFiles((f, name) -> name.equals(username));
+
+            // Return if folder with this user does not exist
+            if(targetDirectories == null || targetDirectories.length == 0 ){
+                return null;
+            }
+
+            File targetDirectory = targetDirectories[0];
+
+            // Get all images
+            File[] screenshots = targetDirectory.listFiles();
+
+            // If there are none return
+            if(screenshots == null){
+                return null;
+            }
+
+            // Make sure Files are in the right order
+            Arrays.sort(screenshots);
+
+            // Set path and size for recorder
+            FFmpegFrameRecorder recorder = getRecorder(screenshots[0], targetDirectory, username);
+
+            // record images
+            record(recorder, screenshots);
+
+            return new FileInputStream(String.format("%s/%s.mp4", targetDirectory.getPath(), username));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 }
