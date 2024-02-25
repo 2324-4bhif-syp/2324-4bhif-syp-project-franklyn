@@ -12,6 +12,7 @@ import java.util.Arrays;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
+import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import org.bytedeco.ffmpeg.global.avcodec;
 import org.bytedeco.javacv.FFmpegFrameRecorder;
@@ -64,9 +65,8 @@ public class VideoResource {
                     continue;
                 }
 
-                File fileToZip = getVideo(fileName);
-                FileInputStream fis = new FileInputStream(fileToZip);
-                ZipEntry zipEntry = new ZipEntry(fileToZip.getName());
+                InputStream fis = getVideo(fileName);
+                ZipEntry zipEntry = new ZipEntry(fileName);
                 zipOut.putNextEntry(zipEntry);
 
                 byte[] bytes = new byte[1024];
@@ -107,9 +107,8 @@ public class VideoResource {
             FileOutputStream fos = new FileOutputStream(String.format("%s/%s.zip", targetDirectory.getPath(), username));
             ZipOutputStream zipOut = new ZipOutputStream(fos);
 
-            File fileToZip = getVideo(username);
-            FileInputStream fis = new FileInputStream(fileToZip);
-            ZipEntry zipEntry = new ZipEntry(fileToZip.getName());
+            InputStream fis = getVideo(username);
+            ZipEntry zipEntry = new ZipEntry(String.format("%s.mp4", username));
             zipOut.putNextEntry(zipEntry);
 
             byte[] bytes = new byte[1024];
@@ -139,8 +138,7 @@ public class VideoResource {
     @Path("/{username}")
     @Produces("video/mp4")
     @GET
-    public File getVideo(@PathParam("username") String username) {
-
+    public InputStream getVideo(@PathParam("username") String username) {
         try {
             // Parent-folder
             File screenshotFolder = new File("screenshots");
@@ -171,7 +169,7 @@ public class VideoResource {
             // record images
             record(recorder, screenshots);
 
-            return new File(String.format("%s/%s.mp4", targetDirectory.getPath(), username));
+            return new FileInputStream(String.format("%s/%s.mp4", targetDirectory.getPath(), username));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -191,9 +189,14 @@ public class VideoResource {
         // more settings
         //recorder.setVideoCodec(avcodec.AV_CODEC_ID_H264);
         recorder.setVideoCodec(avcodec.AV_CODEC_ID_H264);
+        recorder.setVideoOption("-movflags", "+faststart");
+        recorder.setVideoOption("-crf", "51");
+        recorder.setVideoOption("-preset", "ultrafast");
+        recorder.setVideoOption("-tune", "zerolatency");
+        recorder.setVideoOption("threads", "0");
         recorder.setFormat("mp4");
         recorder.setFrameRate(1);
-        recorder.setVideoBitrate(600000);
+        recorder.setVideoBitrate(100000);
 
         return recorder;
     }
