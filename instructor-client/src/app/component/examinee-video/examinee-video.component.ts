@@ -18,7 +18,7 @@ export class ExamineeVideoComponent{
   @Input() examinee: Examinee | undefined;
 
   getVideoUrl(): string {
-    return `${environment.serverBaseUrl}/video/${this.examinee?.username}?cache=${this.examineeRepo.cacheBusterNum}`; //examinee gets checked in the html
+    return `${environment.serverBaseUrl}/video/${this.examinee?.username}?cache=${this.examineeRepo.cacheBusterNumVideo}`; //examinee gets checked in the html
   }
 
   showVideo():boolean {

@@ -20,12 +20,9 @@ export class ExamineeComponent {
 
   @Input() examinee: Examinee | undefined;
   @Input() showImage: boolean = false;
-  private count: number = 0;
 
   getScreenshotAddress() {
-    this.count++;
-
-    return `${environment.serverBaseUrl}/screenshot/${this.examinee!.username}/${environment.imageWidth}/${environment.imageHeight}?cachebust=${this.count}`;
+    return `${environment.serverBaseUrl}/screenshot/${this.examinee!.username}/${environment.imageWidth}/${environment.imageHeight}?cachebust=${this.examineeRepo.cacheBusterNumImg}`;
   }
 
   getActivity(): string {

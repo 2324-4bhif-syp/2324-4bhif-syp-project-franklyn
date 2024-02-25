@@ -18,8 +18,8 @@ export class DownloadExamineeComponent {
   @Input() examinee: Examinee | undefined;
 
   showVideoOfExaminee() {
-    this.examineeRepo.newPatrolExaminee(this.examinee);
-    this.examineeRepo.cacheBusterNum += 1;
+    this.examineeRepo.newPatrolExaminee(this.examinee, true);
+    this.examineeRepo.cacheBusterNumVideo += 1;
   }
 
   getDownloadUrl(): string {

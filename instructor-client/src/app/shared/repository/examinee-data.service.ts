@@ -12,7 +12,8 @@ export default class ExamineeDataService {
 
   private items: Examinee[] = [];
   private patrolExaminee: Examinee | undefined;
-  private cachebustNum: number = 0;
+  private cachebustNumVideo: number = 0;
+  private cachebustNumImage: number = 0;
 
   patrolModeOn: boolean = false;
 
@@ -41,8 +42,10 @@ export default class ExamineeDataService {
     this.patrolExaminee = undefined;
   }
 
-  newPatrolExaminee(examinee?: Examinee) {
-    if (examinee !== undefined && examinee.connected) {
+  newPatrolExaminee(examinee?: Examinee, ignoreConnection: boolean = false) {
+    this.cacheBusterNumImg += 1;
+
+    if (examinee !== undefined && (examinee.connected || ignoreConnection)) {
       this.patrolModeOn = false;
       this.patrolExaminee = examinee;
     } else if (this.patrolModeOn) {
@@ -62,12 +65,28 @@ export default class ExamineeDataService {
     }
   }
 
-  get cacheBusterNum(): number {
-    return this.cachebustNum;
+  get cacheBusterNumVideo(): number {
+    return this.cachebustNumVideo;
   }
 
-  set cacheBusterNum(val: number) {
-    this.cachebustNum = val;
+  set cacheBusterNumVideo(val: number) {
+    if (val === Number.MAX_VALUE) {
+      this.cachebustNumVideo = 0;
+    } else {
+      this.cachebustNumVideo = val;
+    }
+  }
+
+  get cacheBusterNumImg(): number {
+    return this.cachebustNumImage;
+  }
+
+  set cacheBusterNumImg(val: number) {
+    if (val === Number.MAX_VALUE) {
+      this.cachebustNumImage = 0;
+    } else {
+      this.cachebustNumImage = val;
+    }
   }
 
 }
