@@ -12,7 +12,6 @@ import java.util.Arrays;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
-import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import org.bytedeco.ffmpeg.global.avcodec;
 import org.bytedeco.javacv.FFmpegFrameRecorder;
@@ -138,21 +137,41 @@ public class VideoResource {
     @Path("/{username}")
     @Produces("video/mp4")
     @GET
-    public Response getVideoResponse(@PathParam("username") String username) {
-        InputStream video = getVideo(username);
+    public FileInputStream getVideo(@PathParam("username") String username) {
+        try {
+            // Parent-folder
+            File screenshotFolder = new File("screenshots");
+            // Input/Output-folder
+            File[] targetDirectories = screenshotFolder.listFiles((f, name) -> name.equals(username));
 
-        if (video == null) {
-            return Response
-                    .status(Response.Status.NOT_FOUND)
-                    .build();
+            // Return if folder with this user does not exist
+            if(targetDirectories == null || targetDirectories.length == 0 ){
+                return null;
+            }
+
+            File targetDirectory = targetDirectories[0];
+
+            // Get all images
+            File[] screenshots = targetDirectory.listFiles();
+
+            // If there are none return
+            if(screenshots == null){
+                return null;
+            }
+
+            // Make sure Files are in the right order
+            Arrays.sort(screenshots);
+
+            // Set path and size for recorder
+            FFmpegFrameRecorder recorder = getRecorder(screenshots[0], targetDirectory, username);
+
+            // record images
+            record(recorder, screenshots);
+
+            return new FileInputStream(String.format("%s/%s.mp4", targetDirectory.getPath(), username));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
-
-        return Response
-                .ok(video)
-                .header("Cache-Control", "no-cache, no-store, must-revalidate")
-                .header("Pragma", "no-cache")
-                .header("Expires", "-1")
-                .build();
     }
 
     private FFmpegFrameRecorder getRecorder(File sample, File targetDirectory, String ip) throws IOException{
@@ -204,43 +223,6 @@ public class VideoResource {
         }
         catch (Exception e) {
             Log.error(e.getMessage());
-        }
-    }
-
-    public InputStream getVideo(String username) {
-        try {
-            // Parent-folder
-            File screenshotFolder = new File("screenshots");
-            // Input/Output-folder
-            File[] targetDirectories = screenshotFolder.listFiles((f, name) -> name.equals(username));
-
-            // Return if folder with this user does not exist
-            if(targetDirectories == null || targetDirectories.length == 0 ){
-                return null;
-            }
-
-            File targetDirectory = targetDirectories[0];
-
-            // Get all images
-            File[] screenshots = targetDirectory.listFiles();
-
-            // If there are none return
-            if(screenshots == null){
-                return null;
-            }
-
-            // Make sure Files are in the right order
-            Arrays.sort(screenshots);
-
-            // Set path and size for recorder
-            FFmpegFrameRecorder recorder = getRecorder(screenshots[0], targetDirectory, username);
-
-            // record images
-            record(recorder, screenshots);
-
-            return new FileInputStream(String.format("%s/%s.mp4", targetDirectory.getPath(), username));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
         }
     }
 }
