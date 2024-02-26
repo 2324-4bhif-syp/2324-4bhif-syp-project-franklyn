@@ -6,6 +6,7 @@ import {PatrolModeComponent} from "./component/router-components/patrol-mode/pat
 import {VideoViewerComponent} from "./component/router-components/video-viewer/video-viewer.component";
 import ExamineeDataService from "./shared/repository/examinee-data.service";
 import {environment} from "../../env/environment";
+import {PatrolManagerService} from "./shared/repository/patrol-manager.service";
 
 @Injectable({
   providedIn: 'root'
@@ -27,13 +28,12 @@ import {environment} from "../../env/environment";
   styleUrl: './app.component.css'
 })
 export class AppComponent{
-  constructor(private examineeRepo: ExamineeDataService, private location: Location) {
+  constructor(private examineeRepo: ExamineeDataService, private location: Location, private patrolManagerService: PatrolManagerService) {
     this.changeRoute(); // call it for initialization in case of for example a page reload
 
     setInterval(() => {
       examineeRepo.getAllExamineesFromServer();
-      examineeRepo.newPatrolExaminee();
-    }, environment.nextClientScheduleTime);
+    }, environment.nextClientScheduleTime*1000);
   }
 
   public patrolModeActive: boolean = false;
@@ -41,8 +41,10 @@ export class AppComponent{
   public changeRoute() {
     if (this.location.path() === "/video-viewer") {
       this.patrolModeActive = false;
+      this.patrolManagerService.stopInterval();
     } else {
       this.patrolModeActive = true;
+      this.patrolManagerService.startInterval();
     }
 
     this.examineeRepo.patrolModeOn = false; //safety measure to prevent any possible bugs

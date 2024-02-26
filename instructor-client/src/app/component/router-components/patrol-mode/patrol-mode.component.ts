@@ -5,6 +5,7 @@ import {FormsModule} from "@angular/forms";
 import ExamineeDataService from "../../../shared/repository/examinee-data.service";
 import {environment} from "../../../../../env/environment";
 import {CommonModule} from "@angular/common";
+import {PatrolManagerService} from "../../../shared/repository/patrol-manager.service";
 
 @Component({
   selector: 'app-patrol-mode',
@@ -19,6 +20,8 @@ import {CommonModule} from "@angular/common";
   styleUrl: './patrol-mode.component.css'
 })
 export class PatrolModeComponent {
-  constructor(protected examineeRepo: ExamineeDataService) {
+  constructor(protected examineeRepo: ExamineeDataService, protected patrolManagerService: PatrolManagerService) {
   }
+
+  protected readonly environment = environment;
 }

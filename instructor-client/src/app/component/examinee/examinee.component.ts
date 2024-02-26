@@ -3,6 +3,7 @@ import {Examinee} from "../../shared/entity/Examinee";
 import {CommonModule} from "@angular/common";
 import {environment} from "../../../../env/environment";
 import ExamineeDataService from "../../shared/repository/examinee-data.service";
+import {CacheBusterService} from "../../shared/repository/cache-buster.service";
 
 @Injectable({
   providedIn: 'root'
@@ -15,14 +16,14 @@ import ExamineeDataService from "../../shared/repository/examinee-data.service";
   styleUrl: './examinee.component.css'
 })
 export class ExamineeComponent {
-  constructor(protected examineeRepo: ExamineeDataService) {
+  constructor(protected examineeRepo: ExamineeDataService, private cacheBusterService: CacheBusterService) {
   }
 
   @Input() examinee: Examinee | undefined;
   @Input() showImage: boolean = false;
 
   getScreenshotAddress() {
-    return `${environment.serverBaseUrl}/screenshot/${this.examinee!.username}/${environment.imageWidth}/${environment.imageHeight}?cachebust=${this.examineeRepo.cacheBusterNumImg}`;
+    return `${environment.serverBaseUrl}/screenshot/${this.examinee!.username}/${environment.imageWidth}/${environment.imageHeight}?cachebust=${this.cacheBusterService.cacheBusterNum}`;
   }
 
   getActivity(): string {

@@ -1,4 +1,21 @@
-<input type="checkbox" [(ngModel)]="examineeRepo.patrolModeOn"> Patrol-mode
+<div>
+  <input type="checkbox" [(ngModel)]="examineeRepo.patrolModeOn"> Patrol-mode
+  <br><br>
+</div>
+<div style="width: 400px">
+  <label
+    for="customRange"
+    class="form-label">
+    Patrol speed: {{patrolManagerService.nextClientTime}} sec
+  </label>
+  <input
+    type="range"
+    class="form-range"
+    [min]="environment.minNextClientScheduleTime"
+    [max]="environment.maxNextClientScheduleTime"
+    id="customRange"
+    [(ngModel)]="patrolManagerService.nextClientTime">
+</div>
 
 <table>
   <tr>
