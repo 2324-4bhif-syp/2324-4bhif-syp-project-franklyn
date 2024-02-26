@@ -152,7 +152,7 @@ public class VideoResource {
             File targetDirectory = targetDirectories[0];
 
             // Get all images
-            File[] screenshots = targetDirectory.listFiles();
+            File[] screenshots = targetDirectory.listFiles(f -> f.getName().endsWith("png"));
 
             // If there are none return
             if(screenshots == null){
