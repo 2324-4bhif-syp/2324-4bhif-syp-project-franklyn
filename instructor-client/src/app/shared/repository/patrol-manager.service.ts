@@ -38,7 +38,6 @@ export class PatrolManagerService {
   set nextClientTime(val: number) {
     if (val >= environment.minNextClientScheduleTime && val <= environment.maxNextClientScheduleTime) {
       this.nextClientScheduleTime = val*1000;
-      console.log(this.nextClientScheduleTime);
       this.startInterval();
     }
   }

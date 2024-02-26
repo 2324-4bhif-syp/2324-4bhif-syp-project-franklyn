@@ -44,7 +44,7 @@ export default class ExamineeDataService {
 
   newPatrolExaminee(examinee?: Examinee, ignoreConnection: boolean = false) {
     if (this.location.path() !== "/video-viewer") {
-      this.cacheBusterService.cacheBusterNum += 1;
+      this.cacheBusterService.cacheBusterNum++;
     }
 
     if (examinee !== undefined && (examinee.connected || ignoreConnection)) {
