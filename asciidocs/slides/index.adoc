@@ -1,7 +1,17 @@
-= Franklyn
 :revealjs_theme: white
 :customcss: css/presentation.css
 ifndef::imagesdir[:imagesdir: ../images]
+
+[.title]
+= Franklyn
+
+[pass]
+++++
+<script>
+    let header = document.getElementsByClassName("title")[0];
+    header.innerHTML = "<h1><span class=\"highlight\">Fran</span><span class=\"bigFont\">klyn</span></h1>"
+</script>
+++++
 
 [.font-xx-large]
 == Was ist Franklyn
@@ -14,27 +24,12 @@ ifndef::imagesdir[:imagesdir: ../images]
 *** kein Kopieren von fertigen Programmen/Lösungen
 
 [.font-xx-large]
-=== Sprint 5: Aufgabenstellung
-* Instruktor-client (Frontend) Erweiterung für das Abspielen von erstellten Videos
-* Projekt in einsatzbereiten Zustand befördern
-** Konfiguration, Binaries zum Download, ...
+=== Sprint 6: Änderungen
+* Umbau der Architektur
+* Setzten des Patrol-speeds mittels slider
+* Bugfixes
 
 === Live Demo
-
-[.font-x-large]
-=== Durchgeführte Arbeiten
-* Bugfixes
-* Recorder
-** Neue Video Endpunkte
-*** Download single / all videos
-* Instructor-Client
-** Wiedergabe / download von recorder Videos
-** Wechseln zwischen patrol- und view-mode
-** Examinee IP-Cache rework
-* CI/CD
-** Automatisches deployment zur OraVM (Server, Instructor-Client)
-** Vorkonfigurierte build Artefakte (OpenBox, Recorder)
-
 
 === Architektur
 plantuml::./plantuml/architecture.puml[]
@@ -45,14 +40,11 @@ plantuml::./plantuml/architecture.puml[]
 ** Warum OpenBox?
 *** Für den Prüfer ist der Rechner des Schülers wie eine undurchsichtige Box
 *** Mit der Franklyn Applikation kann diese Box geöffnet und daraus Informationen gewonnen werden (z.B. screenshot)
-* *Server*: Quarkus backend zum Verwalten von Boxen
-* *Frontend*: Quarkus client mit Qute zum Anzeigen der aus den Boxen gewonnenen Daten
-* *Recorder*: Applikation zum Persistieren der Screenshots und erstellung einer Aufnahme
+* *Server*: Quarkus backend zum Verwalten von Boxen und Aufzeichnungen
+* *Frontend*: Angular Frontend zum Anzeigen der aus den Boxen gewonnenen Daten
 
 === Konfiguration
 * OraVM
-* Eigener Hotspot
-** WLAN der Schule blockiert Anfragen
 
 [.font-xx-large]
 == Team
