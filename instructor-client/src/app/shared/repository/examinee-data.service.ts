@@ -1,19 +1,19 @@
 import { Injectable } from "@angular/core";
 import { Examinee } from "../entity/Examinee";
 import {WebApiService} from "../web-api.service";
+import {CacheBusterService} from "./cache-buster.service";
+import {Location} from "@angular/common";
 
 @Injectable({
   providedIn: 'root'
 })
 export default class ExamineeDataService {
-  constructor(private webApi: WebApiService) {
+  constructor(private webApi: WebApiService, private cacheBusterService: CacheBusterService, private location: Location) {
     this.getAllExamineesFromServer();
   }
 
   private items: Examinee[] = [];
   private patrolExaminee: Examinee | undefined;
-  private cachebustNumVideo: number = 0;
-  private cachebustNumImage: number = 0;
 
   patrolModeOn: boolean = false;
 
@@ -43,7 +43,9 @@ export default class ExamineeDataService {
   }
 
   newPatrolExaminee(examinee?: Examinee, ignoreConnection: boolean = false) {
-    this.cacheBusterNumImg += 1;
+    if (this.location.path() !== "/video-viewer") {
+      this.cacheBusterService.cacheBusterNum += 1;
+    }
 
     if (examinee !== undefined && (examinee.connected || ignoreConnection)) {
       this.patrolModeOn = false;
@@ -62,30 +64,6 @@ export default class ExamineeDataService {
 
     if (this.items.length === 0) {
       this.patrolExaminee = undefined;
-    }
-  }
-
-  get cacheBusterNumVideo(): number {
-    return this.cachebustNumVideo;
-  }
-
-  set cacheBusterNumVideo(val: number) {
-    if (val === Number.MAX_VALUE) {
-      this.cachebustNumVideo = 0;
-    } else {
-      this.cachebustNumVideo = val;
-    }
-  }
-
-  get cacheBusterNumImg(): number {
-    return this.cachebustNumImage;
-  }
-
-  set cacheBusterNumImg(val: number) {
-    if (val === Number.MAX_VALUE) {
-      this.cachebustNumImage = 0;
-    } else {
-      this.cachebustNumImage = val;
     }
   }
 
