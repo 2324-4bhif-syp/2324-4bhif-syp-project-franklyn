@@ -6,6 +6,15 @@
     font-size: x-large;
 }
 
+.title {
+
+}
+
+.highlight {
+    background-color: #98bdef;
+    color: #fff;
+}
+
 h2 {
     margin-bottom: 10px !important;
 }
