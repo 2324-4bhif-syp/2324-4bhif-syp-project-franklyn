@@ -18,7 +18,7 @@ public class AppLifecycleBean {
             boolean isValidName = false;
 
             do {
-                Log.info("Enter your name: ");
+                System.out.print("Enter your name: ");
                 String name = System.console().readLine();
 
                 if (!name.isBlank()) {
