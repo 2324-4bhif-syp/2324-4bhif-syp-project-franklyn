@@ -1,31 +1,39 @@
 package at.htl.franklyn.recorder.boundary;
 
 import io.quarkus.logging.Log;
+import io.smallrye.common.annotation.Blocking;
+import io.smallrye.mutiny.Uni;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
 import javax.imageio.ImageIO;
+import javax.xml.datatype.Duration;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.Arrays;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
+import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import jakarta.ws.rs.core.Response.ResponseBuilder;
 import org.bytedeco.ffmpeg.global.avcodec;
+import org.bytedeco.javacv.FFmpegFrameGrabber;
 import org.bytedeco.javacv.FFmpegFrameRecorder;
 import org.bytedeco.javacv.Frame;
-import org.bytedeco.javacv.OpenCVFrameConverter;
-import org.bytedeco.opencv.global.opencv_imgcodecs;
 
 @Path("/video")
 public class VideoResource {
 
-    @Path("/download")
-    @Produces("file/zip")
     @GET
-    public Response downloadAllVideos(){
+    @Path("/download")
+    @Produces(MediaType.APPLICATION_OCTET_STREAM)
+    @Blocking
+    public Uni<Response> downloadAllVideos(){
+
+        ResponseBuilder response = Response.serverError();
+
         try {
             // Parent-folder
             File screenshotFolder = new File("screenshots");
@@ -34,17 +42,20 @@ public class VideoResource {
 
             // Return if folder with this user does not exist
             if(targetDirectories == null || targetDirectories.length == 0 ){
-                return null;
+                return Uni.createFrom().item(response.build());
             }
 
-            return Response
+            response =  Response
                     .ok()
                     .header(
                             "Content-Disposition",
                             "attachment; filename=\"compressed.zip\""
                     )
-                    .entity(returnZipFile(targetDirectories, "screenshots/compressed.zip"))
-                    .build();
+                    .entity(
+                            returnZipFile(targetDirectories, "screenshots/compressed.zip")
+                    );
+
+            return Uni.createFrom().item(response.build());
         }
         catch (Exception e) {
             throw new RuntimeException(e);
@@ -86,10 +97,14 @@ public class VideoResource {
         }
     }
 
-    @Path("/download/{username}")
-    @Produces("file/zip")
     @GET
-    public Response downloadOneVideo(@PathParam("username") String username){
+    @Path("/download/{username}")
+    @Produces(MediaType.APPLICATION_OCTET_STREAM)
+    @Blocking
+    public Uni<Response> downloadOneVideo(@PathParam("username") String username){
+
+        ResponseBuilder response = Response.serverError();
+
         try{
             // Parent-folder
             File screenshotFolder = new File("screenshots");
@@ -98,7 +113,7 @@ public class VideoResource {
 
             // Return if folder with this user does not exist
             if(targetDirectories == null || targetDirectories.length == 0 ){
-                return null;
+                return Uni.createFrom().item(response.build());
             }
 
             File targetDirectory = targetDirectories[0];
@@ -107,6 +122,12 @@ public class VideoResource {
             ZipOutputStream zipOut = new ZipOutputStream(fos);
 
             InputStream fis = getVideo(username);
+                    /*.map(video -> video.readEntity(InputStream.class))
+                    .await()
+                    .indefinitely(); // change to atMost() later
+
+                     */
+
             ZipEntry zipEntry = new ZipEntry(String.format("%s.mp4", username));
             zipOut.putNextEntry(zipEntry);
 
@@ -120,14 +141,16 @@ public class VideoResource {
             fis.close();
             fos.close();
 
-            return Response
+            response = Response
                     .ok()
-                    .header(
-                            "Content-Disposition",
-                            String.format("attachment; filename=\"%s.zip\"", username)
-                    )
-                    .entity(new File(String.format("%s/%s.zip", targetDirectory.getPath(), username)))
-                    .build();
+                    .entity(
+                            new File(String.format(
+                                    "%s/%s.zip",
+                                    targetDirectory.getPath(), username
+                            ))
+                    );
+
+            return Uni.createFrom().item(response.build());
         }
         catch (Exception e){
             throw new RuntimeException(e);
@@ -135,9 +158,10 @@ public class VideoResource {
     }
 
     @Path("/{username}")
-    @Produces("video/mp4")
+    @Produces(MediaType.APPLICATION_OCTET_STREAM)
     @GET
     public FileInputStream getVideo(@PathParam("username") String username) {
+
         try {
             // Parent-folder
             File screenshotFolder = new File("screenshots");
@@ -168,6 +192,9 @@ public class VideoResource {
             // record images
             record(recorder, screenshots);
 
+            recorder.release();
+            recorder.close();
+
             return new FileInputStream(String.format("%s/%s.mp4", targetDirectory.getPath(), username));
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -197,12 +224,16 @@ public class VideoResource {
         recorder.setFrameRate(1);
         recorder.setVideoBitrate(100000);
 
+        test.getGraphics().dispose();
+        test.flush();
+
         return recorder;
     }
 
     private void record(FFmpegFrameRecorder recorder, File[] images) {
-        // Converts Mat to Frame
-        try (OpenCVFrameConverter.ToMat converter = new OpenCVFrameConverter.ToMat()) {
+
+        try {
+            // Converts Mat to Frame
 
             recorder.start();
 
@@ -213,13 +244,20 @@ public class VideoResource {
                 }
 
                 // Convert Mat type to Frame
-                Frame frame = converter.convert(opencv_imgcodecs.imread(imageFile.getPath()));
+                FFmpegFrameGrabber grabber = new FFmpegFrameGrabber(imageFile.getPath());
+                grabber.start();
+                Frame frame = grabber.grabFrame();
                 // Add frame to video
                 recorder.record(frame);
+
+                grabber.release();
+                grabber.close();
+                frame.close();
             }
 
             recorder.stop();
             recorder.release();
+            recorder.close();
         }
         catch (Exception e) {
             Log.error(e.getMessage());
