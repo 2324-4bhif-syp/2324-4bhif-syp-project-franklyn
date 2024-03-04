@@ -1,6 +1,7 @@
 package at.htl.franklyn.services;
 
 import at.htl.franklyn.boundary.Client;
+import io.quarkus.logging.Log;
 import io.quarkus.scheduler.Scheduled;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.core.UriBuilder;
@@ -24,8 +25,12 @@ public class ReconnectService {
             final URI uri = UriBuilder.fromPath(String.format("%s/examinee/%s", url, userService.getUserName())).build();
 
             try {
-                connectionService.setSession(ContainerProvider.getWebSocketContainer().connectToServer(Client.class, uri));
-            } catch (Exception ignored){}
+                connectionService.setSession(
+                        ContainerProvider.getWebSocketContainer().connectToServer(Client.class, uri)
+                );
+            } catch (Exception ignored) {
+                Log.errorf("Could not connect to %s", url);
+            }
         }
     }
 }

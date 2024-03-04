@@ -11,6 +11,7 @@ import javax.imageio.ImageIO;
 import javax.xml.datatype.Duration;
 import java.awt.image.BufferedImage;
 import java.io.*;
+import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
@@ -22,9 +23,13 @@ import org.bytedeco.ffmpeg.global.avcodec;
 import org.bytedeco.javacv.FFmpegFrameGrabber;
 import org.bytedeco.javacv.FFmpegFrameRecorder;
 import org.bytedeco.javacv.Frame;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 @Path("/video")
 public class VideoResource {
+
+    @ConfigProperty(name = "screenshots.path")
+    String screenshotsPath;
 
     @GET
     @Path("/download")
@@ -36,7 +41,7 @@ public class VideoResource {
 
         try {
             // Parent-folder
-            File screenshotFolder = new File("screenshots");
+            File screenshotFolder = new File(screenshotsPath);
             // Input/Output-folder
             File[] targetDirectories = screenshotFolder.listFiles();
 
@@ -52,7 +57,10 @@ public class VideoResource {
                             "attachment; filename=\"compressed.zip\""
                     )
                     .entity(
-                            returnZipFile(targetDirectories, "screenshots/compressed.zip")
+                            returnZipFile(
+                                    targetDirectories,
+                                    Paths.get(screenshotsPath, "compressed.zip").toString()
+                            )
                     );
 
             return Uni.createFrom().item(response.build());
@@ -107,7 +115,7 @@ public class VideoResource {
 
         try{
             // Parent-folder
-            File screenshotFolder = new File("screenshots");
+            File screenshotFolder = new File(screenshotsPath);
             // Input/Output-folder
             File[] targetDirectories = screenshotFolder.listFiles((f, name) -> name.equals(username));
 
@@ -118,7 +126,9 @@ public class VideoResource {
 
             File targetDirectory = targetDirectories[0];
 
-            FileOutputStream fos = new FileOutputStream(String.format("%s/%s.zip", targetDirectory.getPath(), username));
+            FileOutputStream fos = new FileOutputStream(
+                    Paths.get(targetDirectory.getPath(), String.format("%s.zip", username)).toString()
+            );
             ZipOutputStream zipOut = new ZipOutputStream(fos);
 
             InputStream fis = getVideo(username);
@@ -144,10 +154,10 @@ public class VideoResource {
             response = Response
                     .ok()
                     .entity(
-                            new File(String.format(
-                                    "%s/%s.zip",
-                                    targetDirectory.getPath(), username
-                            ))
+                            Paths.get(
+                                    targetDirectory.getPath(),
+                                    String.format("/%s.zip", username)
+                            ).toFile()
                     );
 
             return Uni.createFrom().item(response.build());
@@ -164,7 +174,7 @@ public class VideoResource {
 
         try {
             // Parent-folder
-            File screenshotFolder = new File("screenshots");
+            File screenshotFolder = new File(screenshotsPath);
             // Input/Output-folder
             File[] targetDirectories = screenshotFolder.listFiles((f, name) -> name.equals(username));
 
@@ -195,7 +205,10 @@ public class VideoResource {
             recorder.release();
             recorder.close();
 
-            return new FileInputStream(String.format("%s/%s.mp4", targetDirectory.getPath(), username));
+            return new FileInputStream(Paths.get(
+                    targetDirectory.getPath(),
+                    String.format("%s.mp4", username)
+            ).toString());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -207,7 +220,7 @@ public class VideoResource {
 
         // Set path and size for recorder
         FFmpegFrameRecorder recorder = new FFmpegFrameRecorder(
-                String.format("%s/%s.mp4", targetDirectory.getPath(), ip),
+                Paths.get(targetDirectory.getPath(), String.format("%s.mp4", ip)).toString(),
                 test.getWidth(),
                 test.getHeight()
         );

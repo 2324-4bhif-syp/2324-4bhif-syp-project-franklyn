@@ -31,6 +31,7 @@ public class Client {
 
     @OnOpen
     public void onOpen(Session session) {
+        Log.info("Successfully connected to server!");
         connectionService.setConnected(true);
     }
 
@@ -39,6 +40,7 @@ public class Client {
         Log.errorf("Error on Websocket (disconnecting): %s", throwable);
         connectionService.setConnected(false);
         connectionService.getSession().close();
+        connectionService.setSession(null);
     }
 
     @OnMessage
@@ -63,14 +65,17 @@ public class Client {
         try (ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream()) {
             ImageIO.write(ScreenshotService.getScreenshot(), "png", byteArrayOutputStream);
             screenshotUploadService.uploadScreenshot(new ByteArrayInputStream(byteArrayOutputStream.toByteArray()));
-        } catch (Exception e) {
+        } catch(IOException e) {
             Log.error("FAILED: to write image", e);
+        } catch (Exception e) {
+            Log.error("Image upload failed", e);
         }
     }
 
     @OnClose
-    public void onClose() throws IOException {
+    public void onClose() {
+        Log.warn("Lost connection to server");
         connectionService.setConnected(false);
-        connectionService.getSession().close();
+        connectionService.setSession(null);
     }
 }

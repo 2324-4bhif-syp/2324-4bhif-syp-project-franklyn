@@ -5,20 +5,11 @@ import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 @ApplicationScoped
 public class UserService {
-    @ConfigProperty(name = "websocket.username")
-    String usernameProperty;
-
     private String userName;
     private boolean isInitialized = false;
 
     public String getUserName() {
-        String returnString = userName;
-
-        if (userName == null) {
-            returnString = usernameProperty;
-        }
-
-        return returnString;
+        return userName;
     }
 
     public void setUserName(String userName) {

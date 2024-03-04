@@ -12,6 +12,7 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
+import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Collections;
@@ -24,13 +25,17 @@ public class ScreenshotResource {
     @ConfigProperty(name = "timestamp.pattern")
     String timestampPattern;
 
+    @ConfigProperty(name = "screenshots.path")
+    String screenshotsPath;
+
     @POST
     @Path("{username}")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     public void takeScreenshot(@PathParam("username") String username,
                                @RestForm("image") @PartType(MediaType.APPLICATION_OCTET_STREAM) InputStream screenshot){
         try {
-            File directory = new File(String.format("screenshots/%s", username));
+            // TODO: Sanitize username
+            File directory = Paths.get(screenshotsPath, username).toFile();
 
             if(!directory.exists()){
                 directory.mkdirs();
@@ -39,10 +44,12 @@ public class ScreenshotResource {
             ImageIO.write(
                     ImageIO.read(screenshot),
                     "png",
-                    new File(String.format("%s/%s-%s.png",
+                    Paths.get(
                             directory.getPath(),
-                            username,
-                            new SimpleDateFormat(timestampPattern).format(new Date())))
+                            String.format("/%s-%s.png",
+                                    username,
+                                    new SimpleDateFormat(timestampPattern).format(new Date()))
+                    ).toFile()
             );
         }
         catch (Exception e){
@@ -55,7 +62,8 @@ public class ScreenshotResource {
     @Produces("image/png")
     public Response getScreenshot(@PathParam("username") String username){
 
-        File directory = new File(String.format("screenshots/%s", username));
+        // TODO: Sanitize username
+        File directory = Paths.get(screenshotsPath, username).toFile();
 
         Response response = Response.status(404).entity(null).build();
 

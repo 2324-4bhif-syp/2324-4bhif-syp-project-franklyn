@@ -4,7 +4,7 @@ set -e
 
 pushd instructor-client
   npm install
-  npx ng build instructor-client
+  npx ng build --configuration production instructor-client
 popd
 
 mkdir -p dist/instructor-client

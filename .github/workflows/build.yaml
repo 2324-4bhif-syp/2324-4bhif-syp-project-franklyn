@@ -27,7 +27,6 @@ jobs:
 
       - name: Build with maven
         run: |
-          ./cicd/prod-patch-openbox.sh
           ./cicd/build-openbox.sh
 
       - name: Upload artifact
