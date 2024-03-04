@@ -229,13 +229,13 @@ public class VideoResource {
         //recorder.setVideoCodec(avcodec.AV_CODEC_ID_H264);
         recorder.setVideoCodec(avcodec.AV_CODEC_ID_H264);
         recorder.setVideoOption("-movflags", "+faststart");
-        recorder.setVideoOption("-crf", "51");
+        recorder.setVideoOption("-crf", "40");
         recorder.setVideoOption("-preset", "ultrafast");
         recorder.setVideoOption("-tune", "zerolatency");
         recorder.setVideoOption("threads", "0");
         recorder.setFormat("mp4");
         recorder.setFrameRate(1);
-        recorder.setVideoBitrate(100000);
+        recorder.setVideoBitrate(600000);
 
         test.getGraphics().dispose();
         test.flush();
