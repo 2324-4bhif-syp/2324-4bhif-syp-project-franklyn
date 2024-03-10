@@ -20,6 +20,7 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.Response.ResponseBuilder;
 import org.bytedeco.ffmpeg.global.avcodec;
+import org.bytedeco.javacpp.PointerScope;
 import org.bytedeco.javacv.FFmpegFrameGrabber;
 import org.bytedeco.javacv.FFmpegFrameRecorder;
 import org.bytedeco.javacv.Frame;
@@ -172,7 +173,7 @@ public class VideoResource {
     @GET
     public FileInputStream getVideo(@PathParam("username") String username) {
 
-        try {
+        try (PointerScope pointerScope = new PointerScope()){
             // Parent-folder
             File screenshotFolder = new File(screenshotsPath);
             // Input/Output-folder
@@ -197,13 +198,18 @@ public class VideoResource {
             Arrays.sort(screenshots);
 
             // Set path and size for recorder
-            FFmpegFrameRecorder recorder = getRecorder(screenshots[0], targetDirectory, username);
+            try(FFmpegFrameRecorder recorder = getRecorder(screenshots[0], targetDirectory, username))
+            {
+                // record images
+                record(recorder, screenshots);
 
-            // record images
-            record(recorder, screenshots);
+                recorder.stop();
+                recorder.close();
+                recorder.release();
+            }
 
-            recorder.release();
-            recorder.close();
+            pointerScope.close();
+            System.gc();
 
             return new FileInputStream(Paths.get(
                     targetDirectory.getPath(),
@@ -215,39 +221,45 @@ public class VideoResource {
     }
 
     private FFmpegFrameRecorder getRecorder(File sample, File targetDirectory, String ip) throws IOException{
-        // Get just one image to set width and height
-        BufferedImage test = ImageIO.read(sample);
+        try (PointerScope pointerScope = new PointerScope()){
+            // Get just one image to set width and height
+            BufferedImage test = ImageIO.read(sample);
 
-        // Set path and size for recorder
-        FFmpegFrameRecorder recorder = new FFmpegFrameRecorder(
-                Paths.get(targetDirectory.getPath(), String.format("%s.mp4", ip)).toString(),
-                test.getWidth(),
-                test.getHeight()
-        );
+            // Set path and size for recorder
+            FFmpegFrameRecorder recorder = new FFmpegFrameRecorder(
+                    Paths.get(targetDirectory.getPath(), String.format("%s.mp4", ip)).toString(),
+                    test.getWidth(),
+                    test.getHeight()
+            );
 
-        // more settings
-        //recorder.setVideoCodec(avcodec.AV_CODEC_ID_H264);
-        recorder.setVideoCodec(avcodec.AV_CODEC_ID_H264);
-        recorder.setVideoOption("-movflags", "+faststart");
-        recorder.setVideoOption("-crf", "40");
-        recorder.setVideoOption("-preset", "ultrafast");
-        recorder.setVideoOption("-tune", "zerolatency");
-        recorder.setVideoOption("threads", "0");
-        recorder.setFormat("mp4");
-        recorder.setFrameRate(1);
-        recorder.setVideoBitrate(600000);
+            // more settings
+            //recorder.setVideoCodec(avcodec.AV_CODEC_ID_H264);
+            recorder.setVideoCodec(avcodec.AV_CODEC_ID_H264);
+            recorder.setVideoOption("-movflags", "+faststart");
+            recorder.setVideoOption("-crf", "40");
+            recorder.setVideoOption("-preset", "ultrafast");
+            recorder.setVideoOption("-tune", "zerolatency");
+            recorder.setVideoOption("threads", "0");
+            recorder.setFormat("mp4");
+            recorder.setFrameRate(1);
+            recorder.setVideoBitrate(600000);
 
-        test.getGraphics().dispose();
-        test.flush();
+            test.getGraphics().dispose();
+            test.flush();
 
-        return recorder;
+            pointerScope.close();
+            System.gc();
+
+            return recorder;
+        }
+        catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private void record(FFmpegFrameRecorder recorder, File[] images) {
 
-        try {
-            // Converts Mat to Frame
-
+        try (PointerScope pointerScope = new PointerScope()){
             recorder.start();
 
             for (File imageFile : images) {
@@ -257,17 +269,22 @@ public class VideoResource {
                 }
 
                 // Convert Mat type to Frame
-                FFmpegFrameGrabber grabber = new FFmpegFrameGrabber(imageFile.getPath());
-                grabber.start();
-                Frame frame = grabber.grabFrame();
-                // Add frame to video
-                recorder.record(frame);
+                try(FFmpegFrameGrabber grabber = new FFmpegFrameGrabber(imageFile.getPath()))
+                {
+                    grabber.start();
 
-                grabber.release();
-                grabber.close();
-                frame.close();
+                    try (Frame frame = grabber.grabFrame()){
+                        // Add frame to video
+                        recorder.record(frame);
+                    }
+                    System.gc();
+
+                    grabber.release();
+                }
+                System.gc();
             }
 
+            recorder.flush();//
             recorder.stop();
             recorder.release();
             recorder.close();
@@ -275,5 +292,7 @@ public class VideoResource {
         catch (Exception e) {
             Log.error(e.getMessage());
         }
+
+        System.gc();
     }
 }
