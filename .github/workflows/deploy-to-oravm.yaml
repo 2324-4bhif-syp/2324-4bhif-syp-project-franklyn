@@ -72,5 +72,8 @@ jobs:
           ssh -i $SSH_KEY_PATH $SSH_USER@$SSH_HOST "sudo systemctl stop franklyn.service"
           ssh -i $SSH_KEY_PATH $SSH_USER@$SSH_HOST "rm -f ~/franklyn-server/*"
           scp -i $SSH_KEY_PATH dist/server/* $SSH_USER@$SSH_HOST:~/franklyn-server/
+          scp -i $SSH_KEY_PATH cicd/nginx.conf $SSH_USER@SSH_HOST:~/nginx.conf
+          ssh -i $SSH_KEY_PATH $SSH_USER@$SSH_HOST "sudo mv ~/nginx.conf /etc/nginx/nginx.conf"
+          ssh -i $SSH_KEY_PATH $SSH_USER@$SSH_HOST "sudo systemctl restart nginx.service"
           ssh -i $SSH_KEY_PATH $SSH_USER@$SSH_HOST "sudo systemctl start franklyn.service"
         shell: bash
