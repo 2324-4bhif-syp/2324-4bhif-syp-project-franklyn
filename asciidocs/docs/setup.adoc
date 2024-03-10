@@ -268,7 +268,7 @@ to
 %prod.http.url=https://<your-domain-name>/api
 ----
 
-For building the student-client `java 17` or newer is required. Make sure java as well as maven are installed and in the project root run:
+For building the student-client `java 17` or newer and maven is required. With these installed make sure you are in the project root and run:
 [source, shell]
 ----
 ./cicd/build-openbox.sh
