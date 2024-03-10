@@ -5,9 +5,9 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.20">
-<meta name="author" content="Arwed Schnalzenberger">
+<meta name="author" content="Aichinger Tobias, Cvijić Luka, Schludermann Julian, Schnalzenberger Arwed">
 <link rel="icon" type="image/png" href="themes/favicon.png">
-<title>Notenbeschluss Zwischenmeeting 2024-02-06</title>
+<title>Getting started</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /*! Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
@@ -435,174 +435,565 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 @media amzn-kf8{#header,#content,#footnotes,#footer{padding:0}}
 </style>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+pre.rouge table td { padding: 5px; }
+pre.rouge table pre { margin: 0; }
+pre.rouge, pre.rouge .w {
+  color: #24292f;
+  background-color: #f6f8fa;
+}
+pre.rouge .k, pre.rouge .kd, pre.rouge .kn, pre.rouge .kp, pre.rouge .kr, pre.rouge .kt, pre.rouge .kv {
+  color: #cf222e;
+}
+pre.rouge .gr {
+  color: #f6f8fa;
+}
+pre.rouge .gd {
+  color: #82071e;
+  background-color: #ffebe9;
+}
+pre.rouge .nb {
+  color: #953800;
+}
+pre.rouge .nc {
+  color: #953800;
+}
+pre.rouge .no {
+  color: #953800;
+}
+pre.rouge .nn {
+  color: #953800;
+}
+pre.rouge .sr {
+  color: #116329;
+}
+pre.rouge .na {
+  color: #116329;
+}
+pre.rouge .nt {
+  color: #116329;
+}
+pre.rouge .gi {
+  color: #116329;
+  background-color: #dafbe1;
+}
+pre.rouge .kc {
+  color: #0550ae;
+}
+pre.rouge .l, pre.rouge .ld, pre.rouge .m, pre.rouge .mb, pre.rouge .mf, pre.rouge .mh, pre.rouge .mi, pre.rouge .il, pre.rouge .mo, pre.rouge .mx {
+  color: #0550ae;
+}
+pre.rouge .sb {
+  color: #0550ae;
+}
+pre.rouge .bp {
+  color: #0550ae;
+}
+pre.rouge .ne {
+  color: #0550ae;
+}
+pre.rouge .nl {
+  color: #0550ae;
+}
+pre.rouge .py {
+  color: #0550ae;
+}
+pre.rouge .nv, pre.rouge .vc, pre.rouge .vg, pre.rouge .vi, pre.rouge .vm {
+  color: #0550ae;
+}
+pre.rouge .o, pre.rouge .ow {
+  color: #0550ae;
+}
+pre.rouge .gh {
+  color: #0550ae;
+  font-weight: bold;
+}
+pre.rouge .gu {
+  color: #0550ae;
+  font-weight: bold;
+}
+pre.rouge .s, pre.rouge .sa, pre.rouge .sc, pre.rouge .dl, pre.rouge .sd, pre.rouge .s2, pre.rouge .se, pre.rouge .sh, pre.rouge .sx, pre.rouge .s1, pre.rouge .ss {
+  color: #0a3069;
+}
+pre.rouge .nd {
+  color: #8250df;
+}
+pre.rouge .nf, pre.rouge .fm {
+  color: #8250df;
+}
+pre.rouge .err {
+  color: #f6f8fa;
+  background-color: #82071e;
+}
+pre.rouge .c, pre.rouge .ch, pre.rouge .cd, pre.rouge .cm, pre.rouge .cp, pre.rouge .cpf, pre.rouge .c1, pre.rouge .cs {
+  color: #6e7781;
+}
+pre.rouge .gl {
+  color: #6e7781;
+}
+pre.rouge .gt {
+  color: #6e7781;
+}
+pre.rouge .ni {
+  color: #24292f;
+}
+pre.rouge .si {
+  color: #24292f;
+}
+pre.rouge .ge {
+  color: #24292f;
+  font-style: italic;
+}
+pre.rouge .gs {
+  color: #24292f;
+  font-weight: bold;
+}
+</style>
 </head>
 <body class="article toc2 toc-left">
 <div id="header">
-<h1>Notenbeschluss Zwischenmeeting 2024-02-06</h1>
+<h1>Getting started</h1>
 <div class="details">
-<span id="author" class="author">Arwed Schnalzenberger</span><br>
-<span id="revnumber">version 1.0,</span>
-<span id="revdate">2024-02-06</span>
-<br><span id="revremark">Notenbeschluss Zwischenmeeting</span>
+<span id="author" class="author">Aichinger Tobias, Cvijić Luka, Schludermann Julian, Schnalzenberger Arwed</span><br>
+<span id="revdate">2023/24</span>
 </div>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
-<li><a href="#_besprochene_themen">1. Besprochene Themen</a></li>
+<li><a href="#_introduction">1. Introduction</a></li>
+<li><a href="#_native_installation">2. Native installation</a>
+<ul class="sectlevel2">
+<li><a href="#_server_and_frontend">2.1. Server and Frontend</a></li>
+<li><a href="#_setup_frontend_and_server">2.2. Setup Frontend and Server</a></li>
+<li><a href="#_student_client">2.3. Student Client</a></li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
 <div id="content">
-<div id="preamble">
+<div class="sect1">
+<h2 id="_introduction"><a class="anchor" href="#_introduction"></a>1. Introduction</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p><span class="icon"><a class="image" href="https://raw.githubusercontent.com/htl-leonding-college/asciidoctor-docker-template/master/asciidocs/2024-02-06.adoc"><i class="fa fa-file-text-o"></i></a></span> ‏ ‏ ‎
-<span class="icon"><a class="image" href="https://github.com/htl-leonding-college/asciidoctor-docker-template"><i class="fa fa-github-square"></i></a></span> ‏ ‏ ‎
-<span class="icon"><a class="image" href="https://htl-leonding.github.io/"><i class="fa fa-home"></i></a></span></p>
+<p>Franklyn&#8217;s architecture currently consists of three major components:</p>
 </div>
-<table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 1. Teilnehmer (alphabetisch)</caption>
-<colgroup>
-<col style="width: 50%;">
-<col style="width: 50%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">anwesend</th>
-<th class="tableblock halign-left valign-top">Verteiler</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Aberger C.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Aberger C.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Aichinger T.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Aichinger T.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Cvijić L.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Cvijić L.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Schludermann J.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Schludermann J.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Schnalzenberger A.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Schnalzenberger A.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Stütz T.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Stütz T.</p></td>
-</tr>
-</tbody>
-</table>
-<table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 2. Ort und Zeit</caption>
-<colgroup>
-<col style="width: 50%;">
-<col style="width: 50%;">
-</colgroup>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Ort</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">SYP-Unterricht</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">von-bis</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Di. 06.02.2024, 7. EH</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Dauer</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">60 min</p></td>
-</tr>
-</tbody>
-</table>
+<div class="ulist">
+<ul>
+<li>
+<p>an Angular frontend</p>
+</li>
+<li>
+<p>a quarkus server responsible for recording screenshots and managing clients</p>
+</li>
+<li>
+<p>a quarkus client running on each student pc during an exam</p>
+</li>
+</ul>
+</div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_besprochene_themen"><a class="anchor" href="#_besprochene_themen"></a>1. Besprochene Themen</h2>
+<h2 id="_native_installation"><a class="anchor" href="#_native_installation"></a>2. Native installation</h2>
 <div class="sectionbody">
+<div class="paragraph">
+<p>Franklyn can be installed natively without the use of containerization software like docker.</p>
+</div>
+<div class="paragraph">
+<p>For this the following things are needed:</p>
+</div>
 <div class="ulist">
 <ul>
 <li>
-<p>Franklyn logo stylen:</p>
-<div class="ulist">
-<ul>
+<p>some linux-based server</p>
+</li>
 <li>
-<p>"Fran" markieren (blauer Hintergrund, weiße Schrift)</p>
+<p>the ability to use sudo</p>
+</li>
+<li>
+<p>a static public ip-address</p>
+</li>
+<li>
+<p>the ability to open ports to the internet (in particular <strong>80</strong> and <strong>443</strong>)</p>
+</li>
+<li>
+<p>a domain name</p>
 </li>
 </ul>
 </div>
-</li>
-<li>
-<p>Patrol mode</p>
-<div class="ulist">
-<ul>
-<li>
-<p>Cashbuster query parameter dranhängen</p>
-</li>
-</ul>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+The following commands in this tutorial are assuming the server is running <strong>Ubuntu-server-22.04-LTS</strong>. Commands might be different when using a different linux distribution.
+</td>
+</tr>
+</table>
 </div>
-</li>
-<li>
-<p>Http-Https Problem auf OraVM</p>
-<div class="ulist">
-<ul>
-<li>
-<p>Variante: Der Server kümmert sich um den ganzen Verkehr</p>
-</li>
-</ul>
+<div class="sect2">
+<h3 id="_server_and_frontend"><a class="anchor" href="#_server_and_frontend"></a>2.1. Server and Frontend</h3>
+<div class="sect3">
+<h4 id="_setting_up_nginx"><a class="anchor" href="#_setting_up_nginx"></a>2.1.1. Setting up nginx</h4>
+<div class="paragraph">
+<p>The first step of setting up franklyn is installing a webserver. In this tutorial we will be using <strong>nginx</strong>. To install nginx the following commands have to be executed in a terminal:</p>
 </div>
-</li>
-</ul>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell"><span class="nb">sudo </span>apt update
+<span class="nb">sudo </span>apt <span class="nb">install </span>nginx</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>After installation make sure the nginx service is running using:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell"><span class="nb">sudo </span>systemctl status nginx</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Amidst the output one should see <code>Active: active (running)</code>.
+In case <code>Active: inactive (dead)</code> is shown instead try enabling and starting the nginx service using:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell"><span class="nb">sudo </span>systemctl <span class="nb">enable</span> <span class="nt">--now</span> nginx</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The next thing to do is set up port-forwarding of port 80 and 443. Depending on the used provider the required steps might look vastly different.</p>
+</div>
+<details>
+<summary class="title">For oracle vm&#8217;s</summary>
+<div class="content">
+<div class="paragraph">
+<p>In case an oracle virtual machine is used, the following steps can be used to set up port-forwarding:</p>
+</div>
+<div class="paragraph">
+<p>Go to the dashboard and click on <strong>virtual cloud networks</strong></p>
 </div>
 <div class="imageblock">
 <div class="content">
-<img src="images/screenshots-over-server-architecture.png" alt="screenshots over server architecture">
+<img src="images/oracloud_virt_network_select.png" alt="oracloud virt network select">
 </div>
 </div>
-<div class="ulist">
-<ul>
-<li>
-<p>Variante: OpenVPN</p>
-<div class="ulist">
-<ul>
-<li>
-<p>Brauchen Certificate für jede Openbox &#8594; Löschen, wenn nicht mehr benötigt</p>
-</li>
-</ul>
-</div>
-</li>
-</ul>
+<div class="paragraph">
+<p>Then click on the virtual cloud network the instance is in</p>
 </div>
 <div class="imageblock">
 <div class="content">
-<img src="images/peer-to-peer-architecture.png" alt="peer to peer architecture">
+<img src="images/oracloud_vcn_select.png" alt="oracloud vcn select">
 </div>
+</div>
+<div class="paragraph">
+<p>Followed by a click on the available subnet</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/oracloud_subn_select.png" alt="oracloud subn select">
+</div>
+</div>
+<div class="paragraph">
+<p>And a click on the default security list</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/oracloud_sec_list_select.png" alt="oracloud sec list select">
+</div>
+</div>
+<div class="paragraph">
+<p>Finally, add a new ingress rule</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/oracloud_add_ingress.png" alt="oracloud add ingress">
+</div>
+</div>
+<div class="paragraph">
+<p>And enter the following:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/oracloud_ingress_conf.png" alt="oracloud ingress conf">
+</div>
+</div>
+<div class="paragraph">
+<p>Click on <code>Add Ingress Rules</code>.</p>
+</div>
+<div class="paragraph">
+<p>Lastly execute the following commands in the instances' terminal:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell"><span class="nb">sudo </span>apt <span class="nb">install </span>firewalld
+<span class="nb">sudo </span>firewall-cmd <span class="nt">--zone</span><span class="o">=</span>public <span class="nt">--permanent</span> <span class="nt">--add-port</span><span class="o">=</span>80/tcp
+<span class="nb">sudo </span>firewall-cmd <span class="nt">--zone</span><span class="o">=</span>public <span class="nt">--permanent</span> <span class="nt">--add-port</span><span class="o">=</span>443/tcp
+<span class="nb">sudo </span>firewall-cmd <span class="nt">--reload</span></code></pre>
+</div>
+</div>
+</div>
+</details>
+<div class="paragraph">
+<p>When done correctly visiting <code><a href="http://&lt;public-ip&gt" class="bare">http://&lt;public-ip&gt</a>;</code> should show a nginx welcome screen:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/nginx_welcome.png" alt="nginx welcome">
+</div>
+</div>
+<div class="paragraph">
+<p>Before continuing make sure the domain name points to the public ip-address of the server. Usually this can be configured on the domain-name providers website.</p>
+</div>
+<div class="paragraph">
+<p>When done correctly visiting <code><a href="http://&lt;domain-name&gt" class="bare">http://&lt;domain-name&gt</a>;</code> should now also show the same nginx welcome screen.</p>
+</div>
+<div class="paragraph">
+<p>The next step is getting a certificate for the domain. Use the following commands to install certbot on the server:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell"><span class="nb">sudo </span>snap <span class="nb">install</span> <span class="nt">--classic</span> certbot
+<span class="nb">sudo ln</span> <span class="nt">-s</span> /snap/bin/certbot /usr/bin/certbot</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>After that run <code>sudo certbot certonly --nginx</code> to generate a new certificate for the domain. This will ask a few basic questions including an e-mail address and the domain name.</p>
+</div>
+<div class="paragraph">
+<p>Using the certificate nginx can now be configured to use tls. Overwrite <code>/etc/nginx/nginx.conf</code> with the following:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code>user www-data;
+worker_processes auto;
+pid /run/nginx.pid;
+
+events {}
+
+http {
+	include /etc/nginx/mime.types;
+	server {
+		listen 80;
+    server_name &lt;your-domain-name&gt;;
+
+		return 301 https://$host$request_uri;
+	}
+
+	server {
+		server_name &lt;your-domain-name&gt;;
+		root /var/www/html;
+		index index.html;
+
+		location /api/ {
+			proxy_pass http://127.0.0.1:8080/;
+			# Websocket support
+			proxy_http_version 1.1;
+			proxy_set_header Upgrade $http_upgrade;
+			proxy_set_header Connection "upgrade";
+			# increase max file upload limit
+			client_max_body_size 100M;
+		}
+
+		location / {
+			try_files $uri $uri/ /index.html;
+		}
+
+		listen 443 ssl;
+
+		ssl_certificate /etc/letsencrypt/live/&lt;your-domain-name&gt;/fullchain.pem;
+		ssl_certificate_key /etc/letsencrypt/live/&lt;your-domain-name&gt;/privkey.pem;
+		include /etc/letsencrypt/options-ssl-nginx.conf;
+		ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
+	}
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>And restart nginx with:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell"><span class="nb">sudo </span>systemctl restart nginx</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_setup_frontend_and_server"><a class="anchor" href="#_setup_frontend_and_server"></a>2.2. Setup Frontend and Server</h3>
+<div class="paragraph">
+<p>Now that nginx is set up the frontend and server applications are next.
+First install git and clone the franklyn GitHub repository:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell"><span class="nb">sudo </span>apt <span class="nb">install </span>git
+git clone https://github.com/2324-4bhif-syp/2324-4bhif-syp-project-franklyn.git</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>For building the project the following dependencies are required:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>Link Aichinger</p>
-<div class="ulist">
-<ul>
+<p><code>java 17</code> or newer</p>
+</li>
 <li>
-<p>Automatisieren</p>
+<p><code>node 18</code> or newer</p>
 </li>
 </ul>
 </div>
-</li>
-</ul>
+<div class="paragraph">
+<p>To install them execute:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell"><span class="c"># for java</span>
+<span class="nb">sudo </span>apt <span class="nb">install </span>openjdk-21-jdk
+<span class="nb">sudo </span>apt <span class="nb">install </span>maven
+
+<span class="c"># for node</span>
+curl <span class="nt">-o-</span> https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+<span class="nb">source</span> ~/.bashrc
+nvm <span class="nb">install </span>node</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now enter the project directory and build the frontend and server (this might take a while):</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell"><span class="nb">cd </span>2324-4bhif-syp-project-franklyn/
+./cicd/build-instructor-client.sh
+./cicd/build-server.sh</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Finally, copy the frontend to the directory nginx expects it to be:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell"><span class="nb">sudo cp</span> <span class="nt">-r</span> dist/instructor-client/<span class="k">*</span> /var/www/html
+<span class="nb">sudo chown</span> <span class="nt">-R</span> www-data:www-data /var/www/html
+<span class="nb">sudo chmod</span> <span class="nt">-R</span> 755 /var/www/html
+<span class="nb">sudo </span>systemctl restart nginx</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Lastly set up a storage directory for the server and start the jar-file</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell"><span class="nb">sudo mkdir</span> <span class="nt">-p</span> /var/lib/franklyn
+<span class="nb">sudo chown</span> <span class="nt">-R</span> <span class="nv">$USER</span>:<span class="nv">$USER</span> /var/lib/franklyn
+<span class="nb">sudo chmod</span> <span class="nt">-R</span> 755 /var/lib/franklyn
+java <span class="nt">-jar</span> dist/server/franklyn-server.jar</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You should now see the franklyn angular app when visiting <a href="https://&lt;domain-name&gt;" class="bare">https://&lt;domain-name&gt;</a>:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/frontend_pic.png" alt="frontend pic">
+</div>
+</div>
+<div class="paragraph">
+<p>Since running the server using <code>java -jar &lt;path-to-jar&gt;</code> is bad let&#8217;s create a service for it:</p>
+</div>
+<div class="listingblock">
+<div class="title">franklyn.service</div>
+<div class="content">
+<pre class="rouge highlight"><code data-lang="unitfile(systemd)">[Unit]
+Description=Franklyn server software
+
+[Service]
+User=&lt;service-user&gt;
+Group=&lt;service-group&gt;
+ExecStart=/usr/bin/java -jar &lt;path-to-franklyn-server-jar&gt;
+
+[Install]
+WantedBy=multi-user.target</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Make sure to create the service file in the correct directory or move it afterwards with:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell"><span class="nb">sudo mv</span> &lt;path-to-franklyn.service&gt; /etc/systemd/system/</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Finally, start the service and make sure it&#8217;s running:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell"><span class="nb">sudo </span>systemctl <span class="nb">enable</span> <span class="nt">--now</span> franklyn.service
+<span class="nb">sudo </span>systemctl status franklyn.service</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_student_client"><a class="anchor" href="#_student_client"></a>2.3. Student Client</h3>
+<div class="paragraph">
+<p>The last thing to do is preparing the student client (also known as openbox). Why is this needed? Per default the generated openbox artifact on GitHub points at our development domain <code>franklyn.ddns.net</code>. To work with other servers this domain has to be changed and the jar rebuilt.</p>
+</div>
+<div class="paragraph">
+<p>To do this clone the repository on a local computer:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell">git clone https://github.com/2324-4bhif-syp/2324-4bhif-syp-project-franklyn.git
+<span class="nb">cd </span>2324-4bhif-syp-project-franklyn</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Open <code>openbox/src/main/resources/application.properties</code> and change:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="properties"><span class="err">%</span><span class="py">prod.websocket.url</span><span class="p">=</span><span class="s">wss://franklyn.ddns.net/api</span>
+<span class="err">%</span><span class="py">prod.http.url</span><span class="p">=</span><span class="s">https://franklyn.ddns.net/api</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>to</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="properties"><span class="err">%</span><span class="py">prod.websocket.url</span><span class="p">=</span><span class="s">wss://&lt;your-domain-name&gt;/api</span>
+<span class="err">%</span><span class="py">prod.http.url</span><span class="p">=</span><span class="s">https://&lt;your-domain-name&gt;/api</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>For building the student-client <code>java 17</code> or newer and maven is required. With these installed make sure you are in the project root and run:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell">./cicd/build-openbox.sh</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><code>dist/openbox/</code> now contains a file called <code>franklyn-student-client.jar</code>. This is the jar file which students have to execute using:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell">java <span class="nt">-jar</span> franklyn-student-client.jar</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You&#8217;re set!</p>
+</div>
 </div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Version 1.0<br>
 Last updated 2024-03-10 17:18:49 UTC
 </div>
 </div>
