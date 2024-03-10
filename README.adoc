@@ -57,17 +57,7 @@ ng serve --open <.>
 
 link:./instructor-client/src/environment/environment.ts[Properties]
 
-==== Recorder
-
-.start the recorder
-[source, bash]
-----
-./mvnw clean quarkus:dev
-----
-
-link:./recorder/src/main/resources/application.properties[Properties]
-
-==== Openbox (Examinees)
+==== Openbox (Student client)
 
 .start the openbox
 [source, bash]
