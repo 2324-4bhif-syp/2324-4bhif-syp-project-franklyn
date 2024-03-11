@@ -25,6 +25,11 @@ export default class ExamineeDataService {
     });
   }
 
+  resetExaminees(): void {
+    this.webApi.resetExaminees();
+    this.items = [];
+  }
+
   get(predicate?: ((item: Examinee) => boolean) | undefined): Examinee[] {
     if (predicate) return this.get().filter(predicate);
     return this.items;

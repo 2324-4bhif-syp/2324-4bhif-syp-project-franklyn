@@ -23,5 +23,10 @@ export class PatrolModeComponent {
   constructor(protected examineeRepo: ExamineeDataService, protected patrolManagerService: PatrolManagerService) {
   }
 
+  resetExaminees(_event: Event): void {
+    console.log("pressed");
+    this.examineeRepo.resetExaminees();
+  }
+
   protected readonly environment = environment;
 }

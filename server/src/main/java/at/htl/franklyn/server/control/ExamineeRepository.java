@@ -19,6 +19,10 @@ public class ExamineeRepository {
         this.examinees.put(examinee.getUsername(), examinee);
     }
 
+    public void clear() {
+        this.examinees.clear();
+    }
+
     public List<Examinee> findAll() {
         return new ArrayList<>(this.examinees.values());
     }
