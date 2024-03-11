@@ -24,10 +24,12 @@ ifndef::imagesdir[:imagesdir: ../images]
 *** kein Kopieren von fertigen Programmen/Lösungen
 
 [.font-xx-large]
-=== Sprint 6: Änderungen
-* Umbau der Architektur
-* Setzten des Patrol-speeds mittels slider
+=== Sprint 7: Änderungen
+* Tutorial zum aufsetzten
+* Automatische Releases bei push auf Main
+* Memory leaks von ffmpeg teilweise behoben
 * Bugfixes
+* Vorläufiger Reset-Button
 
 === Live Demo
 
