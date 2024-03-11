@@ -25,11 +25,11 @@ ifndef::imagesdir[:imagesdir: ../images]
 
 [.font-xx-large]
 === Sprint 7: Änderungen
-* Tutorial zum aufsetzten
+* Tutorial zum aufsetzten von Franklyn
 * Automatische Releases bei push auf Main
 * Memory leaks von ffmpeg teilweise behoben
-* Bugfixes
 * Vorläufiger Reset-Button
+* Bugfixes
 
 === Live Demo
 
