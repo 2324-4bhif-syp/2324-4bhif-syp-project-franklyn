@@ -25,7 +25,6 @@ public class ExamineeResource {
     @Path("reset")
     @Produces(MediaType.TEXT_PLAIN)
     public Response clearExaminees() {
-        Log.debug("CLEARED");
         this.examineeRepository.clear();
         return Response.ok().build();
     }
