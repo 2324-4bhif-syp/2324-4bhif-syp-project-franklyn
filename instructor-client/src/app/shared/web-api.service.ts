@@ -14,4 +14,8 @@ export class WebApiService {
   public getClientsFromServer() {
     return this.http.get<Examinee[]>(`${environment.serverBaseUrl}/examinees`, {headers: this.headers});
   }
+
+  public resetExaminees(): void {
+    this.http.get(`${environment.serverBaseUrl}/examinees/reset`, {}).subscribe();
+  }
 }
