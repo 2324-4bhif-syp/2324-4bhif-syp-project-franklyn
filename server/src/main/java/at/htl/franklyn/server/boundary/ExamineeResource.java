@@ -2,7 +2,6 @@ package at.htl.franklyn.server.boundary;
 
 import at.htl.franklyn.server.boundary.Dto.ExamineeDto;
 import at.htl.franklyn.server.control.ExamineeRepository;
-import io.quarkus.logging.Log;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
