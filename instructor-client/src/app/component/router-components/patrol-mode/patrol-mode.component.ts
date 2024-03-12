@@ -24,7 +24,6 @@ export class PatrolModeComponent {
   }
 
   resetExaminees(_event: Event): void {
-    console.log("pressed");
     this.examineeRepo.resetExaminees();
   }
 
