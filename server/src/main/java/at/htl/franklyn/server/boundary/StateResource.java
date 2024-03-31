@@ -1,8 +1,12 @@
 package at.htl.franklyn.server.boundary;
 
+import at.htl.franklyn.server.boundary.Dto.ServerMetricsDto;
 import at.htl.franklyn.server.control.ExamineeRepository;
+import at.htl.franklyn.server.services.MetricsService;
 import at.htl.franklyn.server.services.ScreenshotService;
+import io.quarkus.logging.Log;
 import jakarta.inject.Inject;
+import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
@@ -17,6 +21,9 @@ public class StateResource {
     @Inject
     ScreenshotService screenshotService;
 
+    @Inject
+    MetricsService metricsService;
+
     @POST
     @Path("reset")
     @Produces(MediaType.TEXT_PLAIN)
@@ -29,5 +36,21 @@ public class StateResource {
         }
 
         return response;
+    }
+
+    @GET
+    @Path("system-metrics")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getSystemMetrics() {
+        ServerMetricsDto serverMetricsDto = new ServerMetricsDto(
+                metricsService.getSystemCpuUsagePercentage(),
+                metricsService.getTotalDiskSpaceInBytes(),
+                metricsService.getFreeDiskSpaceInBytes(),
+                metricsService.getScreenshotsFolderSizeInBytes(),
+                metricsService.getTotalMemoryInBytes(),
+                metricsService.getUsedMemoryInBytes()
+        );
+
+        return Response.ok(serverMetricsDto).build();
     }
 }
