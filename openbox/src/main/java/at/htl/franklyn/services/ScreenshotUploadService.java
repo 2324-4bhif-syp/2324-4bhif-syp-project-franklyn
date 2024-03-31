@@ -1,6 +1,7 @@
 package at.htl.franklyn.services;
 
 import jakarta.ws.rs.POST;
+import jakarta.ws.rs.Path;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
@@ -12,5 +13,10 @@ import java.io.InputStream;
 @RegisterRestClient
 public interface ScreenshotUploadService {
     @POST
-    Response uploadScreenshot(@RestForm("image") @PartType(MediaType.APPLICATION_OCTET_STREAM) InputStream image);
+    @Path("alpha")
+    Response uploadAlphaScreenshot(@RestForm("image") @PartType(MediaType.APPLICATION_OCTET_STREAM) InputStream image);
+
+    @POST
+    @Path("beta")
+    Response uploadBetaScreenshot(@RestForm("image") @PartType(MediaType.APPLICATION_OCTET_STREAM) InputStream image);
 }

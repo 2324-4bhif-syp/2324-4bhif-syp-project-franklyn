@@ -9,14 +9,17 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import io.quarkus.logging.Log;
 import jakarta.inject.Inject;
 import jakarta.websocket.*;
+import jakarta.ws.rs.core.Response;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.eclipse.microprofile.rest.client.RestClientBuilder;
 
 import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.URI;
+import java.util.Objects;
 
 @ClientEndpoint
 public class Client {
@@ -63,8 +66,26 @@ public class Client {
                 .build(ScreenshotUploadService.class);
 
         try (ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream()) {
-            ImageIO.write(ScreenshotService.getScreenshot(), "png", byteArrayOutputStream);
-            screenshotUploadService.uploadScreenshot(new ByteArrayInputStream(byteArrayOutputStream.toByteArray()));
+
+            Response screenshotResponse = ScreenshotService.getScreenshot();
+
+            String frameTyp = screenshotResponse.getHeaderString("Frame-Type");
+
+            ImageIO.write(screenshotResponse.readEntity(BufferedImage.class), "png", byteArrayOutputStream);
+
+            Log.info(frameTyp);
+
+            if(Objects.equals(frameTyp, "alpha")){
+                screenshotUploadService.uploadAlphaScreenshot(
+                        new ByteArrayInputStream(byteArrayOutputStream.toByteArray())
+                );
+            }
+            else {
+                screenshotUploadService.uploadBetaScreenshot(
+                        new ByteArrayInputStream(byteArrayOutputStream.toByteArray())
+                );
+            }
+
         } catch(IOException e) {
             Log.error("FAILED: to write image", e);
         } catch (Exception e) {
