@@ -10,6 +10,9 @@ import java.io.File;
 import java.io.IOException;
 
 public class ScreenshotService {
+
+    private static BufferedImage alphaFrame = null;
+
     public static Response getScreenshot() {
         BufferedImage screenshot;
 
@@ -20,28 +23,21 @@ public class ScreenshotService {
                     new Rectangle(Toolkit.getDefaultToolkit().getScreenSize())
             );
 
-            File alphaFrame = new File("alpha-frame.png");
-
-            if (!alphaFrame.exists()){
-                ImageIO.write(screenshot, "png", alphaFrame);
+            if (null == alphaFrame){
+                alphaFrame = screenshot;
 
                 r.header("Frame-Type", "alpha");
 
                 return r.entity(screenshot).build();
             }
 
-            return r.entity(getDifference(alphaFrame.getPath(), screenshot, r)).build();
+            return r.entity(getDifference(screenshot, r)).build();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
-    public static BufferedImage getDifference(
-            String alphaFramePath,
-            BufferedImage betaFrame,
-            Response.ResponseBuilder response
-    ) throws IOException {
-        BufferedImage alphaFrame = ImageIO.read(new File(alphaFramePath));
+    public static BufferedImage getDifference(BufferedImage betaFrame, Response.ResponseBuilder response) {
 
         int width = alphaFrame.getWidth();
         int height = alphaFrame.getHeight();
@@ -68,7 +64,7 @@ public class ScreenshotService {
 
         // if more than half of the frame is different make it the new alpha frame
         if(counter > width * height * 0.5){
-            ImageIO.write(betaFrame, "png", new File(alphaFramePath));
+            alphaFrame = betaFrame;
             response.header("Frame-Type", "alpha");
             return betaFrame;
         }
