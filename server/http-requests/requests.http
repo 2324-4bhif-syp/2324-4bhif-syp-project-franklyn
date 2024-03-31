@@ -1,2 +1,5 @@
 ### GET all examinees
 GET http://localhost:8080/examinees
+
+### Reset state (delte screenshot folder, clear examinees)
+POST http://localhost:8080/state/reset

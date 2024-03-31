@@ -20,12 +20,4 @@ public class ExamineeResource {
                 e.isConnected())
         )).build();
     }
-
-    @GET
-    @Path("reset")
-    @Produces(MediaType.TEXT_PLAIN)
-    public Response clearExaminees() {
-        this.examineeRepository.clear();
-        return Response.ok().build();
-    }
 }
