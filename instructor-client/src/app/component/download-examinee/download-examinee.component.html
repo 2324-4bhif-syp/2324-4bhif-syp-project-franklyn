@@ -10,14 +10,12 @@
       Show Video
     </button>
 
-    <button
-      class="btn btn-primary w-100">
-      <a
-        href="{{getDownloadUrl()}}"
-        download="{{examinee.username}}.zip"
-        class="text-light text-decoration-none">
-        Download
-      </a>
-    </button>
+    <a
+      href="{{getDownloadUrl()}}"
+      download="{{examinee.username}}.zip"
+      class="text-light text-decoration-none btn btn-primary w-100"
+      role="button">
+      Download
+    </a>
   </div>
 </div>

@@ -1,7 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
 /*height of the the application*/
 .patrol-mode-height {
-  height: 81vh
+  height: 79vh
 }
 
 .video-viewer-height {
@@ -10,5 +10,5 @@
 
 /*spacing at the end for the bar on the bottom*/
 .bottom-spacing {
-  height: 10vh;
+  height: 9vh;
 }
