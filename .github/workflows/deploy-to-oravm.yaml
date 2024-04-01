@@ -7,7 +7,6 @@ on:
     workflows: [ "Build docker images" ]
     branches:
       - main
-      - feat/docker-ci
     types:
       - completed
   workflow_dispatch:
