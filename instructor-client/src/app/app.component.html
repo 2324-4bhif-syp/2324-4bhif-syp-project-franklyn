@@ -1,35 +1,37 @@
-<nav class="navbar navbar-expand-lg bg-primary" data-bs-theme="dark">
-  <div class="container-fluid">
-    <!--title-->
-    <a class="navbar-brand fw-bold" href="#">Franklyn</a>
+<div class="min-vh-100">
+  <nav
+    class="navbar navbar-expand bg-primary"
+    data-bs-theme="dark">
+    <div class="container-fluid">
+      <!--title-->
+      <a class="navbar-brand fw-bold" href="#">Franklyn</a>
 
-    <!--routes-->
-    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-      <!--Patrol-Mode-->
-      <li class="nav-item"
-          routerLinkActive="active"
-          [routerLinkActiveOptions]="{exact:true}"
-          (click)="changeRoute()">
-        <a class="nav-link"
-           [class.active]="patrolModeActive"
-           routerLink="/"
-           (click)="changeRoute()">
-          Patrol-Mode
-        </a>
-      </li>
-      <!--Video-Viewer-->
-      <li class="nav-item" routerLinkActive="active" (click)="changeRoute()">
-        <a class="nav-link"
-           [class.active]="!patrolModeActive"
-           routerLink="video-viewer"
-           (click)="changeRoute()">
-          Video-Viewer
-        </a>
-      </li>
-    </ul>
-  </div>
-</nav>
+      <!--routes-->
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <!--Patrol-Mode-->
+        <li class="nav-item"
+            routerLinkActive="active"
+            [routerLinkActiveOptions]="{exact:true}"
+            (click)="changeRoute()">
+          <a class="nav-link"
+             [class.active]="patrolModeActive"
+             routerLink="/"
+             (click)="changeRoute()">
+            Patrol-Mode
+          </a>
+        </li>
+        <!--Video-Viewer-->
+        <li class="nav-item" routerLinkActive="active" (click)="changeRoute()">
+          <a class="nav-link"
+             [class.active]="!patrolModeActive"
+             routerLink="video-viewer"
+             (click)="changeRoute()">
+            Video-Viewer
+          </a>
+        </li>
+      </ul>
+    </div>
+  </nav>
 
-<div class="container-fluid my-3 mx-1">
   <router-outlet></router-outlet>
 </div>
