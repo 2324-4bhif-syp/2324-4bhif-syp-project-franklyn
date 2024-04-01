@@ -32,7 +32,7 @@ export class PatrolManagerService {
   }
 
   getNextClientTimeFormatted() {
-    return ('0' + this.nextClientScheduleTime/1000).slice(-2);
+    return this.nextClientScheduleTime/1000;
   }
 
   get nextClientTime() {

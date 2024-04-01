@@ -20,6 +20,12 @@ export class WebApiService {
     this.http.post(`${environment.serverBaseUrl}/state/reset`, {}).subscribe();
   }
 
+  public updateScreenshotCaptureInterval(updateInterval: number): void {
+    this.http.post(`${environment.serverBaseUrl}/screenshot/updateInterval`,
+      {newInterval: updateInterval}
+    ).subscribe();
+  }
+
   public getServerMetrics(){
     return this.http.get<ServerMetrics>(
       `${environment.serverBaseUrl}/state/system-metrics`,

@@ -23,6 +23,7 @@
       <input type="checkbox" [(ngModel)]="examineeRepo.patrolModeOn"> Patrol-mode
     </label>
   </div>
+
   <div>
     <label
       for="customRange"
@@ -36,6 +37,21 @@
       [max]="environment.maxNextClientScheduleTime"
       id="customRange"
       [(ngModel)]="patrolManagerService.nextClientTime">
+  </div>
+  <div>
+    <label
+      for="customRange"
+      class="form-label">
+      Screenshot capture interval: {{ intervalSpeed }} sec
+    </label>
+    <input
+      type="range"
+      class="form-range"
+      [min]="environment.minNextClientScheduleTime"
+      [max]="environment.maxNextClientScheduleTime"
+      id="screenshotCaptureInterval"
+      (change)="screenshotCaptureIntervalUpdate($event)"
+      [(ngModel)]="intervalSpeed">
   </div>
   <div class="align-self-center">
     <button

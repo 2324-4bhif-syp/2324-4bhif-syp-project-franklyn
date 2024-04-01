@@ -30,6 +30,10 @@ export default class ExamineeDataService {
     this.items = [];
   }
 
+  updateScreenshotCaptureInterval(newInterval: number): void {
+    this.webApi.updateScreenshotCaptureInterval(newInterval);
+  }
+
   get(predicate?: ((item: Examinee) => boolean) | undefined): Examinee[] {
     if (predicate) return this.get().filter(predicate);
     return this.items;
