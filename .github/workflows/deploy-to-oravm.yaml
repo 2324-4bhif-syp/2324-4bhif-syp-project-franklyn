@@ -4,7 +4,7 @@ concurrency: production # allow maximum of one running and pending job
 
 on:
   workflow_run:
-    workflows: ["Build Dockerimages"]
+    workflows: [build-docker-images]
     branches:
       - main
       - feat/docker-ci
