@@ -1,5 +1,7 @@
 package at.htl.franklyn.recorder.boundary;
 
+import at.htl.franklyn.recorder.dto.IntervalUpdateDto;
+import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
@@ -26,6 +28,9 @@ public class ScreenshotResource {
 
     @ConfigProperty(name = "screenshots.path")
     String screenshotsPath;
+
+    @Inject
+    SavesResource savesResource;
 
     @POST
     @Path("{username}/alpha")
@@ -129,8 +134,7 @@ public class ScreenshotResource {
     @GET
     @Path("{username}")
     @Produces("image/png")
-    public Response getScreenshot(@PathParam("username") String username){
-
+    public Response getScreenshot(@PathParam("username") String username) {
         // TODO: Sanitize username
         File directory = Paths.get(screenshotsPath, username).toFile();
 
@@ -177,7 +181,6 @@ public class ScreenshotResource {
             @PathParam("width") int width,
             @PathParam("height") int height)
     {
-
         Response response = Response.status(404).entity(null).build();
 
         try{
@@ -207,5 +210,12 @@ public class ScreenshotResource {
         }
 
         return response;
+    }
+
+    @POST
+    @Path("updateInterval")
+    public Response updateScreenshotInterval(IntervalUpdateDto intervalUpdateDto) {
+        this.savesResource.rescheduleScreenshotUpdateJob(intervalUpdateDto.newInterval());
+        return Response.ok().build();
     }
 }

@@ -1,9 +1,11 @@
 package at.htl.franklyn.server.control;
 
+import at.htl.franklyn.recorder.boundary.SavesResource;
 import io.quarkus.logging.Log;
 import io.quarkus.runtime.StartupEvent;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.event.Observes;
+import jakarta.inject.Inject;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 import java.io.IOException;
@@ -18,6 +20,9 @@ public class InitBean {
     @ConfigProperty(name = "screenshots.path")
     String screenshotsPath;
 
+    @Inject
+    SavesResource savesResource;
+
     void startUp(@Observes StartupEvent startupEvent) {
         Log.infof("Running on port: %d", port);
 
@@ -27,5 +32,7 @@ public class InitBean {
         } catch (IOException e) {
             Log.error("Could not create directory for screenshot storage: ", e);
         }
+
+        savesResource.scheduleScreenshotUpdateJob();
     }
 }
