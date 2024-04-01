@@ -1,7 +1,15 @@
-<a href="{{getDownloadUrl()}}" download="videos.zip">Download All</a>
+<div class="px-4">
+  <button
+    class="btn btn-primary w-100 mb-2">
+    <a
+      href="{{getDownloadUrl()}}"
+      download="videos.zip"
+      class="text-light text-decoration-none">
+      Download All
+    </a>
+  </button>
 
-<ul>
-  <li *ngFor="let e of examineeRepo.get()">
+  <div *ngFor="let e of examineeRepo.get()" class="pb-3 w-100">
     <app-download-examinee [examinee]="e"></app-download-examinee>
-  </li>
-</ul>
+  </div>
+</div>

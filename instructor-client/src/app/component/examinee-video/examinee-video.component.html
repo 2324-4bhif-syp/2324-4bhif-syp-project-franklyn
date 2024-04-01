@@ -1,9 +1,9 @@
-<div *ngIf="showVideo()">
+<div *ngIf="showVideo()" class="container-fluid">
   <video id="videoTag"
          controls
          [defaultMuted]="true"
-        height="450px"
-        src="{{getVideoUrl()}}">
+        src="{{getVideoUrl()}}"
+        class="w-100">
     <source id="videoSrcTag" src="{{getVideoUrl()}}" type="video/mp4">
     Your browser does not support the video tag.
   </video>
