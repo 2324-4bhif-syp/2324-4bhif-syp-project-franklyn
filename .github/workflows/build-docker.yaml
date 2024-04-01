@@ -27,8 +27,7 @@ jobs:
 
       - name: Find and set image tag
         run: |
-          - echo ${{ github.ref_name }}
-          - if test ${{ github.ref_name }} = 'main'; then tag=latest; else tag=dev; fi
+          - if test "${{ github.ref_name }}" = "main"; then tag=latest; else tag=dev; fi
           - echo "IMAGE_TAG=${tag}" >> "$GITHUB_ENV"
 
       - name: Build and push
