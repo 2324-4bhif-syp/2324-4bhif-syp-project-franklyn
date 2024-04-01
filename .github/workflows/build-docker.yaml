@@ -1,4 +1,4 @@
-name: Build and Deploy Dockerfiles
+name: Build Dockerimages
 run-name: ${{ github.actor }} is building Docker images 🚀
 on:
   push:
