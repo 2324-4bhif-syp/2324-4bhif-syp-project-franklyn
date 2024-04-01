@@ -6,32 +6,41 @@
       <!--title-->
       <a class="navbar-brand fw-bold" href="#">Franklyn</a>
 
-      <!--routes-->
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <!--Patrol-Mode-->
-        <li class="nav-item"
-            routerLinkActive="active"
-            [routerLinkActiveOptions]="{exact:true}"
-            (click)="changeRoute()">
-          <a class="nav-link"
-             [class.active]="patrolModeActive"
-             routerLink="/"
-             (click)="changeRoute()">
-            Patrol-Mode
-          </a>
-        </li>
-        <!--Video-Viewer-->
-        <li class="nav-item" routerLinkActive="active" (click)="changeRoute()">
-          <a class="nav-link"
-             [class.active]="!patrolModeActive"
-             routerLink="video-viewer"
-             (click)="changeRoute()">
-            Video-Viewer
-          </a>
-        </li>
-      </ul>
-    </div>
-  </nav>
+    <!--routes-->
+    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+      <!--Patrol-Mode-->
+      <li class="nav-item"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{exact:true}"
+          (click)="changeRoute()">
+        <a class="nav-link"
+           [class.active]="location.path() === '/patrol-mode'"
+           routerLink="/"
+           (click)="changeRoute()">
+          Patrol-Mode
+        </a>
+      </li>
+      <!--Video-Viewer-->
+      <li class="nav-item" routerLinkActive="active" (click)="changeRoute()">
+        <a class="nav-link"
+           [class.active]="location.path() === '/video-viewer'"
+           routerLink="video-viewer"
+           (click)="changeRoute()">
+          Video-Viewer
+        </a>
+      </li>
+      <!--Metrics-Dashboard-->
+      <li class="nav-item" routerLinkActive="active" (click)="changeRoute()">
+        <a class="nav-link"
+           [class.active]="location.path() === '/metrics-dashboard'"
+           routerLink="metrics-dashboard"
+           (click)="changeRoute()">
+            Metrics Dashboard
+        </a>
+      </li>
+    </ul>
+  </div>
+</nav>
 
   <router-outlet></router-outlet>
 </div>

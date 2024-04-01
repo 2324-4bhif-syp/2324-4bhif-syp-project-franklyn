@@ -28,7 +28,7 @@ import {PatrolManagerService} from "./shared/repository/patrol-manager.service";
   styleUrl: './app.component.css'
 })
 export class AppComponent{
-  constructor(private examineeRepo: ExamineeDataService, private location: Location, private patrolManagerService: PatrolManagerService) {
+  constructor(private examineeRepo: ExamineeDataService, protected location: Location, private patrolManagerService: PatrolManagerService) {
     this.changeRoute(); // call it for initialization in case of for example a page reload
 
     setInterval(() => {
@@ -40,6 +40,9 @@ export class AppComponent{
 
   public changeRoute() {
     if (this.location.path() === "/video-viewer") {
+      this.patrolModeActive = false;
+      this.patrolManagerService.stopInterval();
+    } else if (this.location.path() === "/metrics-dashboard") {
       this.patrolModeActive = false;
       this.patrolManagerService.stopInterval();
     } else {
