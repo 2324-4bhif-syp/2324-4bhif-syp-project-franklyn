@@ -1,9 +1,0 @@
-services:
-  streaming:
-    build:
-      context: .
-      dockerfile: src/main/docker/Dockerfile
-    ports:
-      - 8080:8080
-    volumes:
-      - /var/lib/franklyn/screenshots:/opt/applications/server/screenshots
