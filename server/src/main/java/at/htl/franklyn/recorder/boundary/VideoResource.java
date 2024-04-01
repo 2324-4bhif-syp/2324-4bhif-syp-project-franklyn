@@ -75,7 +75,7 @@ public class VideoResource {
                     continue;
                 }
 
-                InputStream fis = getVideo(fileName);
+                InputStream fis = getVideo(fileName).readEntity(FileInputStream.class);
                 ZipEntry zipEntry = new ZipEntry(String.format("%s.mp4", fileName));
                 zipOut.putNextEntry(zipEntry);
 
@@ -123,7 +123,7 @@ public class VideoResource {
             );
             ZipOutputStream zipOut = new ZipOutputStream(fos);
 
-            InputStream fis = getVideo(username);
+            InputStream fis = getVideo(username).readEntity(FileInputStream.class);
                     /*.map(video -> video.readEntity(InputStream.class))
                     .await()
                     .indefinitely(); // change to atMost() later
@@ -162,7 +162,7 @@ public class VideoResource {
     @Path("/{username}")
     @Produces(MediaType.APPLICATION_OCTET_STREAM)
     @GET
-    public FileInputStream getVideo(@PathParam("username") String username) {
+    public Response getVideo(@PathParam("username") String username) {
 
         try {
             // Parent-folder
@@ -191,7 +191,7 @@ public class VideoResource {
 
             Process p = r.exec(
                     String.format(
-                            "ffmpeg -y -framerate 1 -pattern_type glob -i %s -c:v libx264 %s",
+                            "ffmpeg -y -framerate 1 -pattern_type glob -i %s -c:v libx264 -pix_fmt yuv420p %s",
                             inputPath, outputPath)
             );
 
@@ -201,10 +201,11 @@ public class VideoResource {
             r.freeMemory();
             r.gc();
 
-            return new FileInputStream(Paths.get(
-                    targetDirectory.getPath(),
-                    String.format("%s.mp4", username)
-            ).toString());
+            String returnFileName = String.format("%s.mp4", username);
+            return Response
+                    .ok(new FileInputStream(Paths.get(targetDirectory.getPath(), returnFileName).toString()))
+                    .header("Content-Disposition", "attachment; filename=\"" + returnFileName + "\"")
+                    .build();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
