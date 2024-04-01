@@ -30,6 +30,8 @@ jobs:
       - name: Deploy build
         run: |
           ssh -i $SSH_KEY_PATH $SSH_USER@$SSH_HOST "git -C project-franklyn pull || git clone https://github.com/2324-4bhif-syp/2324-4bhif-syp-project-franklyn.git project-franklyn"
+          ssh -i $SSH_KEY_PATH $SSH_USER@$SSH_HOST "git -C project-franklyn switch ${{ github.ref_name }}"
+          ssh -i $SSH_KEY_PATH $SSH_USER@$SSH_HOST "git -C project-franklyn pull"
           ssh -i $SSH_KEY_PATH $SSH_USER@$SSH_HOST "docker compose -f project-franklyn/cicd/docker-compose.yaml down"
           ssh -i $SSH_KEY_PATH $SSH_USER@$SSH_HOST "docker compose -f project-franklyn/cicd/docker-compose.yaml pull"
           ssh -i $SSH_KEY_PATH $SSH_USER@$SSH_HOST "docker compose -f project-franklyn/cicd/docker-compose.yaml up -d"
