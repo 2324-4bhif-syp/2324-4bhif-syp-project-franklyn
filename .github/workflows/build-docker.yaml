@@ -37,4 +37,4 @@ jobs:
           file: ./server/src/main/docker/Dockerfile
           platforms: linux/amd64, linux/arm64
           push: true
-          tags: ghcr.io/${{ github.repository }}/franklyn-server:$IMAGE_TAG
+          tags: ghcr.io/${{ github.repository }}/franklyn-server:${{ env.IMAGE_TAG }}
