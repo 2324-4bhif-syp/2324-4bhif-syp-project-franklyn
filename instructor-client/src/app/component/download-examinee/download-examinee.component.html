@@ -1,5 +1,21 @@
-<b *ngIf="examinee">{{examinee.username}}</b>
-<br>
-<a href="{{getDownloadUrl()}}" download="{{examinee?.username}}.zip">Download</a>
-<br>
-<button (click)="showVideoOfExaminee()">Show Video</button>
+<div class="card w-100 text-bg-light" *ngIf="examinee">
+  <div class="card-header text-center fw-bold">
+    {{examinee.username}}
+  </div>
+
+  <div class="card-body">
+    <button
+      (click)="showVideoOfExaminee()"
+      class="btn btn-secondary w-100 mb-2">
+      Show Video
+    </button>
+
+    <a
+      href="{{getDownloadUrl()}}"
+      download="{{examinee.username}}.zip"
+      class="text-light text-decoration-none btn btn-primary w-100"
+      role="button">
+      Download
+    </a>
+  </div>
+</div>

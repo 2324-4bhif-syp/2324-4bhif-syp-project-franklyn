@@ -16,6 +16,6 @@ export class WebApiService {
   }
 
   public resetExaminees(): void {
-    this.http.get(`${environment.serverBaseUrl}/examinees/reset`, {}).subscribe();
+    this.http.post(`${environment.serverBaseUrl}/state/reset`, {}).subscribe();
   }
 }
