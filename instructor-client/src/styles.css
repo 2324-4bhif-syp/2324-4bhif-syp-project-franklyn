@@ -3,6 +3,11 @@
 .router {
   height: 81vh
 }
+
+.router-full-height {
+  height: 87vh
+}
+
 /*spacing at the end for the bar on the bottom*/
 .bottom-spacing {
   height: 10vh;

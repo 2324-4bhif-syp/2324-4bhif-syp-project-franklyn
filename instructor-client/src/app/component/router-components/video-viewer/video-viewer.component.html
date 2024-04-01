@@ -1,12 +1,15 @@
-<table>
-  <tr>
-    <td class="examinee-list">
-      <b>Examinees:</b>
-      <br>
-      <app-examinee-download-list></app-examinee-download-list>
-    </td>
-    <td class="examinee-patrol px-auto">
-      <app-examinee-video [examinee]="examineeRepo.getPatrolExaminee()"></app-examinee-video>
-    </td>
-  </tr>
-</table>
+<div>
+  <table class="router-full-height container-fluid">
+    <tr>
+      <td class="bg-light col-2 align-top pt-3">
+        <div class="overflow-scroll router-full-height">
+          <h6 class="fw-bold text-center">Examinees</h6>
+          <app-examinee-download-list></app-examinee-download-list>
+        </div>
+      </td>
+      <td class="examinee-patrol col-8 align-top pt-2 px-3">
+        <app-examinee-video [examinee]="examineeRepo.getPatrolExaminee()"></app-examinee-video>
+      </td>
+    </tr>
+  </table>
+</div>
