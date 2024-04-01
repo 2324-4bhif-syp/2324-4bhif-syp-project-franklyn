@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {environment} from "../../../env/environment";
 import {Examinee} from "./entity/Examinee";
+import {ServerMetrics} from "./entity/ServerMetrics";
 
 @Injectable({
   providedIn: 'root'
@@ -17,5 +18,12 @@ export class WebApiService {
 
   public resetExaminees(): void {
     this.http.post(`${environment.serverBaseUrl}/state/reset`, {}).subscribe();
+  }
+
+  public getServerMetrics(){
+    return this.http.get<ServerMetrics>(
+      `${environment.serverBaseUrl}/state/system-metrics`,
+      {headers: this.headers}
+    );
   }
 }
