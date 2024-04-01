@@ -1,5 +1,4 @@
 name: build-docker-images
-run-name: ${{ github.actor }} is building Docker images 🚀
 on:
   push:
     paths:

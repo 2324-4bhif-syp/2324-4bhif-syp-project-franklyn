@@ -14,7 +14,6 @@ on:
 
 jobs:
   build-deploy-franklyn:
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     name: Build and deploy Franklyn
     runs-on: ubuntu-22.04
     steps:
