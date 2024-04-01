@@ -30,9 +30,9 @@ export class ExamineeComponent {
     let activity: string = "";
 
     if (this.examinee && !this.showImage && this.examinee.connected) {
-      activity =  "🟢";
+      activity =  "btn-success";
     } else if (this.examinee && !this.showImage){
-      activity = "🔴";
+      activity = "btn-danger";
     }
 
     return activity

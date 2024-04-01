@@ -1,1 +1,9 @@
 /* You can add global styles to this file, and also import other style files */
+/*height of the rest of the application without the navbar*/
+.router {
+  height: 81vh
+}
+/*spacing at the end for the bar on the bottom*/
+.bottom-spacing {
+  height: 10vh;
+}
