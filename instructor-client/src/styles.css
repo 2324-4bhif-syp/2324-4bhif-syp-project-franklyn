@@ -1,10 +1,10 @@
 /* You can add global styles to this file, and also import other style files */
-/*height of the rest of the application without the navbar*/
-.router {
+/*height of the the application*/
+.patrol-mode-height {
   height: 81vh
 }
 
-.router-full-height {
+.video-viewer-height {
   height: 87vh
 }
 

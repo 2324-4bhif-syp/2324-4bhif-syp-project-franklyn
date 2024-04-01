@@ -1,9 +1,11 @@
 <div>
-  <table class="router container-fluid">
+  <table class="patrol-mode-height container-fluid">
     <tr>
       <td class="bg-light col-2 align-top pt-3">
-        <h6 class="fw-bold text-center">Examinees</h6>
-        <app-examinee-list></app-examinee-list>
+        <div class="overflow-scroll patrol-mode-height">
+          <h6 class="fw-bold text-center">Examinees</h6>
+          <app-examinee-list></app-examinee-list>
+        </div>
       </td>
       <td class="examinee-patrol col-8 align-top pt-2 px-3">
         <app-examinee [examinee]="examineeRepo.getPatrolExaminee()" [showImage]="true"></app-examinee>
