@@ -5,6 +5,7 @@ on:
     paths:
       - 'instructor-client/**'
       - 'server/**'
+      - 'cicd/**'
     branches:
       - main
       - develop
