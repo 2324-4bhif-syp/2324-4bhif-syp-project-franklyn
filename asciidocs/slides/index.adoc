@@ -24,12 +24,12 @@ ifndef::imagesdir[:imagesdir: ../images]
 *** kein Kopieren von fertigen Programmen/Lösungen
 
 [.font-xx-large]
-=== Sprint 7: Änderungen
-* Tutorial zum aufsetzten von Franklyn
-* Automatische Releases bei push auf Main
-* Memory leaks von ffmpeg teilweise behoben
-* Vorläufiger Reset-Button
-* Bugfixes
+=== Sprint 8: Änderungen
+* Überarbeitung des instructor-clients
+* Implementierung der Alpha- und Betaframes
+* Dashboard für Systeminformationen (CPU, RAM, Disk usage)
+* Reset-Button löscht nun alte Screenshots
+* Screenshotintervall ist nun im instructor-client einstellbar
 
 === Live Demo
 
