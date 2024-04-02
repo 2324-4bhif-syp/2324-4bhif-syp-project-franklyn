@@ -1,6 +1,6 @@
 :revealjs_theme: white
 :customcss: css/presentation.css
-ifndef::imagesdir[:imagesdir: ../images]
+ifndef::imagesdir[:imagesdir: ./images]
 
 [.title]
 = Franklyn
@@ -30,6 +30,15 @@ ifndef::imagesdir[:imagesdir: ../images]
 * Dashboard für Systeminformationen (CPU, RAM, Disk usage)
 * Reset-Button löscht nun alte Screenshots
 * Screenshotintervall ist nun im instructor-client einstellbar
+
+[.columns.is-vcentered]
+=== Original instructor-frontend
+
+[.column]
+image::instructor-frontend-original-style-patrol-mode.png[Patrol-mode]
+
+[.column]
+image::instructor-frontend-original-style-video-viewer.png[Video-viewer]
 
 === Live Demo
 
