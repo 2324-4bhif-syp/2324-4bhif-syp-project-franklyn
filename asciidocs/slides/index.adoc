@@ -1,6 +1,8 @@
 :revealjs_theme: white
 :customcss: css/presentation.css
-ifndef::imagesdir[:imagesdir: ./images]
+ifdef::env-ide[]
+:imagesdir: ../images
+endif::[]
 
 [.title]
 = Franklyn
