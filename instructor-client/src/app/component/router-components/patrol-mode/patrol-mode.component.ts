@@ -25,14 +25,12 @@ export class PatrolModeComponent {
   constructor(protected examineeRepo: ExamineeDataService, protected patrolManagerService: PatrolManagerService) {
   }
 
-  public intervalSpeed: number = 10;
-
   resetExaminees(_event: Event): void {
     this.examineeRepo.resetExaminees();
   }
 
   screenshotCaptureIntervalUpdate(_: Event): void {
-    this.examineeRepo.updateScreenshotCaptureInterval(this.intervalSpeed);
+    this.examineeRepo.updateScreenshotCaptureInterval(this.examineeRepo.intervalSpeed);
   }
 
   protected readonly environment = environment;

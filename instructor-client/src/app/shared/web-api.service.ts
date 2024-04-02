@@ -26,6 +26,11 @@ export class WebApiService {
     ).subscribe();
   }
 
+  public getIntervalSpeed() {
+    return this.http.get<number>(`${environment.serverBaseUrl}/screenshot/intervalSpeed`,
+      {headers: this.headers});
+  }
+
   public getServerMetrics(){
     return this.http.get<ServerMetrics>(
       `${environment.serverBaseUrl}/state/system-metrics`,

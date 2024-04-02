@@ -42,7 +42,7 @@
     <label
       for="customRange"
       class="form-label">
-      Screenshot capture interval: {{ intervalSpeed }} sec
+      Screenshot capture interval: {{ examineeRepo.intervalSpeed}} sec
     </label>
     <input
       type="range"
@@ -51,7 +51,7 @@
       [max]="environment.maxNextClientScheduleTime"
       id="screenshotCaptureInterval"
       (change)="screenshotCaptureIntervalUpdate($event)"
-      [(ngModel)]="intervalSpeed">
+      [(ngModel)]="examineeRepo.intervalSpeed">
   </div>
   <div class="align-self-center">
     <button

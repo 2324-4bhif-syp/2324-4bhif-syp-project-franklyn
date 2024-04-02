@@ -14,12 +14,14 @@ public class SavesResource {
     org.quartz.Scheduler quartz;
 
     private Trigger trigger;
+    private int intervalSpeed;
 
     public void scheduleScreenshotUpdateJob() {
+        this.intervalSpeed = updateInterval;
         JobDetail job = JobBuilder.newJob(ScreenshotUpdateJob.class)
                 .withIdentity(ScreenshotUpdateJob.class.getName(), "updateGroup")
                 .build();
-        this.trigger = createTriggerWith(this.updateInterval);
+        this.trigger = createTriggerWith(this.intervalSpeed);
 
         try {
             this.quartz.scheduleJob(job, trigger);
@@ -28,8 +30,9 @@ public class SavesResource {
         }
     }
 
-    public void rescheduleScreenshotUpdateJob(int updateInterval) {
-        Trigger nextTrigger = createTriggerWith(updateInterval);
+    public void rescheduleScreenshotUpdateJob(int newInterval) {
+        this.intervalSpeed = newInterval;
+        Trigger nextTrigger = createTriggerWith(newInterval);
 
         try {
             this.quartz.rescheduleJob(this.trigger.getKey(), nextTrigger);
@@ -50,6 +53,10 @@ public class SavesResource {
                                 .repeatForever()
                 )
                 .build();
+    }
+
+    public int getIntervalSpeed() {
+        return this.intervalSpeed;
     }
 }
 

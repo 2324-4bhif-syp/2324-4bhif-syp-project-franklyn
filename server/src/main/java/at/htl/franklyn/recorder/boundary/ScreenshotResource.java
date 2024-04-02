@@ -218,4 +218,10 @@ public class ScreenshotResource {
         this.savesResource.rescheduleScreenshotUpdateJob(intervalUpdateDto.newInterval());
         return Response.ok().build();
     }
+
+    @GET
+    @Path("intervalSpeed")
+    public Response getIntervalSpeed() {
+        return Response.ok(this.savesResource.getIntervalSpeed()).build();
+    }
 }

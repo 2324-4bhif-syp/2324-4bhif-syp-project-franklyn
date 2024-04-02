@@ -10,10 +10,15 @@ import {Location} from "@angular/common";
 export default class ExamineeDataService {
   constructor(private webApi: WebApiService, private cacheBusterService: CacheBusterService, private location: Location) {
     this.getAllExamineesFromServer();
+    this.webApi.getIntervalSpeed().subscribe({
+      next: intervalSpeed => this.intervalSpeed = intervalSpeed,
+      error: console.error,
+    });
   }
 
   private items: Examinee[] = [];
   private patrolExaminee: Examinee | undefined;
+  public intervalSpeed: number = 10;
 
   patrolModeOn: boolean = false;
 
