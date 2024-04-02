@@ -1,6 +1,7 @@
 package at.htl.franklyn.recorder.boundary;
 
-import io.quarkus.logging.Log;
+import at.htl.franklyn.recorder.dto.IntervalUpdateDto;
+import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
@@ -28,10 +29,13 @@ public class ScreenshotResource {
     @ConfigProperty(name = "screenshots.path")
     String screenshotsPath;
 
+    @Inject
+    SavesResource savesResource;
+
     @POST
-    @Path("{username}")
+    @Path("{username}/alpha")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
-    public void takeScreenshot(@PathParam("username") String username,
+    public void takeAlphaScreenshot(@PathParam("username") String username,
                                @RestForm("image") @PartType(MediaType.APPLICATION_OCTET_STREAM) InputStream screenshot){
         try {
             // TODO: Sanitize username
@@ -41,8 +45,78 @@ public class ScreenshotResource {
                 directory.mkdirs();
             }
 
+            BufferedImage alpha =  ImageIO.read(screenshot);
+
             ImageIO.write(
-                    ImageIO.read(screenshot),
+                    alpha,
+                    "png",
+                    Paths.get(
+                            directory.getPath(),
+                            "/alphaframe.png"
+                    ).toFile()
+            );
+
+            ImageIO.write(
+                    alpha,
+                    "png",
+                    Paths.get(
+                            directory.getPath(),
+                            String.format("/%s-%s.png",
+                                    username,
+                                    new SimpleDateFormat(timestampPattern).format(new Date()))
+                    ).toFile()
+            );
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    @POST
+    @Path("{username}/beta")
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    public void takeBetaScreenshot(@PathParam("username") String username,
+                               @RestForm("image") @PartType(MediaType.APPLICATION_OCTET_STREAM) InputStream screenshot){
+        try {
+            // TODO: Sanitize username
+            File directory = Paths.get(screenshotsPath, username).toFile();
+
+            if(!directory.exists()){
+                directory.mkdirs();
+            }
+
+            BufferedImage diffFrame = ImageIO.read(screenshot);
+
+            BufferedImage alphaFrame = ImageIO.read(Paths
+                    .get(
+                            directory.getPath(),
+                            "/alphaframe.png"
+                    )
+                    .toFile()
+            );
+
+
+            int width = alphaFrame.getWidth();
+            int height = alphaFrame.getHeight();
+
+            BufferedImage betaFrame = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+
+
+            for (int y = 0; y < height; y++) {
+                for (int x = 0; x < width; x++) {
+                    int alphaRGB = alphaFrame.getRGB(x, y);
+                    int diffRGB = diffFrame.getRGB(x, y);
+
+                    if (0 != diffRGB) {
+                        betaFrame.setRGB(x, y, diffRGB);
+                    } else {
+                        betaFrame.setRGB(x, y, alphaRGB);
+                    }
+                }
+            }
+
+            ImageIO.write(
+                    betaFrame,
                     "png",
                     Paths.get(
                             directory.getPath(),
@@ -60,8 +134,7 @@ public class ScreenshotResource {
     @GET
     @Path("{username}")
     @Produces("image/png")
-    public Response getScreenshot(@PathParam("username") String username){
-
+    public Response getScreenshot(@PathParam("username") String username) {
         // TODO: Sanitize username
         File directory = Paths.get(screenshotsPath, username).toFile();
 
@@ -81,6 +154,7 @@ public class ScreenshotResource {
             File newestScreenshot = Collections.max(
                 Arrays.stream(files)
                         .filter(file -> file.getName().endsWith("png"))
+                        .filter(file -> !file.getName().startsWith("alphaframe"))
                         .toList(),
                 Comparator.comparing(File::getName)
             );
@@ -108,7 +182,6 @@ public class ScreenshotResource {
             @PathParam("width") int width,
             @PathParam("height") int height)
     {
-
         Response response = Response.status(404).entity(null).build();
 
         try{
@@ -138,5 +211,18 @@ public class ScreenshotResource {
         }
 
         return response;
+    }
+
+    @POST
+    @Path("updateInterval")
+    public Response updateScreenshotInterval(IntervalUpdateDto intervalUpdateDto) {
+        this.savesResource.rescheduleScreenshotUpdateJob(intervalUpdateDto.newInterval());
+        return Response.ok().build();
+    }
+
+    @GET
+    @Path("intervalSpeed")
+    public Response getIntervalSpeed() {
+        return Response.ok(this.savesResource.getIntervalSpeed()).build();
     }
 }

@@ -3,14 +3,6 @@ table {
   margin-top: 2%;
 }
 
-.examinee-list {
-  width: 20%;
-  padding: 2%;
-  vertical-align: top;
-  background: lightgrey;
-}
-
 .examinee-patrol {
   width: 80%;
-  padding: 2%;
 }

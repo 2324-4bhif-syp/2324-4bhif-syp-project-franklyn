@@ -1,30 +1,60 @@
-<div style="display: flex; text-align: center">
-  <button (click)="resetExaminees($event)">Reset</button>
-  <input type="checkbox" [(ngModel)]="examineeRepo.patrolModeOn"> Patrol-mode
-</div>
-<div style="width: 400px">
-  <label
-    for="customRange"
-    class="form-label">
-    Patrol speed: {{patrolManagerService.nextClientTime}} sec
-  </label>
-  <input
-    type="range"
-    class="form-range"
-    [min]="environment.minNextClientScheduleTime"
-    [max]="environment.maxNextClientScheduleTime"
-    id="customRange"
-    [(ngModel)]="patrolManagerService.nextClientTime">
+<div>
+  <table class="patrol-mode-height container-fluid">
+    <tr>
+      <td class="bg-light col-2 align-top pt-3">
+        <div class="overflow-scroll patrol-mode-height">
+          <h6 class="fw-bold text-center">Examinees</h6>
+          <app-examinee-list></app-examinee-list>
+        </div>
+      </td>
+      <td class="examinee-patrol col-8 align-top pt-2 px-3">
+        <app-examinee [examinee]="examineeRepo.getPatrolExaminee()" [showImage]="true"></app-examinee>
+      </td>
+    </tr>
+  </table>
 </div>
 
-<table>
-  <tr>
-    <td class="examinee-list">
-      <b>Examinees:</b>
-      <app-examinee-list></app-examinee-list>
-    </td>
-    <td class="examinee-patrol px-auto">
-      <app-examinee [examinee]="examineeRepo.getPatrolExaminee()" [showImage]="true"></app-examinee>
-    </td>
-  </tr>
-</table>
+<div class="d-flex justify-content-around fixed-bottom bg-light pt-1">
+  <div class="text-center align-self-center">
+    <label>
+      <input type="checkbox" [(ngModel)]="examineeRepo.patrolModeOn"> Patrol-mode
+    </label>
+  </div>
+
+  <div>
+    <label
+      for="customRange"
+      class="form-label">
+      Patrol speed: {{patrolManagerService.getNextClientTimeFormatted()}} sec
+    </label>
+    <input
+      type="range"
+      class="form-range"
+      [min]="environment.minNextClientScheduleTime"
+      [max]="environment.maxNextClientScheduleTime"
+      id="customRange"
+      [(ngModel)]="patrolManagerService.nextClientTime">
+  </div>
+  <div>
+    <label
+      for="customRange"
+      class="form-label">
+      Screenshot capture interval: {{ examineeRepo.intervalSpeed}} sec
+    </label>
+    <input
+      type="range"
+      class="form-range"
+      [min]="environment.minNextClientScheduleTime"
+      [max]="environment.maxNextClientScheduleTime"
+      id="screenshotCaptureInterval"
+      (change)="screenshotCaptureIntervalUpdate($event)"
+      [(ngModel)]="examineeRepo.intervalSpeed">
+  </div>
+  <div class="align-self-center">
+    <button
+      (click)="resetExaminees($event)"
+      class="btn btn-danger">
+      Reset
+    </button>
+  </div>
+</div>

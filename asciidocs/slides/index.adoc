@@ -1,6 +1,8 @@
 :revealjs_theme: white
 :customcss: css/presentation.css
-ifndef::imagesdir[:imagesdir: ../images]
+ifdef::env-ide[]
+:imagesdir: ../images
+endif::[]
 
 [.title]
 = Franklyn
@@ -24,12 +26,21 @@ ifndef::imagesdir[:imagesdir: ../images]
 *** kein Kopieren von fertigen Programmen/Lösungen
 
 [.font-xx-large]
-=== Sprint 7: Änderungen
-* Tutorial zum aufsetzten von Franklyn
-* Automatische Releases bei push auf Main
-* Memory leaks von ffmpeg teilweise behoben
-* Vorläufiger Reset-Button
-* Bugfixes
+=== Sprint 8: Änderungen
+* Überarbeitung des instructor-clients
+* Implementierung der Alpha- und Betaframes
+* Dashboard für Systeminformationen (CPU, RAM, Disk usage)
+* Reset-Button löscht nun alte Screenshots
+* Screenshotintervall ist nun im instructor-client einstellbar
+
+[.columns.is-vcentered]
+=== Original instructor-frontend
+
+[.column]
+image::instructor-frontend-original-style-patrol-mode.png[Patrol-mode]
+
+[.column]
+image::instructor-frontend-original-style-video-viewer.png[Video-viewer]
 
 === Live Demo
 

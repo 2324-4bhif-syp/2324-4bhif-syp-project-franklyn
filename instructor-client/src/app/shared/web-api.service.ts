@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {environment} from "../../../env/environment";
 import {Examinee} from "./entity/Examinee";
+import {ServerMetrics} from "./entity/ServerMetrics";
 
 @Injectable({
   providedIn: 'root'
@@ -16,6 +17,24 @@ export class WebApiService {
   }
 
   public resetExaminees(): void {
-    this.http.get(`${environment.serverBaseUrl}/examinees/reset`, {}).subscribe();
+    this.http.post(`${environment.serverBaseUrl}/state/reset`, {}).subscribe();
+  }
+
+  public updateScreenshotCaptureInterval(updateInterval: number): void {
+    this.http.post(`${environment.serverBaseUrl}/screenshot/updateInterval`,
+      {newInterval: updateInterval}
+    ).subscribe();
+  }
+
+  public getIntervalSpeed() {
+    return this.http.get<number>(`${environment.serverBaseUrl}/screenshot/intervalSpeed`,
+      {headers: this.headers});
+  }
+
+  public getServerMetrics(){
+    return this.http.get<ServerMetrics>(
+      `${environment.serverBaseUrl}/state/system-metrics`,
+      {headers: this.headers}
+    );
   }
 }

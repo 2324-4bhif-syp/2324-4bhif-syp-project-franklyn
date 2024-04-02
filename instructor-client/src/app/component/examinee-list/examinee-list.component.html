@@ -1,5 +1,7 @@
-<ul>
-  <li *ngFor="let e of examineeRepo.get()">
-    <app-examinee [examinee]="e"></app-examinee>
-  </li>
-</ul>
+<div class="px-2">
+  <div *ngFor="let e of examineeRepo.get()" class="pb-3 mb-3">
+    <app-examinee
+      [examinee]="e">
+    </app-examinee>
+  </div>
+</div>
