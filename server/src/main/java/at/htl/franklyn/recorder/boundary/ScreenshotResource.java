@@ -154,6 +154,7 @@ public class ScreenshotResource {
             File newestScreenshot = Collections.max(
                 Arrays.stream(files)
                         .filter(file -> file.getName().endsWith("png"))
+                        .filter(file -> !file.getName().startsWith("alphaframe"))
                         .toList(),
                 Comparator.comparing(File::getName)
             );
