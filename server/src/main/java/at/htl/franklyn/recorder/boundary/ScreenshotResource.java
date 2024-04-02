@@ -1,6 +1,7 @@
 package at.htl.franklyn.recorder.boundary;
 
 import at.htl.franklyn.recorder.dto.IntervalUpdateDto;
+import io.quarkus.logging.Log;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;

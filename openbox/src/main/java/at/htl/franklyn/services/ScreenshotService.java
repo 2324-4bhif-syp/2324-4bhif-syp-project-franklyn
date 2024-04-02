@@ -23,7 +23,9 @@ public class ScreenshotService {
                     new Rectangle(Toolkit.getDefaultToolkit().getScreenSize())
             );
 
-            if (null == alphaFrame){
+            // scale it to 1920*1080 if it has a different size
+
+            if (null == alphaFrame) {
                 alphaFrame = screenshot;
 
                 r.header("Frame-Type", "alpha");
@@ -41,8 +43,6 @@ public class ScreenshotService {
 
         int width = alphaFrame.getWidth();
         int height = alphaFrame.getHeight();
-
-        // schauen ob ein hund mitten im test auflösung ändert
 
         BufferedImage outputFrame = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
 
@@ -63,7 +63,7 @@ public class ScreenshotService {
         }
 
         // if more than half of the frame is different make it the new alpha frame
-        if(counter > width * height * 0.5){
+        if (counter > width * height * 0.5) {
             alphaFrame = betaFrame;
             response.header("Frame-Type", "alpha");
             return betaFrame;

@@ -17,6 +17,7 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.util.Objects;
@@ -71,9 +72,11 @@ public class Client {
 
             String frameTyp = screenshotResponse.getHeaderString("Frame-Type");
 
-            ImageIO.write(screenshotResponse.readEntity(BufferedImage.class), "png", byteArrayOutputStream);
+            BufferedImage screenshot = screenshotResponse.readEntity(BufferedImage.class);
 
-            Log.info(frameTyp);
+            ImageIO.write(screenshot, "png", byteArrayOutputStream);
+
+            Log.info(frameTyp + ": " + byteArrayOutputStream.size() / 1000 + " KB");
 
             if(Objects.equals(frameTyp, "alpha")){
                 screenshotUploadService.uploadAlphaScreenshot(
