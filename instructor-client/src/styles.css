@@ -7,3 +7,14 @@
 .video-viewer-height {
   height: 87vh
 }
+
+.left-bar-width {
+  width: 25vw;
+}
+
+.examinee-btn-label {
+  overflow: hidden;
+  white-space: nowrap;
+  display: block;
+  text-overflow: ellipsis;
+}

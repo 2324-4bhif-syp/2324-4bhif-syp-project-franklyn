@@ -4,7 +4,9 @@
     (click)="selectExaminee()"
     class="btn w-100"
     [class]="getActivity()">
-    {{examinee.username}}
+    <span class="examinee-btn-label examinee-btn-width">
+      {{examinee.username}}
+    </span>
   </button>
 
   <h3 *ngIf="examinee && showImage">{{examinee.username}}</h3>
