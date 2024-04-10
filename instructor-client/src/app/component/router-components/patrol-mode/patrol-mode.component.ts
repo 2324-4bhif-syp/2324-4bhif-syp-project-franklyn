@@ -25,13 +25,23 @@ export class PatrolModeComponent {
   constructor(protected examineeRepo: ExamineeDataService, protected patrolManagerService: PatrolManagerService) {
   }
 
-  resetExaminees(_event: Event): void {
+  protected resetText: string = "";
+
+  resetExaminees(): void {
     this.examineeRepo.resetExaminees();
   }
 
-  screenshotCaptureIntervalUpdate(_: Event): void {
+  resetTextIsWantedText(): boolean {
+    return this.resetText !== environment.wantedResetText
+  }
+
+  screenshotCaptureIntervalUpdate(): void {
     this.examineeRepo.updateScreenshotCaptureInterval(this.examineeRepo.intervalSpeed);
   }
 
   protected readonly environment = environment;
+
+  emptyResetText() {
+    this.resetText = "";
+  }
 }

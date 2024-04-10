@@ -47,14 +47,62 @@
       [min]="environment.minNextClientScheduleTime"
       [max]="environment.maxNextClientScheduleTime"
       id="screenshotCaptureInterval"
-      (change)="screenshotCaptureIntervalUpdate($event)"
+      (change)="screenshotCaptureIntervalUpdate()"
       [(ngModel)]="examineeRepo.intervalSpeed">
   </div>
-  <div class="align-self-center">
+  <div class="align-self-center" >
     <button
-      (click)="resetExaminees($event)"
-      class="btn btn-danger">
+      (click)="emptyResetText()"
+      class="btn btn-danger"
+      data-bs-toggle="modal"
+      data-bs-target="#verification-modal">
       Reset
     </button>
+  </div>
+</div>
+
+<!-- Modal -->
+<div
+  class="modal fade"
+  id="verification-modal"
+  tabindex="-1"
+  aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5">Reset</h1>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close">
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>
+          Please proceed with caution!
+          By proceeding, you will disconnect all examinees
+          and delete all screenshots and videos. If you continue,
+          you will no longer have access to any videos that
+          have been recorded thus far.
+        </p>
+        <p class="fw-bold">Please confirm by typing '{{environment.wantedResetText}}' in the box below and then pressing the reset button.</p>
+        <input type="text" class="form-control" placeholder="{{environment.wantedResetText}}" [(ngModel)]="resetText">
+      </div>
+      <div class="modal-footer">
+        <button
+          class="btn btn-secondary"
+          data-bs-dismiss="modal">
+          Cancel
+        </button>
+        <button
+          (click)="resetExaminees()"
+          class="btn btn-danger"
+          [disabled]="resetTextIsWantedText()"
+          data-bs-dismiss="modal">
+          Reset
+        </button>
+      </div>
+    </div>
   </div>
 </div>
