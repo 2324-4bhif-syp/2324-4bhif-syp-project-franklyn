@@ -59,15 +59,30 @@
             <label
               for="patrol-speed-range"
               class="form-label">
-              Patrol speed: {{patrolManagerService.getNextClientTimeFormatted()}} sec
+              Patrol speed: {{patrolManagerService.getPatrolSpeedFormatted()}} sec
+            </label>
+            <input
+              type="range"
+              class="form-range"
+              [min]="environment.minPatrolSpeed"
+              [max]="environment.maxPatrolSpeed"
+              id="patrol-speed-range"
+              name="patrol-speed-range"
+              [(ngModel)]="patrolManagerService.nextPatrol">
+          </div>
+          <div class="mb-2">
+            <label
+              for="get-client-interval"
+              class="form-label">
+              Get client interval: {{patrolManagerService.getNextClientTimeFormatted()}} sec
             </label>
             <input
               type="range"
               class="form-range"
               [min]="environment.minNextClientScheduleTime"
               [max]="environment.maxNextClientScheduleTime"
-              id="patrol-speed-range"
-              name="patrol-speed-range"
+              id="get-client-interval"
+              name="get-client-interval"
               [(ngModel)]="patrolManagerService.nextClientTime">
           </div>
           <div class="mb-4">

@@ -56,11 +56,13 @@ export default class ExamineeDataService {
     this.patrolExaminee = undefined;
   }
 
-  newPatrolExaminee(examinee?: Examinee, ignoreConnection: boolean = false) {
+  updateScreenshots() {
     if (this.location.path() !== "/video-viewer") {
       this.cacheBusterService.cacheBusterNum++;
     }
+  }
 
+  newPatrolExaminee(examinee?: Examinee, ignoreConnection: boolean = false) {
     if (examinee !== undefined && (examinee.connected || ignoreConnection)) {
       this.patrolModeOn = false;
       this.patrolExaminee = examinee;

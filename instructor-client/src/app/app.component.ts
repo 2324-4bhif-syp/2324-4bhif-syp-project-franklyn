@@ -39,15 +39,14 @@ export class AppComponent{
   public patrolModeActive: boolean = false;
 
   public changeRoute() {
-    if (this.location.path() === "/video-viewer") {
+    if (this.location.path() === "/video-viewer" || this.location.path() === "/metrics-dashboard") {
       this.patrolModeActive = false;
-      this.patrolManagerService.stopInterval();
-    } else if (this.location.path() === "/metrics-dashboard") {
-      this.patrolModeActive = false;
-      this.patrolManagerService.stopInterval();
+      this.patrolManagerService.stopClientScheduleInterval();
+      this.patrolManagerService.stopPatrolInterval();
     } else {
       this.patrolModeActive = true;
-      this.patrolManagerService.startInterval();
+      this.patrolManagerService.startClientScheduleInterval();
+      this.patrolManagerService.startPatrolInterval();
     }
 
     this.examineeRepo.patrolModeOn = false; //safety measure to prevent any possible bugs
