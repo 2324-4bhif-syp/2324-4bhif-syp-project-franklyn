@@ -22,26 +22,6 @@ import {ExamineeDownloadListComponent} from "../../examinee-download-list/examin
   styleUrl: './patrol-mode.component.css'
 })
 export class PatrolModeComponent {
-  constructor(protected examineeRepo: ExamineeDataService, protected patrolManagerService: PatrolManagerService) {
-  }
-
-  protected resetText: string = "";
-
-  resetExaminees(): void {
-    this.examineeRepo.resetExaminees();
-  }
-
-  resetTextIsWantedText(): boolean {
-    return this.resetText !== environment.wantedResetText
-  }
-
-  screenshotCaptureIntervalUpdate(): void {
-    this.examineeRepo.updateScreenshotCaptureInterval(this.examineeRepo.intervalSpeed);
-  }
-
-  protected readonly environment = environment;
-
-  emptyResetText() {
-    this.resetText = "";
+  constructor(protected examineeRepo: ExamineeDataService) {
   }
 }

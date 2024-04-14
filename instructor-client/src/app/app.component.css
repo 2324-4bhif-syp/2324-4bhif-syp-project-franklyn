@@ -6,3 +6,8 @@ table {
 .examinee-patrol {
   width: 80%;
 }
+
+.settings-dropdown {
+  width: 30vw;
+  max-height: 70vh;
+}

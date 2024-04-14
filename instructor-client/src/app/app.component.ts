@@ -28,7 +28,7 @@ import {PatrolManagerService} from "./shared/repository/patrol-manager.service";
   styleUrl: './app.component.css'
 })
 export class AppComponent{
-  constructor(private examineeRepo: ExamineeDataService, protected location: Location, private patrolManagerService: PatrolManagerService) {
+  constructor(protected examineeRepo: ExamineeDataService, protected location: Location, protected patrolManagerService: PatrolManagerService) {
     this.changeRoute(); // call it for initialization in case of for example a page reload
 
     setInterval(() => {
@@ -52,5 +52,25 @@ export class AppComponent{
 
     this.examineeRepo.patrolModeOn = false; //safety measure to prevent any possible bugs
     this.examineeRepo.unsetPatrolExaminee();
+  }
+
+  protected resetText: string = "";
+
+  resetExaminees(): void {
+    this.examineeRepo.resetExaminees();
+  }
+
+  resetTextIsWantedText(): boolean {
+    return this.resetText !== environment.wantedResetText
+  }
+
+  screenshotCaptureIntervalUpdate(): void {
+    this.examineeRepo.updateScreenshotCaptureInterval(this.examineeRepo.intervalSpeed);
+  }
+
+  protected readonly environment = environment;
+
+  emptyResetText() {
+    this.resetText = "";
   }
 }
