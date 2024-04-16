@@ -1,4 +1,4 @@
-export {store, Model} from './model';
+export {store, Model, set} from './model';
 export {Examinee} from './entity/Examinee';
 export {CacheBuster} from './entity/CacheBuster';
 export {ExamineeData} from './entity/ExamineeData';

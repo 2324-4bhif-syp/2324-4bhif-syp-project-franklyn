@@ -3,7 +3,7 @@ import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Examinee, ServerMetrics} from "../model";
 import {environment} from "../../../env/environment";
 import {firstValueFrom} from "rxjs";
-import {set} from "../model/model";
+import {set} from "../model";
 
 @Injectable({
   providedIn: 'root'
