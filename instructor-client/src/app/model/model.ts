@@ -14,21 +14,16 @@ export interface Model {
 }
 
 const initialState: Model = {
-  cacheBuster: {
-    cachebustNum: 0
-  },
+  cacheBuster: new CacheBuster(0),
   examineeData: {
     examinees: [],
     getExamineeIntervalSpeed: environment.getExamineeInterval
   },
-  patrol: {
-    nextClientScheduleTime: environment.getExamineeInterval,
-    patrolSpeed: environment.patrolSpeed,
-    clientScheduleTimer: undefined,
-    patrolTimer: undefined,
-    patrolModeOn: false,
-    patrolExaminee: undefined
-  },
+  patrol: new Patrol(
+    environment.getExamineeInterval,
+    environment.patrolSpeed,
+    false
+  ),
   serverMetrics: {
     cpuUsagePercent: 0,
     totalDiskSpaceInBytes: 0,
