@@ -1,26 +1,26 @@
 import {Examinee} from "./Examinee";
 import {environment} from "../../../../env/environment";
-import {inject} from "@angular/core";
-import {ScheduleService} from "../../services/schedule.service";
 
 export class Patrol {
   constructor(
     nextClientScheduleTime: number,
     patrolSpeed: number,
     patrolModeOn: boolean) {
-    this.nextClientScheduleTime = nextClientScheduleTime;
-    this.patrolSpeed = patrolSpeed;
+    this.nextClientTime = nextClientScheduleTime;
+    this.nextPatrol = patrolSpeed;
     this.isPatrolModeOn = patrolModeOn;
   }
 
-  private nextClientScheduleTime: number;
-  private patrolSpeed: number;
+  private nextClientScheduleTime: number = 0;
+  private patrolSpeed: number = 0;
   private clientScheduleTimer: number | undefined;
   private patrolScheduleTimer: number | undefined;
   private isPatrolModeOn: boolean;
   private curPatrolExaminee: Examinee | undefined;
 
-  private scheduleSvc = inject(ScheduleService);
+  get nextClientTimeUnformatted() {
+    return this.nextClientScheduleTime;
+  }
 
   get nextClientTime() {
     return this.nextClientScheduleTime/1000;
@@ -29,8 +29,11 @@ export class Patrol {
   set nextClientTime(val: number) {
     if (val >= environment.minNextClientScheduleTime && val <= environment.maxNextClientScheduleTime) {
       this.nextClientScheduleTime = val*1000;
-      this.scheduleSvc.startExamineeScheduleInterval();
     }
+  }
+
+  get nextPatrolUnformatted() {
+    return this.patrolSpeed;
   }
 
   get nextPatrol() {
@@ -40,7 +43,6 @@ export class Patrol {
   set nextPatrol(val: number) {
     if (val >= environment.minPatrolSpeed && val <= environment.maxPatrolSpeed) {
       this.patrolSpeed = val*1000;
-      this.scheduleSvc.startPatrolInterval();
     }
   }
 
@@ -69,10 +71,10 @@ export class Patrol {
   }
 
   get patrolExaminee(): Examinee | undefined {
-    return this.patrolExaminee;
+    return this.curPatrolExaminee;
   }
 
-  set patrolExaminee(val: number) {
-    this.patrolExaminee = val;
+  set patrolExaminee(val: Examinee | undefined) {
+    this.curPatrolExaminee = val;
   }
 }

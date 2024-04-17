@@ -2,7 +2,7 @@ import {inject, Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Examinee, ServerMetrics} from "../model";
 import {environment} from "../../../env/environment";
-import {firstValueFrom} from "rxjs";
+import {lastValueFrom} from "rxjs";
 import {set} from "../model";
 
 @Injectable({
@@ -13,17 +13,15 @@ export class WebApiService {
   private headers: HttpHeaders = new HttpHeaders().set('Accept', 'application/json');
 
   public async getExamineesFromServer(): Promise<void> {
-    const examinees: Examinee[] = await firstValueFrom(
-      this.httpClient
-      .get<Examinee[]>(
+      this.httpClient.get<Examinee[]>(
         `${environment.serverBaseUrl}/examinees`,
-        {headers: this.headers}
-      )
-    );
-
-    set((model) => {
-      model.examineeData.examinees = examinees;
-    });
+        {headers: this.headers})
+        .subscribe({
+        "next": (examinees) => set((model) => {
+          model.examineeData.examinees = examinees;
+        }),
+        "error": (err) => console.error(err),
+      });
   }
 
   public async resetServer(): Promise<void> {
@@ -41,7 +39,7 @@ export class WebApiService {
   }
 
   public async getIntervalSpeed(): Promise<void> {
-    const intervalSpeed: number = await firstValueFrom(
+    const intervalSpeed: number = await lastValueFrom(
       this.httpClient
         .get<number>(
           `${environment.serverBaseUrl}/screenshot/intervalSpeed`,
@@ -50,12 +48,12 @@ export class WebApiService {
     );
 
     set((model) => {
-      model.examineeData.getExamineeIntervalSpeed = intervalSpeed;
+      model.examineeData.screenshotCaptureInterval = intervalSpeed;
     });
   }
 
   public async getServerMetrics(): Promise<void> {
-    const serverMetrics: ServerMetrics = await firstValueFrom(
+    const serverMetrics: ServerMetrics = await lastValueFrom(
       this.httpClient
         .get<ServerMetrics>(
         `${environment.serverBaseUrl}/state/system-metrics`,

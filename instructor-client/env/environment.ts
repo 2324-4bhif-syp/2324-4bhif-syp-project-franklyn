@@ -1,5 +1,5 @@
 export const environment = {
-  getExamineeInterval: 10,
+  screenshotCaptureInterval: 10,
   nextClientScheduleTime: 10,
   minNextClientScheduleTime: 1,
   maxNextClientScheduleTime: 30,
