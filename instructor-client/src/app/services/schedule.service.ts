@@ -10,7 +10,7 @@ export class ScheduleService {
   private store = inject(StoreService).store;
   private examineeRepo = inject(ExamineeService);
 
-  stopClientScheduleInterval() {
+  stopExamineeScheduleInterval() {
     if (this.store.value.patrol.clientTimer !== undefined) {
       clearInterval(this.store.value.patrol.clientTimer);
     }
@@ -30,8 +30,8 @@ export class ScheduleService {
     });
   }
 
-  startClientScheduleInterval() {
-    this.stopClientScheduleInterval();
+  startExamineeScheduleInterval() {
+    this.stopExamineeScheduleInterval();
 
     if (this.store.value.patrol.clientTimer === undefined) {
       this.store.value.patrol.clientTimer = window.setInterval(() => {

@@ -31,38 +31,55 @@ export class ExamineeService {
   updateScreenshots() {
     if (this.location.path() !== "/video-viewer") {
       set((model) => {
-        model.cacheBuster.cacheBusterNum++;
+        model.cacheBuster.cachebustNum++;
       });
     }
   }
 
   newPatrolExaminee(examinee?: Examinee, ignoreConnection: boolean = false) {
+    // if a valid examinee is specified to be the patrol-examinee
     if (examinee !== undefined && (examinee.connected || ignoreConnection)) {
       set((model) => {
         model.patrol.patrolModeOn = false;
         model.patrol.patrolExaminee = examinee;
       });
-    } else if (this.store.value.patrol.patrolModeOn) {
+    } else {
+      /*
+      * potential new valid patrol examinees
+      * (they are connected and not the current patrol-examinee)
+      */
       let examinees: Examinee[] = this.get(e => e?.connected && e.username !== this.store.value.patrol.patrolExaminee?.username);
 
-      if (this.get().length !== 0) {
-        // no examinees connected
-        if (examinees.length === 0) {
+      // if length = 0 then there are no valid patrol-examinees
+      if (examinees.length === 0) {
+        /*
+        * 1) if the patrol examinee is not connected we set it
+        * to undefined because then we have no possible new
+        * patrol-examinee.
+        * 2) on the other hand, if we already do have a valid
+        * patrol-examinee and no other possible valid new
+        * patrol examinees (as specified in the if-statement
+        * above), then we can just stay with the current one
+        * 3) this also sets the patrol-examinee to undefined if
+        * the patrol-mode isn't on and the current patrol examinee
+        * isn't connected so this is a way to check if the
+        * current chosen (patrol) examinee is still connected
+        */
+        if (!this.store.value.patrol.patrolExaminee?.connected) {
           set((model) => {
             model.patrol.patrolExaminee = undefined;
           });
-        } else {
-          set((model) => {
-            model.patrol.patrolExaminee = examinees[Math.floor(Math.random() * examinees.length)];
-          })
         }
+      } else if (this.store.value.patrol.patrolModeOn && examinees.length !== 0) {
+        /*
+        * if there are any valid examinees, that could become
+        * the new patrol-examinee and if the patrol-mode is
+        * on then we choose a new random patrol-examinee
+        */
+        set((model) => {
+          model.patrol.patrolExaminee = examinees[Math.floor(Math.random() * examinees.length)];
+        })
       }
-    }
-
-    if (this.get().length === 0) {
-      set((model) => {
-        model.patrol.patrolExaminee = undefined;
-      });
     }
   }
 }
