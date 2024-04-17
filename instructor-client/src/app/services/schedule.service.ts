@@ -1,15 +1,31 @@
-import {inject, Injectable, model, OnDestroy} from '@angular/core';
+import {inject, Injectable, OnDestroy, OnInit} from '@angular/core';
 import {StoreService} from "./store.service";
 import {set} from "../model";
 import {ExamineeService} from "./examinee.service";
-import {window} from "rxjs";
+import {distinctUntilChanged, map} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
 })
-export class ScheduleService implements OnDestroy{
+export class ScheduleService implements OnDestroy, OnInit{
   private store = inject(StoreService).store;
   private examineeRepo = inject(ExamineeService);
+
+  ngOnInit(): void {
+    this.store.pipe(
+      map(model => model.patrol.nextPatrol),
+      distinctUntilChanged()
+    ).subscribe(() => {
+      this.startPatrolInterval();
+    })
+
+    this.store.pipe(
+      map(model => model.patrol.nextClientTime),
+      distinctUntilChanged()
+    ).subscribe(() => {
+      this.startExamineeScheduleInterval();
+    })
+  }
 
   stopExamineeScheduleInterval() {
     if (this.store.value.patrol.clientTimer !== undefined) {
@@ -37,7 +53,7 @@ export class ScheduleService implements OnDestroy{
     if (this.store.value.patrol.clientTimer === undefined) {
       this.store.value.patrol.clientTimer = setInterval(() => {
         this.examineeRepo.updateScreenshots();
-      }, this.store.value.patrol.nextClientTime);
+      }, this.store.value.patrol.nextClientTimeUnformatted);
     }
   }
 
@@ -47,7 +63,7 @@ export class ScheduleService implements OnDestroy{
     if (this.store.value.patrol.patrolTimer === undefined) {
       this.store.value.patrol.patrolTimer = setInterval(() => {
         this.examineeRepo.newPatrolExaminee();
-      }, this.store.value.patrol.nextPatrol);
+      }, this.store.value.patrol.nextPatrolUnformatted);
     }
   }
 

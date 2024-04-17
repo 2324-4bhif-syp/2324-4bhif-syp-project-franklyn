@@ -1,13 +1,94 @@
-import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { RouterOutlet } from '@angular/router';
+import {Component, inject} from '@angular/core';
+import {CommonModule, Location} from '@angular/common';
+import {RouterLink, RouterLinkActive, RouterOutlet} from '@angular/router';
+import {environment} from "../../env/environment";
+import {StoreService} from "./services/store.service";
+import {ExamineeService} from "./services/examinee.service";
+import {set} from "./model";
+import {WebApiService} from "./services/web-api.service";
+import {ScheduleService} from "./services/schedule.service";
+
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterOutlet],
+  imports: [CommonModule, RouterOutlet, RouterLink, RouterLinkActive],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
 export class AppComponent {
+  protected store = inject(StoreService).store;
+  protected examineeSvc = inject(ExamineeService);
+  protected webApi = inject(WebApiService);
+  protected location = inject(Location);
+  protected scheduleSvc = inject(ScheduleService);
+
+  protected readonly environment = environment;
+
+  resetExaminees(): void {
+    this.examineeSvc.resetExaminees();
+  }
+
+  resetTextIsWantedText(): boolean {
+    return this.store.value.resetText !== environment.wantedResetText
+  }
+
+  screenshotCaptureIntervalUpdate(): void {
+    this.webApi.updateScreenshotCaptureInterval(this.store.value.examineeData.screenshotCaptureInterval);
+  }
+
+  setResetText(val: string): void {
+    set((model) => {
+      model.resetText = val;
+    });
+  }
+
+  setPatrolMode(val: boolean): void {
+    set((model) => {
+      model.patrol.patrolModeOn = val;
+    });
+  }
+
+  setPatrolSpeed(val: string): void {
+    console.log(val)
+    /*
+    set((model) => {
+      model.patrol.nextPatrol = val;
+    });*/
+  }
+
+  setNextClientTime(val: string): void {
+    console.log(val)
+    /*
+    set((model) => {
+      model.patrol.nextClientTime = val;
+    });*/
+    this.screenshotCaptureIntervalUpdate();
+  }
+
+  setScreenshotCaptureInterval(val: string): void {
+    console.log(val)
+    /*
+    set((model) => {
+      model.examineeData.screenshotCaptureInterval = val;
+    });*/
+  }
+
+  public changeRoute() {
+    if (this.location.path() === "/video-viewer" || this.location.path() === "/metrics-dashboard") {
+      this.scheduleSvc.stopExamineeScheduleInterval();
+      this.scheduleSvc.stopPatrolInterval();
+    } else {
+      this.scheduleSvc.startExamineeScheduleInterval();
+      this.scheduleSvc.startPatrolInterval();
+    }
+
+    set((model) => {
+      //safety measure to prevent any possible bugs
+      model.patrol.patrolExaminee = undefined;
+      model.patrol.patrolModeOn = false;
+    })
+  }
+
+  protected readonly Number = Number;
 }

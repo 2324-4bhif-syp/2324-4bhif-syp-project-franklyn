@@ -10,7 +10,8 @@ export interface Model {
   readonly cacheBuster: CacheBuster,
   readonly examineeData: ExamineeData,
   readonly patrol: Patrol,
-  readonly serverMetrics: ServerMetrics
+  readonly serverMetrics: ServerMetrics,
+  readonly resetText: string
 }
 
 const initialState: Model = {
@@ -19,10 +20,10 @@ const initialState: Model = {
   },
   examineeData: {
     examinees: [],
-    getExamineeIntervalSpeed: environment.getExamineeInterval
+    screenshotCaptureInterval: environment.screenshotCaptureInterval
   },
   patrol: new Patrol(
-    environment.getExamineeInterval,
+    environment.nextClientScheduleTime,
     environment.patrolSpeed,
     false
   ),
@@ -34,7 +35,8 @@ const initialState: Model = {
     maxAvailableMemoryInBytes: 0,
     totalUsedMemoryInBytes: 0,
     timerId: undefined
-  }
+  },
+  resetText: ""
 };
 
 export const store = new BehaviorSubject<Model>(initialState);
