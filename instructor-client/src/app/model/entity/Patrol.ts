@@ -29,7 +29,7 @@ export class Patrol {
   set nextClientTime(val: number) {
     if (val >= environment.minNextClientScheduleTime && val <= environment.maxNextClientScheduleTime) {
       this.nextClientScheduleTime = val*1000;
-      this.scheduleSvc.startClientScheduleInterval();
+      this.scheduleSvc.startExamineeScheduleInterval();
     }
   }
 
