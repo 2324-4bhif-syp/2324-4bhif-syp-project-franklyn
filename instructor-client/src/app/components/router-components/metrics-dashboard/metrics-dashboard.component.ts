@@ -1,4 +1,4 @@
-import {Component, inject, OnDestroy, OnInit, QueryList, ViewChildren} from '@angular/core';
+import {Component, inject, QueryList, ViewChildren} from '@angular/core';
 import {BaseChartDirective} from "ng2-charts";
 import {StoreService} from "../../../services/store.service";
 import {ChartConfiguration, ChartData, ChartType} from "chart.js";
@@ -6,6 +6,8 @@ import {WebApiService} from "../../../services/web-api.service";
 import {distinctUntilChanged, map} from "rxjs";
 import {environment} from "../../../../../env/environment";
 import {set} from "../../../model";
+import {Router} from "@angular/router";
+import {Location} from "@angular/common";
 
 @Component({
   selector: 'app-metrics-dashboard',
@@ -16,13 +18,13 @@ import {set} from "../../../model";
   templateUrl: './metrics-dashboard.component.html',
   styleUrl: './metrics-dashboard.component.css'
 })
-export class MetricsDashboardComponent implements OnInit, OnDestroy{
+export class MetricsDashboardComponent{
   @ViewChildren(BaseChartDirective) charts: QueryList<BaseChartDirective> | undefined;
 
   protected store = inject(StoreService).store;
   protected webApi = inject(WebApiService);
 
-  ngOnInit() {
+  constructor(location: Location, router: Router) {
     // subscribe to server-metrics to update when
     // there are changes
     this.store.pipe(
@@ -32,18 +34,20 @@ export class MetricsDashboardComponent implements OnInit, OnDestroy{
       this.updateDatasets();
     });
 
-    // get the server-metrics periodically
-    set((model) => {
-      model.serverMetrics.timerId = setInterval(() => {
-        this.webApi.getServerMetrics();
-      }, environment.reloadDashboardInterval)
-    })
-  }
-
-  ngOnDestroy() {
-    clearTimeout(this.store.value.serverMetrics.timerId);
-    set((model) => {
-      model.serverMetrics.timerId = undefined;
+    router.events.subscribe(val => {
+      if(location.path() === '/metrics-dashboard') {
+        // get the server-metrics periodically
+        set((model) => {
+          model.serverMetrics.timerId = setInterval(() => {
+            this.webApi.getServerMetrics();
+          }, environment.reloadDashboardInterval)
+        })
+      } else {
+        clearTimeout(this.store.value.serverMetrics.timerId);
+        set((model) => {
+          model.serverMetrics.timerId = undefined;
+        })
+      }
     })
   }
 

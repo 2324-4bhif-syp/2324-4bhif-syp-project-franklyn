@@ -42,6 +42,6 @@ const initialState: Model = {
 export const store = new BehaviorSubject<Model>(initialState);
 
 export function set(recipe: (model: Draft<Model>)=>void) {
-  const nextState = produce(store.getValue, recipe);
+  const nextState = produce(store.value, recipe);
   store.next(nextState);
 }
