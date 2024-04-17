@@ -1,1 +1,6 @@
-/* You can add global styles to this file, and also import other style files */
+.examinee-btn-label {
+  overflow: hidden;
+  white-space: nowrap;
+  display: block;
+  text-overflow: ellipsis;
+}
