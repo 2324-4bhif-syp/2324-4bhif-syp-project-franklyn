@@ -14,7 +14,9 @@ export interface Model {
 }
 
 const initialState: Model = {
-  cacheBuster: new CacheBuster(0),
+  cacheBuster: {
+    cachebustNum: 0
+  },
   examineeData: {
     examinees: [],
     getExamineeIntervalSpeed: environment.getExamineeInterval
