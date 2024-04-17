@@ -32,7 +32,8 @@ const initialState: Model = {
     remainingDiskSpaceInBytes: 0,
     savedScreenshotsSizeInBytes: 0,
     maxAvailableMemoryInBytes: 0,
-    totalUsedMemoryInBytes: 0
+    totalUsedMemoryInBytes: 0,
+    timerId: undefined
   }
 };
 

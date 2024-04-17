@@ -9,5 +9,6 @@ export const environment = {
   serverBaseUrl: "/api",
   imageWidth: 1920,
   imageHeight: 1080,
-  wantedResetText: "franklyn"
+  wantedResetText: "franklyn",
+  reloadDashboardInterval: 5000,
 }
