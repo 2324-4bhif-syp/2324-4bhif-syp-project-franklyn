@@ -4,5 +4,6 @@ export interface ServerMetrics {
   remainingDiskSpaceInBytes: number,
   savedScreenshotsSizeInBytes: number,
   maxAvailableMemoryInBytes: number,
-  totalUsedMemoryInBytes: number
+  totalUsedMemoryInBytes: number,
+  timerId: number | undefined
 }
