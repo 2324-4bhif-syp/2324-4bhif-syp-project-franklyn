@@ -1,0 +1,18 @@
+<div class="container-fluid">
+  @if (examinee && !showImage) {
+    <button
+      (click)="selectExaminee()"
+      class="btn w-100"
+      [class]="getActivity()">
+      <span class="examinee-btn-label examinee-btn-width">
+        {{examinee.username}}
+      </span>
+    </button>
+  }
+
+  @if (examinee && showImage) {
+    <h3>{{examinee.username}}</h3>
+
+    <img src="{{getScreenshotAddress()}}" alt="Screenshot of {{examinee.username}}'s screen">
+  }
+</div>
