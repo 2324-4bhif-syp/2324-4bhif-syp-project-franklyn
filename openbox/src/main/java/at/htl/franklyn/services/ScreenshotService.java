@@ -3,11 +3,8 @@ package at.htl.franklyn.services;
 import io.quarkus.logging.Log;
 import jakarta.ws.rs.core.Response;
 
-import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 
 public class ScreenshotService {
 
@@ -23,7 +20,31 @@ public class ScreenshotService {
                     new Rectangle(Toolkit.getDefaultToolkit().getScreenSize())
             );
 
-            // scale it to 1920*1080 if it has a different size
+            int width = screenshot.getWidth();
+            int height = screenshot.getHeight();
+
+            Log.info(width + "-" + height);
+
+            if (width != 1920 || height != 1080) {
+                // scale image to 1920*1080 if it has a different size
+
+                Log.info("resize needed");
+
+                BufferedImage resizedImage = new BufferedImage(
+                        1920,
+                        1080,
+                        BufferedImage.TYPE_INT_RGB
+                );
+
+                Graphics graphicsOfNewImage = resizedImage.getGraphics();
+
+                graphicsOfNewImage.drawImage(screenshot, 0, 0, 1920, 1080, null);
+
+                screenshot = resizedImage;
+
+                graphicsOfNewImage.dispose();
+                resizedImage.flush();
+            }
 
             if (null == alphaFrame) {
                 alphaFrame = screenshot;
