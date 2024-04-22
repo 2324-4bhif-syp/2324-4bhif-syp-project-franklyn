@@ -22,16 +22,6 @@ import {ExamineeDownloadListComponent} from "../../examinee-download-list/examin
   styleUrl: './patrol-mode.component.css'
 })
 export class PatrolModeComponent {
-  constructor(protected examineeRepo: ExamineeDataService, protected patrolManagerService: PatrolManagerService) {
+  constructor(protected examineeRepo: ExamineeDataService) {
   }
-
-  resetExaminees(_event: Event): void {
-    this.examineeRepo.resetExaminees();
-  }
-
-  screenshotCaptureIntervalUpdate(_: Event): void {
-    this.examineeRepo.updateScreenshotCaptureInterval(this.examineeRepo.intervalSpeed);
-  }
-
-  protected readonly environment = environment;
 }

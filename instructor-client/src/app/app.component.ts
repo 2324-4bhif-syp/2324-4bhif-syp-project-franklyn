@@ -28,7 +28,7 @@ import {PatrolManagerService} from "./shared/repository/patrol-manager.service";
   styleUrl: './app.component.css'
 })
 export class AppComponent{
-  constructor(private examineeRepo: ExamineeDataService, protected location: Location, private patrolManagerService: PatrolManagerService) {
+  constructor(protected examineeRepo: ExamineeDataService, protected location: Location, protected patrolManagerService: PatrolManagerService) {
     this.changeRoute(); // call it for initialization in case of for example a page reload
 
     setInterval(() => {
@@ -39,18 +39,37 @@ export class AppComponent{
   public patrolModeActive: boolean = false;
 
   public changeRoute() {
-    if (this.location.path() === "/video-viewer") {
+    if (this.location.path() === "/video-viewer" || this.location.path() === "/metrics-dashboard") {
       this.patrolModeActive = false;
-      this.patrolManagerService.stopInterval();
-    } else if (this.location.path() === "/metrics-dashboard") {
-      this.patrolModeActive = false;
-      this.patrolManagerService.stopInterval();
+      this.patrolManagerService.stopClientScheduleInterval();
+      this.patrolManagerService.stopPatrolInterval();
     } else {
       this.patrolModeActive = true;
-      this.patrolManagerService.startInterval();
+      this.patrolManagerService.startClientScheduleInterval();
+      this.patrolManagerService.startPatrolInterval();
     }
 
     this.examineeRepo.patrolModeOn = false; //safety measure to prevent any possible bugs
     this.examineeRepo.unsetPatrolExaminee();
+  }
+
+  protected resetText: string = "";
+
+  resetExaminees(): void {
+    this.examineeRepo.resetExaminees();
+  }
+
+  resetTextIsWantedText(): boolean {
+    return this.resetText !== environment.wantedResetText
+  }
+
+  screenshotCaptureIntervalUpdate(): void {
+    this.examineeRepo.updateScreenshotCaptureInterval(this.examineeRepo.intervalSpeed);
+  }
+
+  protected readonly environment = environment;
+
+  emptyResetText() {
+    this.resetText = "";
   }
 }
