@@ -59,7 +59,11 @@ public class Client {
         }
 
         if (!dto.request().equals("getScreenshot")) {
-            return;
+            Log.info(dto.request());
+            if (!dto.request().equals("getAlphaFrame")){
+                return;
+            }
+            ScreenshotService.resetAlphaFrame();
         }
 
         ScreenshotUploadService screenshotUploadService = RestClientBuilder.newBuilder()

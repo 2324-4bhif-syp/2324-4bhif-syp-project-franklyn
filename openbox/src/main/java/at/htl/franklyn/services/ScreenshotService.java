@@ -94,4 +94,8 @@ public class ScreenshotService {
 
         return outputFrame;
     }
+
+    public static void resetAlphaFrame(){
+        alphaFrame = null;
+    }
 }
