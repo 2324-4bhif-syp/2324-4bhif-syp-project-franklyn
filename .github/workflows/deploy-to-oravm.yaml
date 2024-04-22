@@ -7,6 +7,7 @@ on:
     workflows: [ "Build docker images" ]
     branches:
       - main
+      - feat/doc-update
     types:
       - completed
   workflow_dispatch:
@@ -34,6 +35,9 @@ jobs:
           ssh -i $SSH_KEY_PATH $SSH_USER@$SSH_HOST "docker compose -f project-franklyn/cicd/docker-compose.yaml down"
           ssh -i $SSH_KEY_PATH $SSH_USER@$SSH_HOST "docker compose -f project-franklyn/cicd/docker-compose.yaml pull"
           ssh -i $SSH_KEY_PATH $SSH_USER@$SSH_HOST "docker compose -f project-franklyn/cicd/docker-compose.yaml up -d"
-          ssh -i $SSH_KEY_PATH $SSH_USER@$SSH_HOST "sudo cp -f project-franklyn/cicd/nginx.conf /etc/nginx/nginx.conf"
+          ssh -i $SSH_KEY_PATH $SSH_USER@$SSH_HOST "project-franklyn/cicd/build-openbox.sh"
+          ssh -i $SSH_KEY_PATH $SSH_USER@$SSH_HOST "sudo cp -f project-franklyn/nginx/nginx.conf /etc/nginx/nginx.conf"
+          ssh -i $SSH_KEY_PATH $SSH_USER@$SSH_HOST "sudo cp -f project-franklyn/nginx/index.html /var/www/html/"
+          ssh -i $SSH_KEY_PATH $SSH_USER@$SSH_HOST "sudo cp -f project-franklyn/dist/openbox/franklyn-student-client.jar /var/www/downloads/"
           ssh -i $SSH_KEY_PATH $SSH_USER@$SSH_HOST "sudo systemctl restart nginx.service"
         shell: bash

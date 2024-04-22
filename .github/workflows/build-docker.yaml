@@ -5,6 +5,7 @@ on:
       - 'instructor-client/**'
       - 'server/**'
       - 'cicd/**'
+      - 'nginx/**'
     branches:
       - main
       - develop
