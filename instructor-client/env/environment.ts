@@ -1,5 +1,4 @@
 export const environment = {
-  screenshotCaptureInterval: 10,
   nextClientScheduleTime: 10,
   minNextClientScheduleTime: 1,
   maxNextClientScheduleTime: 30,

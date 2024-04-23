@@ -48,7 +48,7 @@ export class WebApiService {
     );
 
     set((model) => {
-      model.examineeData.screenshotCaptureInterval = intervalSpeed;
+      model.timer.screenshotCaptureInterval = intervalSpeed;
     });
   }
 

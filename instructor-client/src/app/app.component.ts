@@ -1,6 +1,6 @@
-import {Component, inject} from '@angular/core';
+import {Component, inject, OnInit} from '@angular/core';
 import {CommonModule, Location} from '@angular/common';
-import {RouterLink, RouterLinkActive, RouterOutlet} from '@angular/router';
+import {Router, RouterLink, RouterLinkActive, RouterOutlet} from '@angular/router';
 import {environment} from "../../env/environment";
 import {StoreService} from "./services/store.service";
 import {ExamineeService} from "./services/examinee.service";
@@ -16,7 +16,7 @@ import {ScheduleService} from "./services/schedule.service";
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
-export class AppComponent {
+export class AppComponent implements OnInit{
   protected store = inject(StoreService).store;
   protected examineeSvc = inject(ExamineeService);
   protected webApi = inject(WebApiService);
@@ -24,6 +24,10 @@ export class AppComponent {
   protected scheduleSvc = inject(ScheduleService);
 
   protected readonly environment = environment;
+
+  ngOnInit() {
+    this.webApi.getIntervalSpeed();
+  }
 
   resetExaminees(): void {
     this.examineeSvc.resetExaminees();
@@ -34,7 +38,7 @@ export class AppComponent {
   }
 
   screenshotCaptureIntervalUpdate(): void {
-    this.webApi.updateScreenshotCaptureInterval(this.store.value.examineeData.screenshotCaptureInterval);
+    this.webApi.updateScreenshotCaptureInterval(this.store.value.timer.screenshotCaptureInterval);
   }
 
   setResetText(val: string): void {
@@ -45,13 +49,13 @@ export class AppComponent {
 
   setPatrolMode(val: boolean): void {
     set((model) => {
-      model.patrol.patrolModeOn = val;
+      model.patrol.isPatrolModeOn = val;
     });
   }
 
   setPatrolSpeed(val: string): void {
     console.log(val)
-    /*
+    /* //TODO: check output
     set((model) => {
       model.patrol.nextPatrol = val;
     });*/
@@ -59,7 +63,7 @@ export class AppComponent {
 
   setNextClientTime(val: string): void {
     console.log(val)
-    /*
+    /* //TODO: check output
     set((model) => {
       model.patrol.nextClientTime = val;
     });*/
@@ -67,7 +71,7 @@ export class AppComponent {
   }
 
   setScreenshotCaptureInterval(val: string): void {
-    console.log(val)
+    console.log(val) //TODO: check output
     /*
     set((model) => {
       model.examineeData.screenshotCaptureInterval = val;
@@ -86,7 +90,7 @@ export class AppComponent {
     set((model) => {
       //safety measure to prevent any possible bugs
       model.patrol.patrolExaminee = undefined;
-      model.patrol.patrolModeOn = false;
+      model.patrol.isPatrolModeOn = false;
     })
   }
 

@@ -40,7 +40,7 @@ export class ExamineeService {
     // if a valid examinee is specified to be the patrol-examinee
     if (examinee !== undefined && (examinee.connected || ignoreConnection)) {
       set((model) => {
-        model.patrol.patrolModeOn = false;
+        model.patrol.isPatrolModeOn = false;
         model.patrol.patrolExaminee = examinee;
       });
     } else {
@@ -70,7 +70,7 @@ export class ExamineeService {
             model.patrol.patrolExaminee = undefined;
           });
         }
-      } else if (this.store.value.patrol.patrolModeOn && examinees.length !== 0) {
+      } else if (this.store.value.patrol.isPatrolModeOn && examinees.length !== 0) {
         /*
         * if there are any valid examinees, that could become
         * the new patrol-examinee and if the patrol-mode is
