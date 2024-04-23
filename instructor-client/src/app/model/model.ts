@@ -5,12 +5,14 @@ import {ExamineeData} from "./entity/ExamineeData";
 import {Patrol} from "./entity/Patrol";
 import {ServerMetrics} from "./entity/ServerMetrics";
 import {environment} from "../../../env/environment";
+import {Timer} from "./entity/Timer";
 
 export interface Model {
   readonly cacheBuster: CacheBuster,
   readonly examineeData: ExamineeData,
   readonly patrol: Patrol,
   readonly serverMetrics: ServerMetrics,
+  readonly timer: Timer,
   readonly resetText: string
 }
 
@@ -19,23 +21,21 @@ const initialState: Model = {
     cachebustNum: 0
   },
   examineeData: {
-    examinees: [],
-    screenshotCaptureInterval: environment.screenshotCaptureInterval
+    examinees: []
   },
-  patrol: new Patrol(
-    environment.nextClientScheduleTime,
-    environment.patrolSpeed,
-    false
-  ),
+  patrol: {
+    isPatrolModeOn: false,
+    patrolExaminee: undefined
+  },
   serverMetrics: {
     cpuUsagePercent: 0,
     totalDiskSpaceInBytes: 0,
     remainingDiskSpaceInBytes: 0,
     savedScreenshotsSizeInBytes: 0,
     maxAvailableMemoryInBytes: 0,
-    totalUsedMemoryInBytes: 0,
-    timerId: undefined
+    totalUsedMemoryInBytes: 0
   },
+  timer: new Timer(),
   resetText: ""
 };
 

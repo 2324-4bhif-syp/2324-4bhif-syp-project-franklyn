@@ -4,7 +4,7 @@
     data-bs-theme="dark">
     <div class="container-fluid">
       <!--title-->
-      <a class="navbar-brand fw-bold" routerLink="#">Franklyn</a>
+      <a class="navbar-brand fw-bold" routerLink="/">Franklyn</a>
 
       <!--routes-->
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
@@ -50,7 +50,7 @@
                    class="form-check-input"
                    id="patrol-mode-check"
                    name="patrol-mode-check"
-                   [value]="store.value.patrol.patrolModeOn"
+                   [value]="store.value.patrol.isPatrolModeOn"
                    (change)="setPatrolMode(patrolModeOn.checked)">
             <label class="form-check-label" for="patrol-mode-check">
               Patrol-Mode
@@ -60,7 +60,7 @@
             <label
               for="patrol-speed-range"
               class="form-label">
-              Patrol speed: {{store.value.patrol.nextPatrol}} sec
+              Patrol speed: {{store.value.timer.patrolSpeed}} sec
             </label>
             <input #patrolSpeed
                    type="range"
@@ -69,14 +69,14 @@
                    [max]="environment.maxPatrolSpeed"
                    id="patrol-speed-range"
                    name="patrol-speed-range"
-                   [value]="store.value.patrol.patrolModeOn"
+                   [value]="store.value.timer.patrolSpeed"
                    (change)="setPatrolSpeed(patrolSpeed.value)">
           </div>
           <div class="mb-2">
             <label
               for="get-client-interval"
               class="form-label">
-              Get client interval: {{store.value.patrol.nextClientTime}} sec
+              Get client interval: {{store.value.timer.nextClientTime}} sec
             </label>
             <input #nextClientTime
                    type="range"
@@ -85,14 +85,14 @@
                    [max]="environment.maxNextClientScheduleTime"
                    id="get-client-interval"
                    name="get-client-interval"
-                   [value]="store.value.patrol.nextClientTime"
+                   [value]="store.value.timer.nextClientTime"
                    (change)="setNextClientTime(nextClientTime.value)">
           </div>
           <div class="mb-4">
             <label
               for="patrol-screenshot-interval"
               class="form-label">
-              Screenshot capture interval: {{store.value.examineeData.screenshotCaptureInterval}} sec
+              Screenshot capture interval: {{store.value.timer.screenshotCaptureInterval}} sec
             </label>
             <input #screenshotInterval
                    type="range"
@@ -101,7 +101,7 @@
                    [max]="environment.maxNextClientScheduleTime"
                    id="patrol-screenshot-interval"
                    name="patrol-screenshot-interval"
-                   [value]="store.value.examineeData.screenshotCaptureInterval"
+                   [value]="store.value.timer.screenshotCaptureInterval"
                    (change)="setScreenshotCaptureInterval(screenshotInterval.value)">
           </div>
           <div>
