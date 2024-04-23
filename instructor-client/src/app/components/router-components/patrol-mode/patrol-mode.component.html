@@ -18,8 +18,9 @@
 <div class="d-flex justify-content-around fixed-bottom bg-light py-2 bottom-bar-height">
   <div class="text-center align-self-center">
     <label>
-      <input type="checkbox" disabled [(ngModel)]="store.value.patrol.isPatrolModeOn"> Patrol-mode
+      Patrol-mode: {{getPatrolModeOnState()}}
     </label>
+
   </div>
 
   <div class="text-center align-self-center">
