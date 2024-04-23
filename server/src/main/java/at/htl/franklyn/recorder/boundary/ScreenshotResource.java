@@ -1,6 +1,8 @@
 package at.htl.franklyn.recorder.boundary;
 
 import at.htl.franklyn.recorder.dto.IntervalUpdateDto;
+import at.htl.franklyn.server.services.ScreenshotService;
+import io.quarkus.logging.Log;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
@@ -31,6 +33,9 @@ public class ScreenshotResource {
 
     @Inject
     SavesResource savesResource;
+
+    @Inject
+    ScreenshotService screenshotService;
 
     @POST
     @Path("{username}/alpha")
@@ -95,12 +100,10 @@ public class ScreenshotResource {
                     .toFile()
             );
 
-
             int width = alphaFrame.getWidth();
             int height = alphaFrame.getHeight();
 
             BufferedImage betaFrame = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-
 
             for (int y = 0; y < height; y++) {
                 for (int x = 0; x < width; x++) {
@@ -127,7 +130,12 @@ public class ScreenshotResource {
             );
         }
         catch (Exception e){
-            e.printStackTrace();
+            if (e instanceof java.io.IOException) {
+                // thrown by ImageIO.read
+                screenshotService.requestAlphaFrame(username);
+            } else {
+                e.printStackTrace();
+            }
         }
     }
 
