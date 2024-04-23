@@ -5,7 +5,7 @@ WORKDIR /opt/franklyn
 COPY . .
 
 RUN npm install
-RUN npx ng build --configuration production --base-href /instructor instructor-client
+RUN npx ng build --configuration production --base-href /instructor/ instructor-client
 
 FROM nginx:1.25.4
 
