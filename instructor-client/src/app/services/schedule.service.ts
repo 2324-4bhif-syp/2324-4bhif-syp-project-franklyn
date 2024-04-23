@@ -9,12 +9,12 @@ import {WebApiService} from "./web-api.service";
 @Injectable({
   providedIn: 'root'
 })
-export class ScheduleService implements OnInit{
+export class ScheduleService {
   private store = inject(StoreService).store;
   private examineeRepo = inject(ExamineeService);
   protected webApi = inject(WebApiService);
 
-  ngOnInit(): void {
+  constructor() {
     this.store.pipe(
       map(model => model.timer.patrolSpeed),
       distinctUntilChanged()
@@ -31,9 +31,6 @@ export class ScheduleService implements OnInit{
   }
 
   stopGettingServerMetrics() {
-    console.log("stop getting server metrics");
-
-    console.log("stop", this.store.value.timer.serverMetricsTimerId)
     clearInterval(this.store.value.timer.serverMetricsTimerId);
     set((model) => {
       model.timer.serverMetricsTimerId = undefined;
@@ -41,8 +38,6 @@ export class ScheduleService implements OnInit{
   }
 
   stopExamineeScheduleInterval() {
-    console.log("stop getting examinees");
-
     if (this.store.value.timer.clientScheduleTimerId !== undefined) {
       clearInterval(this.store.value.timer.clientScheduleTimerId);
     }
@@ -53,8 +48,6 @@ export class ScheduleService implements OnInit{
   }
 
   stopPatrolInterval() {
-    console.log("stop switching between patrol-examinees");
-
     if (this.store.value.timer.patrolScheduleTimer !== undefined) {
       clearInterval(this.store.value.timer.patrolScheduleTimer);
     }
@@ -65,8 +58,6 @@ export class ScheduleService implements OnInit{
   }
 
   startExamineeScheduleInterval() {
-    console.log("start getting examinees from server");
-
     this.stopExamineeScheduleInterval();
 
     if (this.store.value.timer.clientScheduleTimerId === undefined) {
@@ -78,8 +69,6 @@ export class ScheduleService implements OnInit{
   }
 
   startPatrolInterval() {
-    console.log("start switching between patrol-examinees");
-
     this.stopPatrolInterval();
 
     if (this.store.value.timer.patrolScheduleTimer === undefined) {
@@ -92,8 +81,6 @@ export class ScheduleService implements OnInit{
   }
 
   startGettingServerMetrics() {
-    console.log("start getting server-metrics");
-
     this.stopGettingServerMetrics();
 
     if (this.store.value.timer.serverMetricsTimerId === undefined) {

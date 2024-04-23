@@ -1,10 +1,10 @@
-<div class="container-fluid">
+<div class="container-fluid w-100">
   @if (examinee && !showImage) {
     <button
       (click)="selectExaminee()"
       class="btn w-100"
       [class]="getActivity()">
-      <span class="examinee-btn-label examinee-btn-width">
+      <span class="examinee-btn-label w-100">
         {{examinee.username}}
       </span>
     </button>
