@@ -561,10 +561,10 @@ pre.rouge .gs {
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
 <li><a href="#_introduction">1. Introduction</a></li>
-<li><a href="#_native_installation">2. Native installation</a>
+<li><a href="#_using_docker_images">2. Using docker images</a>
 <ul class="sectlevel2">
 <li><a href="#_server_and_frontend">2.1. Server and Frontend</a></li>
-<li><a href="#_setup_frontend_and_server">2.2. Setup Frontend and Server</a></li>
+<li><a href="#_setup_instructor_client_and_franklyn_server">2.2. Setup instructor client and franklyn server</a></li>
 <li><a href="#_student_client">2.3. Student Client</a></li>
 </ul>
 </li>
@@ -594,10 +594,10 @@ pre.rouge .gs {
 </div>
 </div>
 <div class="sect1">
-<h2 id="_native_installation"><a class="anchor" href="#_native_installation"></a>2. Native installation</h2>
+<h2 id="_using_docker_images"><a class="anchor" href="#_using_docker_images"></a>2. Using docker images</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Franklyn can be installed natively without the use of containerization software like docker.</p>
+<p>The easiest way to install franklyn is using docker</p>
 </div>
 <div class="paragraph">
 <p>For this the following things are needed:</p>
@@ -606,12 +606,19 @@ pre.rouge .gs {
 <ul>
 <li>
 <p>some linux-based server</p>
+<div class="ulist">
+<ul>
+<li>
+<p>with docker support</p>
+</li>
+</ul>
+</div>
 </li>
 <li>
 <p>the ability to use sudo</p>
 </li>
 <li>
-<p>a static public ip-address</p>
+<p>(a static public ip-address)</p>
 </li>
 <li>
 <p>the ability to open ports to the internet (in particular <strong>80</strong> and <strong>443</strong>)</p>
@@ -636,7 +643,7 @@ The following commands in this tutorial are assuming the server is running <stro
 <div class="sect2">
 <h3 id="_server_and_frontend"><a class="anchor" href="#_server_and_frontend"></a>2.1. Server and Frontend</h3>
 <div class="sect3">
-<h4 id="_setting_up_nginx"><a class="anchor" href="#_setting_up_nginx"></a>2.1.1. Setting up nginx</h4>
+<h4 id="_setting_up_nginx_reverse_proxy"><a class="anchor" href="#_setting_up_nginx_reverse_proxy"></a>2.1.1. Setting up nginx reverse-proxy</h4>
 <div class="paragraph">
 <p>The first step of setting up franklyn is installing a webserver. In this tutorial we will be using <strong>nginx</strong>. To install nginx the following commands have to be executed in a terminal:</p>
 </div>
@@ -777,15 +784,24 @@ http {
 	include /etc/nginx/mime.types;
 	server {
 		listen 80;
-    server_name &lt;your-domain-name&gt;;
+		server_name &lt;your-domain-name&gt;;
 
 		return 301 https://$host$request_uri;
 	}
 
 	server {
 		server_name &lt;your-domain-name&gt;;
-		root /var/www/html;
-		index index.html;
+
+		location / {
+		    root /var/www/html;
+            index index.html;
+		}
+
+		location /downloads/ {
+		    alias /var/www/downloads/;
+		    add_header Content-disposition "attachment; filename=$1";
+            default_type application/octet-stream;
+		}
 
 		location /api/ {
 			proxy_pass http://127.0.0.1:8080/;
@@ -795,10 +811,20 @@ http {
 			proxy_set_header Connection "upgrade";
 			# increase max file upload limit
 			client_max_body_size 100M;
+			# increase timout to prevent 504 when clicking on show-video
+			proxy_read_timeout 600s;
 		}
 
-		location / {
-			try_files $uri $uri/ /index.html;
+		if ($http_referer ~ ^https?://&lt;your-domain-name&gt;/instructor/) {
+                rewrite ^ /instructor$uri;
+        }
+
+		location /instructor/ {
+		    proxy_pass http://127.0.0.1:8088/;
+		}
+
+		location = /instructor/ {
+		    proxy_pass http://127.0.0.1:8088/index.html;
 		}
 
 		listen 443 ssl;
@@ -806,7 +832,7 @@ http {
 		ssl_certificate /etc/letsencrypt/live/&lt;your-domain-name&gt;/fullchain.pem;
 		ssl_certificate_key /etc/letsencrypt/live/&lt;your-domain-name&gt;/privkey.pem;
 		include /etc/letsencrypt/options-ssl-nginx.conf;
-		ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
+	    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
 	}
 }</code></pre>
 </div>
@@ -822,7 +848,7 @@ http {
 </div>
 </div>
 <div class="sect2">
-<h3 id="_setup_frontend_and_server"><a class="anchor" href="#_setup_frontend_and_server"></a>2.2. Setup Frontend and Server</h3>
+<h3 id="_setup_instructor_client_and_franklyn_server"><a class="anchor" href="#_setup_instructor_client_and_franklyn_server"></a>2.2. Setup instructor client and franklyn server</h3>
 <div class="paragraph">
 <p>Now that nginx is set up the frontend and server applications are next.
 First install git and clone the franklyn GitHub repository:</p>
@@ -834,7 +860,52 @@ git clone https://github.com/2324-4bhif-syp/2324-4bhif-syp-project-franklyn.git<
 </div>
 </div>
 <div class="paragraph">
-<p>For building the project the following dependencies are required:</p>
+<p>In order to host the webservers <code>docker</code> and <code>docker-compose</code> are required.
+How to install docker is not covered here but is explained at <a href="https://docs.docker.com/engine/install/" class="bare">https://docs.docker.com/engine/install/</a></p>
+</div>
+<div class="paragraph">
+<p>Now enter the project directory and start franklyn using docker-compose:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell"><span class="nb">cd </span>2324-4bhif-syp-project-franklyn/
+docker compose <span class="nt">-f</span> cicd/docker-compose.yaml up <span class="nt">-d</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Finally, copy the static <code>index.html</code> start page into <code>/var/www/html/</code></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell"><span class="nb">cd </span>2324-4bhif-syp-project-franklyn/
+<span class="nb">sudo cp</span> <span class="nt">-f</span> nginx/index.html /var/www/html/</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You should now see the franklyn start page when visiting <a href="https://&lt;domain-name&gt;" class="bare">https://&lt;domain-name&gt;</a>:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/franklyn-startpage.png" alt="franklyn startpage">
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_student_client"><a class="anchor" href="#_student_client"></a>2.3. Student Client</h3>
+<div class="paragraph">
+<p>The last thing to do is preparing the student client (also known as openbox). Why is this needed? Per default the generated openbox artifact on GitHub points at our development domain <code>franklyn.ddns.net</code>. To work with other servers this domain has to be changed and the jar rebuilt.</p>
+</div>
+<div class="paragraph">
+<p>To do this clone the repository (in case you have not done so already):</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="shell">git clone https://github.com/2324-4bhif-syp/2324-4bhif-syp-project-franklyn.git
+<span class="nb">cd </span>2324-4bhif-syp-project-franklyn</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>For building the student-client the following dependencies are required:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -842,7 +913,7 @@ git clone https://github.com/2324-4bhif-syp/2324-4bhif-syp-project-franklyn.git<
 <p><code>java 17</code> or newer</p>
 </li>
 <li>
-<p><code>node 18</code> or newer</p>
+<p><code>maven</code></p>
 </li>
 </ul>
 </div>
@@ -853,102 +924,7 @@ git clone https://github.com/2324-4bhif-syp/2324-4bhif-syp-project-franklyn.git<
 <div class="content">
 <pre class="rouge highlight"><code data-lang="shell"><span class="c"># for java</span>
 <span class="nb">sudo </span>apt <span class="nb">install </span>openjdk-21-jdk
-<span class="nb">sudo </span>apt <span class="nb">install </span>maven
-
-<span class="c"># for node</span>
-curl <span class="nt">-o-</span> https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
-<span class="nb">source</span> ~/.bashrc
-nvm <span class="nb">install </span>node</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Now enter the project directory and build the frontend and server (this might take a while):</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="rouge highlight"><code data-lang="shell"><span class="nb">cd </span>2324-4bhif-syp-project-franklyn/
-./cicd/build-instructor-client.sh
-./cicd/build-server.sh</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Finally, copy the frontend to the directory nginx expects it to be:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="rouge highlight"><code data-lang="shell"><span class="nb">sudo cp</span> <span class="nt">-r</span> dist/instructor-client/<span class="k">*</span> /var/www/html
-<span class="nb">sudo chown</span> <span class="nt">-R</span> www-data:www-data /var/www/html
-<span class="nb">sudo chmod</span> <span class="nt">-R</span> 755 /var/www/html
-<span class="nb">sudo </span>systemctl restart nginx</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Lastly set up a storage directory for the server and start the jar-file</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="rouge highlight"><code data-lang="shell"><span class="nb">sudo mkdir</span> <span class="nt">-p</span> /var/lib/franklyn
-<span class="nb">sudo chown</span> <span class="nt">-R</span> <span class="nv">$USER</span>:<span class="nv">$USER</span> /var/lib/franklyn
-<span class="nb">sudo chmod</span> <span class="nt">-R</span> 755 /var/lib/franklyn
-java <span class="nt">-jar</span> dist/server/franklyn-server.jar</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>You should now see the franklyn angular app when visiting <a href="https://&lt;domain-name&gt;" class="bare">https://&lt;domain-name&gt;</a>:</p>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="images/frontend_pic.png" alt="frontend pic">
-</div>
-</div>
-<div class="paragraph">
-<p>Since running the server using <code>java -jar &lt;path-to-jar&gt;</code> is bad let&#8217;s create a service for it:</p>
-</div>
-<div class="listingblock">
-<div class="title">franklyn.service</div>
-<div class="content">
-<pre class="rouge highlight"><code data-lang="unitfile(systemd)">[Unit]
-Description=Franklyn server software
-
-[Service]
-User=&lt;service-user&gt;
-Group=&lt;service-group&gt;
-ExecStart=/usr/bin/java -jar &lt;path-to-franklyn-server-jar&gt;
-
-[Install]
-WantedBy=multi-user.target</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Make sure to create the service file in the correct directory or move it afterwards with:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="rouge highlight"><code data-lang="shell"><span class="nb">sudo mv</span> &lt;path-to-franklyn.service&gt; /etc/systemd/system/</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Finally, start the service and make sure it&#8217;s running:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="rouge highlight"><code data-lang="shell"><span class="nb">sudo </span>systemctl <span class="nb">enable</span> <span class="nt">--now</span> franklyn.service
-<span class="nb">sudo </span>systemctl status franklyn.service</code></pre>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_student_client"><a class="anchor" href="#_student_client"></a>2.3. Student Client</h3>
-<div class="paragraph">
-<p>The last thing to do is preparing the student client (also known as openbox). Why is this needed? Per default the generated openbox artifact on GitHub points at our development domain <code>franklyn.ddns.net</code>. To work with other servers this domain has to be changed and the jar rebuilt.</p>
-</div>
-<div class="paragraph">
-<p>To do this clone the repository on a local computer:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="rouge highlight"><code data-lang="shell">git clone https://github.com/2324-4bhif-syp/2324-4bhif-syp-project-franklyn.git
-<span class="nb">cd </span>2324-4bhif-syp-project-franklyn</code></pre>
+<span class="nb">sudo </span>apt <span class="nb">install </span>maven</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -970,7 +946,7 @@ WantedBy=multi-user.target</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>For building the student-client <code>java 17</code> or newer and maven is required. With these installed make sure you are in the project root and run:</p>
+<p>Make sure you have all dependencies installed and run the following command in the projects root directory</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -978,11 +954,12 @@ WantedBy=multi-user.target</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p><code>dist/openbox/</code> now contains a file called <code>franklyn-student-client.jar</code>. This is the jar file which students have to execute using:</p>
+<p><code>dist/openbox/</code> now contains a file called <code>franklyn-student-client.jar</code>. Make sure to copy this jar to <code>/var/www/downloads/</code> and create the folder in case it does not exist</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="shell">java <span class="nt">-jar</span> franklyn-student-client.jar</code></pre>
+<pre class="rouge highlight"><code data-lang="shell"><span class="nb">mkdir</span> <span class="nt">-p</span> /var/www/downloads/
+<span class="nb">sudo cp</span> <span class="nt">-f</span> dist/openbox/franklyn-student-client.jar /var/www/downloads</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -994,7 +971,7 @@ WantedBy=multi-user.target</code></pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-04-02 09:17:09 UTC
+Last updated 2024-04-23 09:56:16 UTC
 </div>
 </div>
 </body>
