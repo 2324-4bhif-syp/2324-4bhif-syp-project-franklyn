@@ -17,4 +17,14 @@ import {FormsModule} from "@angular/forms";
 })
 export class PatrolModeComponent {
   protected store = inject(StoreService).store;
+
+  getPatrolModeOnState():string {
+    let returnString: string = "off";
+
+    if (this.store.value.patrol.isPatrolModeOn) {
+      return "on";
+    }
+
+    return returnString;
+  }
 }
