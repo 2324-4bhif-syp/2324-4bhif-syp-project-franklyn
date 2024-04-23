@@ -13,3 +13,30 @@
     </tr>
   </table>
 </div>
+
+
+<div class="d-flex justify-content-around fixed-bottom bg-light py-2 bottom-bar-height">
+  <div class="text-center align-self-center">
+    <label>
+      <input type="checkbox" disabled [(ngModel)]="store.value.patrol.isPatrolModeOn"> Patrol-mode
+    </label>
+  </div>
+
+  <div class="text-center align-self-center">
+    <label>
+      Patrol speed: {{store.value.timer.patrolSpeed}} sec
+    </label>
+  </div>
+
+  <div class="text-center align-self-center">
+    <label>
+      Get-Client interval: {{store.value.timer.nextClientTime}} sec
+    </label>
+  </div>
+
+  <div class="text-center align-self-center">
+    <label>
+      Screenshot capture interval: {{store.value.timer.screenshotCaptureInterval}} sec
+    </label>
+  </div>
+</div>
