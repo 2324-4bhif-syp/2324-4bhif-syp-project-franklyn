@@ -66,10 +66,21 @@ jobs:
           if test "${{ github.ref_name }}" = "main"; then tag="latest"; else tag="dev"; fi
           echo "IMAGE_TAG=${tag}" >> "$GITHUB_ENV"
 
+      - name: Setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '21'
+          cache: 'npm'
+          cache-dependency-path: 'instructor-client/package-lock.json'
+
+      - name: Build instructor-client
+        run: |
+          ./cicd/build-instructor-client.sh
+
       - name: Build and push
         uses: docker/build-push-action@v5
         with:
-          context: ./instructor-client
+          context: ./
           file: ./instructor-client/docker/Dockerfile
           platforms: linux/amd64, linux/arm64
           push: true
