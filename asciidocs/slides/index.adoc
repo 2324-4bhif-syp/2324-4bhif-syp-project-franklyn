@@ -32,15 +32,6 @@ endif::[]
 * Installationsanleitung aktualisiert
 * Deployment auf franklyn3 VM
 
-[.columns.is-vcentered]
-=== Original instructor-frontend
-
-[.column]
-image::instructor-frontend-original-style-patrol-mode.png[Patrol-mode]
-
-[.column]
-image::instructor-frontend-original-style-video-viewer.png[Video-viewer]
-
 === Live Demo
 
 === Architektur
