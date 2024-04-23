@@ -3,11 +3,8 @@ package at.htl.franklyn.services;
 import io.quarkus.logging.Log;
 import jakarta.ws.rs.core.Response;
 
-import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 
 public class ScreenshotService {
 
@@ -23,7 +20,33 @@ public class ScreenshotService {
                     new Rectangle(Toolkit.getDefaultToolkit().getScreenSize())
             );
 
-            if (null == alphaFrame){
+            int width = screenshot.getWidth();
+            int height = screenshot.getHeight();
+
+            Log.info(width + "-" + height);
+
+            if (width != 1920 || height != 1080) {
+                // scale image to 1920*1080 if it has a different size
+
+                Log.info("resize needed");
+
+                BufferedImage resizedImage = new BufferedImage(
+                        1920,
+                        1080,
+                        BufferedImage.TYPE_INT_RGB
+                );
+
+                Graphics graphicsOfNewImage = resizedImage.getGraphics();
+
+                graphicsOfNewImage.drawImage(screenshot, 0, 0, 1920, 1080, null);
+
+                screenshot = resizedImage;
+
+                graphicsOfNewImage.dispose();
+                resizedImage.flush();
+            }
+
+            if (null == alphaFrame) {
                 alphaFrame = screenshot;
 
                 r.header("Frame-Type", "alpha");
@@ -41,8 +64,6 @@ public class ScreenshotService {
 
         int width = alphaFrame.getWidth();
         int height = alphaFrame.getHeight();
-
-        // schauen ob ein hund mitten im test auflösung ändert
 
         BufferedImage outputFrame = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
 
@@ -63,7 +84,7 @@ public class ScreenshotService {
         }
 
         // if more than half of the frame is different make it the new alpha frame
-        if(counter > width * height * 0.5){
+        if (counter > width * height * 0.5) {
             alphaFrame = betaFrame;
             response.header("Frame-Type", "alpha");
             return betaFrame;
@@ -72,5 +93,9 @@ public class ScreenshotService {
         response.header("Frame-Type", "difference");
 
         return outputFrame;
+    }
+
+    public static void resetAlphaFrame(){
+        alphaFrame = null;
     }
 }

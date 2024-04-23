@@ -26,21 +26,11 @@ endif::[]
 *** kein Kopieren von fertigen Programmen/Lösungen
 
 [.font-xx-large]
-=== Sprint 8: Änderungen
+=== Sprint 9: Änderungen
 * Überarbeitung des instructor-clients
-* Implementierung der Alpha- und Betaframes
-* Dashboard für Systeminformationen (CPU, RAM, Disk usage)
-* Reset-Button löscht nun alte Screenshots
-* Screenshotintervall ist nun im instructor-client einstellbar
-
-[.columns.is-vcentered]
-=== Original instructor-frontend
-
-[.column]
-image::instructor-frontend-original-style-patrol-mode.png[Patrol-mode]
-
-[.column]
-image::instructor-frontend-original-style-video-viewer.png[Video-viewer]
+* Reset Button fix
+* Installationsanleitung aktualisiert
+* Deployment auf franklyn3 VM
 
 === Live Demo
 
