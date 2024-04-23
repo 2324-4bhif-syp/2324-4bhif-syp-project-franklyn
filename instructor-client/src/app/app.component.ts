@@ -7,12 +7,13 @@ import {ExamineeService} from "./services/examinee.service";
 import {set} from "./model";
 import {WebApiService} from "./services/web-api.service";
 import {ScheduleService} from "./services/schedule.service";
+import {FormsModule} from "@angular/forms";
 
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, RouterLink, RouterLinkActive],
+  imports: [CommonModule, RouterOutlet, RouterLink, RouterLinkActive, FormsModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
@@ -53,29 +54,23 @@ export class AppComponent implements OnInit{
     });
   }
 
-  setPatrolSpeed(val: string): void {
-    console.log(val)
-    /* //TODO: check output
+  setPatrolSpeed(val: number): void {
     set((model) => {
-      model.patrol.nextPatrol = val;
-    });*/
+      model.timer.patrolSpeed = val;
+    });
   }
 
-  setNextClientTime(val: string): void {
-    console.log(val)
-    /* //TODO: check output
+  setNextClientTime(val: number): void {
     set((model) => {
-      model.patrol.nextClientTime = val;
-    });*/
+      model.timer.nextClientTime = val;
+    });
     this.screenshotCaptureIntervalUpdate();
   }
 
-  setScreenshotCaptureInterval(val: string): void {
-    console.log(val) //TODO: check output
-    /*
+  setScreenshotCaptureInterval(val: number): void {
     set((model) => {
-      model.examineeData.screenshotCaptureInterval = val;
-    });*/
+      model.timer.screenshotCaptureInterval = val;
+    });
   }
 
   public changeRoute() {
