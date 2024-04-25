@@ -60,7 +60,7 @@
             <label
               for="patrol-speed-range"
               class="form-label">
-              Patrol speed: {{store.value.timer.patrolSpeed}} sec
+              Patrol speed: {{this.store.value.timer.patrolSpeed}} sec
             </label>
             <input #patrolSpeed
                    type="range"
@@ -76,7 +76,7 @@
             <label
               for="get-client-interval"
               class="form-label">
-              Get client interval: {{store.value.timer.nextClientTime}} sec
+              Get client interval: {{this.store.value.timer.nextClientTime}} sec
             </label>
             <input #nextClientTime
                    type="range"
@@ -92,7 +92,7 @@
             <label
               for="patrol-screenshot-interval"
               class="form-label">
-              Screenshot capture interval: {{store.value.timer.screenshotCaptureInterval}} sec
+              Screenshot capture interval: {{this.store.value.timer.screenshotCaptureInterval}} sec
             </label>
             <input #screenshotInterval
                    type="range"
