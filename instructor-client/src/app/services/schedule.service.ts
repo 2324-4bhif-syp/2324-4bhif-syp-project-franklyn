@@ -85,12 +85,11 @@ export class ScheduleService {
 
     if (this.store.value.timer.serverMetricsTimerId === undefined) {
       set((model) => {
-        model.timer.serverMetricsTimerId = setInterval(() => {
-          this.webApi.getServerMetrics();
+        model.timer.serverMetricsTimerId = setInterval(async () => {
+          console.log("")
+          await this.webApi.getServerMetrics();
         }, this.store.value.timer.reloadDashboardIntervalMilliseconds);
       });
     }
-
-    console.log("start", this.store.value.timer.serverMetricsTimerId);
   }
 }

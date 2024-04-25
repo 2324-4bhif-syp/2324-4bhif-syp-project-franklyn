@@ -1,14 +1,13 @@
 import {Component, inject, OnInit} from '@angular/core';
 import {CommonModule, Location} from '@angular/common';
-import {Router, RouterLink, RouterLinkActive, RouterOutlet} from '@angular/router';
+import {RouterLink, RouterLinkActive, RouterOutlet} from '@angular/router';
 import {environment} from "../../env/environment";
 import {StoreService} from "./services/store.service";
 import {ExamineeService} from "./services/examinee.service";
-import {set} from "./model";
+import {set, store} from "./model";
 import {WebApiService} from "./services/web-api.service";
 import {ScheduleService} from "./services/schedule.service";
 import {FormsModule} from "@angular/forms";
-
 
 @Component({
   selector: 'app-root',
