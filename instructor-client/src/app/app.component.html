@@ -70,7 +70,7 @@
                    id="patrol-speed-range"
                    name="patrol-speed-range"
                    [value]="store.value.timer.patrolSpeed"
-                   (change)="setPatrolSpeed(Number(patrolSpeed.value))">
+                   (input)="setPatrolSpeed(Number(patrolSpeed.value))">
           </div>
           <div class="mb-2">
             <label
@@ -86,7 +86,7 @@
                    id="get-client-interval"
                    name="get-client-interval"
                    [value]="store.value.timer.nextClientTime"
-                   (change)="setNextClientTime(Number(nextClientTime.value))">
+                   (input)="setNextClientTime(Number(nextClientTime.value))">
           </div>
           <div class="mb-4">
             <label
@@ -102,7 +102,7 @@
                    id="patrol-screenshot-interval"
                    name="patrol-screenshot-interval"
                    [value]="store.value.timer.screenshotCaptureInterval"
-                   (change)="setScreenshotCaptureInterval(Number(screenshotInterval.value))">
+                   (input)="setScreenshotCaptureInterval(Number(screenshotInterval.value))">
           </div>
           <div>
             <button
