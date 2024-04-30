@@ -5,6 +5,8 @@ import {ChartConfiguration, ChartData, ChartType} from "chart.js";
 import {distinctUntilChanged, map} from "rxjs";
 import {ScheduleService} from "../../../services/schedule.service";
 import {WebApiService} from "../../../services/web-api.service";
+import {set, store} from "../../../model";
+import {environment} from "../../../../../env/environment";
 
 @Component({
   selector: 'app-metrics-dashboard',
@@ -60,7 +62,50 @@ export class MetricsDashboardComponent implements OnInit, OnDestroy{
       100 - this.store.value.serverMetrics.cpuUsagePercent
     ]
 
+    this.updateColorLabels();
+
+    this.diskChartData.datasets[0].backgroundColor = [
+      store.value.serverMetrics.diagramBackgroundColor,
+      store.value.serverMetrics.diskUsageColor
+    ]
+
+    this.memChartData.datasets[0].backgroundColor = [
+      store.value.serverMetrics.diagramBackgroundColor,
+      store.value.serverMetrics.memoryUtilisationColor
+    ];
+
+    this.cpuChartData.datasets[0].backgroundColor = [
+      store.value.serverMetrics.cpuUtilisationColor,
+      store.value.serverMetrics.diagramBackgroundColor
+    ]
+
     this.charts?.forEach(c => c.update());
+  }
+
+  getColorPerPercentage(val: number): string {
+    let color = environment.metricsDashboardValueNotOkay;
+
+    if (val < 0.5) {
+      color = environment.metricsDashboardValueOkay;
+    } else if (val < 0.8) {
+      color = environment.metricsDashboardValueBarelyOkay;
+    }
+
+    return color;
+  }
+
+  updateColorLabels() {
+    let cpuPercent: number = this.store.value.serverMetrics.cpuUsagePercent/100;
+
+    let diskUsagePercent: number = this.store.value.serverMetrics.totalUsedMemoryInBytes / this.store.value.serverMetrics.maxAvailableMemoryInBytes;
+
+    let memoryPercent: number = this.store.value.serverMetrics.totalUsedMemoryInBytes / this.store.value.serverMetrics.maxAvailableMemoryInBytes;
+
+    set((model) => {
+      model.serverMetrics.cpuUtilisationColor = this.getColorPerPercentage(cpuPercent);
+      model.serverMetrics.diskUsageColor = this.getColorPerPercentage(diskUsagePercent);
+      model.serverMetrics.memoryUtilisationColor = this.getColorPerPercentage(memoryPercent);
+    })
   }
 
   doughnutLabel = {
@@ -72,7 +117,7 @@ export class MetricsDashboardComponent implements OnInit, OnDestroy{
       const x = chart.getDatasetMeta(0).data[0].x;
       const y = chart.getDatasetMeta(0).data[0].y;
       ctx.font = "bold 15px sans-serif";
-      ctx.fillStyle = "#36363a";
+      ctx.fillStyle = store.value.serverMetrics.diagramTextColor;
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
       ctx.fillText(data.labels[data.labels.length - 1], x, y);
@@ -89,8 +134,8 @@ export class MetricsDashboardComponent implements OnInit, OnDestroy{
           this.store.value.serverMetrics.savedScreenshotsSizeInBytes / (1024 * 1024 * 1024),
         ],
         backgroundColor: [
-          "#f0f0f0",
-          "#0d6efd"
+          store.value.serverMetrics.diagramBackgroundColor,
+          store.value.serverMetrics.diskUsageColor
         ]
       }
     ]
@@ -120,8 +165,8 @@ export class MetricsDashboardComponent implements OnInit, OnDestroy{
           this.store.value.serverMetrics.totalUsedMemoryInBytes / (1024 * 1024 * 1024),
         ],
         backgroundColor: [
-          "#f0f0f0",
-          "#0d6efd"
+          store.value.serverMetrics.diagramBackgroundColor,
+          store.value.serverMetrics.memoryUtilisationColor
         ]
       }
     ]
@@ -150,7 +195,7 @@ export class MetricsDashboardComponent implements OnInit, OnDestroy{
           100 - this.store.value.serverMetrics.cpuUsagePercent
         ],
         backgroundColor: [
-          "#0d6efd",
+          store.value.serverMetrics.cpuUtilisationColor
         ]
       },
       {
@@ -158,7 +203,7 @@ export class MetricsDashboardComponent implements OnInit, OnDestroy{
           100 - this.store.value.serverMetrics.cpuUsagePercent
         ],
         backgroundColor: [
-          "#f0f0f0"
+          store.value.serverMetrics.diagramBackgroundColor
         ]
       }
     ]

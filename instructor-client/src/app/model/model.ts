@@ -4,7 +4,6 @@ import {CacheBuster} from "./entity/CacheBuster";
 import {ExamineeData} from "./entity/ExamineeData";
 import {Patrol} from "./entity/Patrol";
 import {ServerMetrics} from "./entity/ServerMetrics";
-import {environment} from "../../../env/environment";
 import {Timer} from "./entity/Timer";
 
 export interface Model {
@@ -33,7 +32,12 @@ const initialState: Model = {
     remainingDiskSpaceInBytes: 0,
     savedScreenshotsSizeInBytes: 0,
     maxAvailableMemoryInBytes: 0,
-    totalUsedMemoryInBytes: 0
+    totalUsedMemoryInBytes: 0,
+    diagramBackgroundColor: "#f0f0f0",
+    diagramTextColor: "#36363a",
+    cpuUtilisationColor: "#0d6efd",
+    diskUsageColor: "#0d6efd",
+    memoryUtilisationColor: "#0d6efd"
   },
   timer: new Timer(),
   resetText: ""
