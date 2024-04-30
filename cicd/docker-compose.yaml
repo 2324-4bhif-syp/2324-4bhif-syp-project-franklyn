@@ -16,3 +16,17 @@ services:
       - franklyn-server
     ports:
       - 8088:80
+
+  franklyn-db:
+    container_name: franklyn-db
+    image: postgres:16.2-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: app
+      POSTGRES_PASSWORD: app
+      POSTGRES_DB: db
+    ports:
+      - 5432:5432
+    volumes:
+      - /var/lib/franklyn/db:/var/lib/postgresql/data
+      - /var/lib/franklyn/db/import:/import
