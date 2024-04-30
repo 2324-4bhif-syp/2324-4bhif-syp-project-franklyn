@@ -1,6 +1,6 @@
 package at.htl.franklyn.server.control;
 
-import at.htl.franklyn.server.entity.Examinee;
+import at.htl.franklyn.server.entity.InMemoryExaminee;
 import io.quarkus.logging.Log;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.websocket.Session;
@@ -13,9 +13,9 @@ import java.util.concurrent.ConcurrentHashMap;
 @ApplicationScoped
 public class ExamineeRepository {
     // Key: Username
-    private final ConcurrentHashMap<String, Examinee> examinees = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<String, InMemoryExaminee> examinees = new ConcurrentHashMap<>();
 
-    public void save(Examinee examinee) {
+    public void save(InMemoryExaminee examinee) {
         this.examinees.put(examinee.getUsername(), examinee);
     }
 
@@ -23,16 +23,16 @@ public class ExamineeRepository {
         this.examinees.clear();
     }
 
-    public List<Examinee> findAll() {
+    public List<InMemoryExaminee> findAll() {
         return new ArrayList<>(this.examinees.values());
     }
 
-    public Examinee findByUsername(String username) {
+    public InMemoryExaminee findByUsername(String username) {
         return this.examinees.get(username);
     }
 
     public void disconnect(String username) {
-        Examinee e = this.findByUsername(username);
+        InMemoryExaminee e = this.findByUsername(username);
 
         // Could happen when onClose is called before onOpen
         // (sometimes the case when in dev mode and a "hot reload" occurs)
@@ -46,10 +46,10 @@ public class ExamineeRepository {
     }
 
     public void connect(String username, Session session) {
-        Examinee e = this.findByUsername(username);
+        InMemoryExaminee e = this.findByUsername(username);
 
         if (e == null) {
-            e = new Examinee();
+            e = new InMemoryExaminee();
             e.setUsername(username);
         }
 
@@ -61,7 +61,7 @@ public class ExamineeRepository {
     }
 
     public void refresh(String username, Session session) {
-        Examinee e = this.findByUsername(username);
+        InMemoryExaminee e = this.findByUsername(username);
 
         if(e == null) {
             Log.warnf("Could not refresh session with %s! User was never fully connected!", username);

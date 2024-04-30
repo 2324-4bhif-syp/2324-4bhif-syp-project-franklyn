@@ -6,21 +6,21 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Examinee {
+public class InMemoryExaminee {
     private String username;
     private List<String> ipAddresses;
     private boolean isConnected;
     private LocalDateTime lastPingTimestamp;
     private Session session;
 
-    public Examinee() {
+    public InMemoryExaminee() {
         this.ipAddresses = new ArrayList<>();
     }
 
-    public Examinee(String userName,
-                    boolean isConnected,
-                    LocalDateTime lastPingTimestamp,
-                    Session session) {
+    public InMemoryExaminee(String userName,
+                            boolean isConnected,
+                            LocalDateTime lastPingTimestamp,
+                            Session session) {
         this();
         this.username = userName;
         this.isConnected = isConnected;

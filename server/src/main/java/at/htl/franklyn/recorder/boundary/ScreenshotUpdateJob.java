@@ -1,7 +1,7 @@
 package at.htl.franklyn.recorder.boundary;
 
 import at.htl.franklyn.server.control.ExamineeRepository;
-import at.htl.franklyn.server.entity.Examinee;
+import at.htl.franklyn.server.entity.InMemoryExaminee;
 import at.htl.franklyn.server.services.ScreenshotService;
 import jakarta.inject.Inject;
 import org.quartz.Job;
@@ -17,11 +17,11 @@ public class ScreenshotUpdateJob implements Job {
 
     public void execute(JobExecutionContext ctx) {
         // all examinees here should be connected
-        List<Examinee> examinees = examineeRepository.findAll();
+        List<InMemoryExaminee> examinees = examineeRepository.findAll();
 
-        for(Examinee examinee : examinees){
-            if(examinee.isConnected())
-                screenshotService.requestScreenshot(examinee);
+        for(InMemoryExaminee inMemoryExaminee : examinees){
+            if(inMemoryExaminee.isConnected())
+                screenshotService.requestScreenshot(inMemoryExaminee);
         }
     }
 }

@@ -1,7 +1,7 @@
 package at.htl.franklyn.server.services;
 
 import at.htl.franklyn.server.control.ExamineeRepository;
-import at.htl.franklyn.server.entity.Examinee;
+import at.htl.franklyn.server.entity.InMemoryExaminee;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
@@ -22,7 +22,7 @@ public class ScreenshotService {
     @Inject
     ExamineeRepository examineeRepository;
 
-    public void requestScreenshot(Examinee examinee){
+    public void requestScreenshot(InMemoryExaminee examinee){
         examinee
                 .getSession()
                 .getAsyncRemote()
@@ -31,7 +31,7 @@ public class ScreenshotService {
 
     public void requestAlphaFrame(String username){
 
-        Optional<Examinee> examinee = examineeRepository
+        Optional<InMemoryExaminee> examinee = examineeRepository
                 .findAll()
                 .stream()
                 .filter(e -> e.getUsername().equals(username))
