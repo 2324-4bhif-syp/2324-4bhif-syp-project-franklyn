@@ -1,75 +1,92 @@
-import {Component, Injectable} from '@angular/core';
-import { CommonModule, Location } from '@angular/common';
-import {RouterLinkActive, RouterOutlet, RouterModule} from '@angular/router';
-import {FormsModule, ReactiveFormsModule} from "@angular/forms";
-import {PatrolModeComponent} from "./component/router-components/patrol-mode/patrol-mode.component";
-import {VideoViewerComponent} from "./component/router-components/video-viewer/video-viewer.component";
-import ExamineeDataService from "./shared/repository/examinee-data.service";
+import {Component, inject, OnInit} from '@angular/core';
+import {CommonModule, Location} from '@angular/common';
+import {RouterLink, RouterLinkActive, RouterOutlet} from '@angular/router';
 import {environment} from "../../env/environment";
-import {PatrolManagerService} from "./shared/repository/patrol-manager.service";
+import {StoreService} from "./services/store.service";
+import {ExamineeService} from "./services/examinee.service";
+import {set, store} from "./model";
+import {WebApiService} from "./services/web-api.service";
+import {ScheduleService} from "./services/schedule.service";
+import {FormsModule} from "@angular/forms";
 
-@Injectable({
-  providedIn: 'root'
-})
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [
-    CommonModule,
-    RouterOutlet,
-    FormsModule,
-    RouterModule,
-    RouterLinkActive,
-    PatrolModeComponent,
-    VideoViewerComponent,
-    ReactiveFormsModule
-  ],
+  imports: [CommonModule, RouterOutlet, RouterLink, RouterLinkActive, FormsModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
-export class AppComponent{
-  constructor(protected examineeRepo: ExamineeDataService, protected location: Location, protected patrolManagerService: PatrolManagerService) {
-    this.changeRoute(); // call it for initialization in case of for example a page reload
-
-    setInterval(() => {
-      examineeRepo.getAllExamineesFromServer();
-    }, environment.nextClientScheduleTime*1000);
-  }
-
-  public patrolModeActive: boolean = false;
-
-  public changeRoute() {
-    if (this.location.path() === "/video-viewer" || this.location.path() === "/metrics-dashboard") {
-      this.patrolModeActive = false;
-      this.patrolManagerService.stopClientScheduleInterval();
-      this.patrolManagerService.stopPatrolInterval();
-    } else {
-      this.patrolModeActive = true;
-      this.patrolManagerService.startClientScheduleInterval();
-      this.patrolManagerService.startPatrolInterval();
-    }
-
-    this.examineeRepo.patrolModeOn = false; //safety measure to prevent any possible bugs
-    this.examineeRepo.unsetPatrolExaminee();
-  }
-
-  protected resetText: string = "";
-
-  resetExaminees(): void {
-    this.examineeRepo.resetExaminees();
-  }
-
-  resetTextIsWantedText(): boolean {
-    return this.resetText !== environment.wantedResetText
-  }
-
-  screenshotCaptureIntervalUpdate(): void {
-    this.examineeRepo.updateScreenshotCaptureInterval(this.examineeRepo.intervalSpeed);
-  }
+export class AppComponent implements OnInit{
+  protected store = inject(StoreService).store;
+  protected examineeSvc = inject(ExamineeService);
+  protected webApi = inject(WebApiService);
+  protected location = inject(Location);
+  protected scheduleSvc = inject(ScheduleService);
 
   protected readonly environment = environment;
 
-  emptyResetText() {
-    this.resetText = "";
+  ngOnInit() {
+    this.webApi.getIntervalSpeed();
   }
+
+  resetExaminees(): void {
+    this.examineeSvc.resetExaminees();
+  }
+
+  resetTextIsWantedText(): boolean {
+    return this.store.value.resetText !== environment.wantedResetText
+  }
+
+  screenshotCaptureIntervalUpdate(): void {
+    this.webApi.updateScreenshotCaptureInterval(this.store.value.timer.screenshotCaptureInterval);
+  }
+
+  setResetText(val: string): void {
+    set((model) => {
+      model.resetText = val;
+    });
+  }
+
+  setPatrolMode(val: boolean): void {
+    set((model) => {
+      model.patrol.isPatrolModeOn = val;
+    });
+  }
+
+  setPatrolSpeed(val: number): void {
+    set((model) => {
+      model.timer.patrolSpeed = val;
+    });
+  }
+
+  setNextClientTime(val: number): void {
+    set((model) => {
+      model.timer.nextClientTime = val;
+    });
+    this.screenshotCaptureIntervalUpdate();
+  }
+
+  setScreenshotCaptureInterval(val: number): void {
+    set((model) => {
+      model.timer.screenshotCaptureInterval = val;
+    });
+  }
+
+  public changeRoute() {
+    if (this.location.path() === "/video-viewer" || this.location.path() === "/metrics-dashboard") {
+      this.scheduleSvc.stopExamineeScheduleInterval();
+      this.scheduleSvc.stopPatrolInterval();
+    } else {
+      this.scheduleSvc.startExamineeScheduleInterval();
+      this.scheduleSvc.startPatrolInterval();
+    }
+
+    set((model) => {
+      //safety measure to prevent any possible bugs
+      model.patrol.patrolExaminee = undefined;
+      model.patrol.isPatrolModeOn = false;
+    })
+  }
+
+  protected readonly Number = Number;
 }

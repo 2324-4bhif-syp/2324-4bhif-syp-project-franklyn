@@ -9,4 +9,5 @@ export const environment = {
   imageWidth: 1920,
   imageHeight: 1080,
   wantedResetText: "franklyn",
+  reloadDashboardInterval: 5,
 }

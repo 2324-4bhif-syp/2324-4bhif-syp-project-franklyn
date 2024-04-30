@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
-import {PatrolModeComponent} from "./component/router-components/patrol-mode/patrol-mode.component";
-import {VideoViewerComponent} from "./component/router-components/video-viewer/video-viewer.component";
-import {MetricsDashboardComponent} from "./component/router-components/metrics-dashboard/metrics-dashboard.component";
+import {PatrolModeComponent} from "./components/router-components/patrol-mode/patrol-mode.component";
+import {VideoViewerComponent} from "./components/router-components/video-viewer/video-viewer.component";
+import {MetricsDashboardComponent} from "./components/router-components/metrics-dashboard/metrics-dashboard.component";
 
 export const routes: Routes = [
   {path: "", redirectTo: "patrol-mode", pathMatch: "full"},
