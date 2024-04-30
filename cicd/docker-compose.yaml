@@ -29,4 +29,4 @@ services:
       - 5432:5432
     volumes:
       - /var/lib/franklyn/db:/var/lib/postgresql/data
-      - /var/lib/franklyn/db/import:/import
+      - /var/lib/franklyn/db-import:/import
