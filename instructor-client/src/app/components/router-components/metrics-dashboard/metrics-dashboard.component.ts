@@ -4,6 +4,7 @@ import {StoreService} from "../../../services/store.service";
 import {ChartConfiguration, ChartData, ChartType} from "chart.js";
 import {distinctUntilChanged, map} from "rxjs";
 import {ScheduleService} from "../../../services/schedule.service";
+import {WebApiService} from "../../../services/web-api.service";
 
 @Component({
   selector: 'app-metrics-dashboard',
@@ -19,8 +20,9 @@ export class MetricsDashboardComponent implements OnInit, OnDestroy{
 
   protected store = inject(StoreService).store;
   protected scheduleSvc = inject(ScheduleService);
+  protected webApi = inject(WebApiService);
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
     // subscribe to server-metrics to update when
     // there are changes
     this.store.pipe(
@@ -29,6 +31,9 @@ export class MetricsDashboardComponent implements OnInit, OnDestroy{
     ).subscribe(next => {
       this.updateDatasets();
     });
+
+    await this.webApi.getServerMetrics();
+    this.updateDatasets();
 
     this.scheduleSvc.startGettingServerMetrics();
   }
