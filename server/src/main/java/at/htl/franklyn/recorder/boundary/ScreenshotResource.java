@@ -82,6 +82,9 @@ public class ScreenshotResource {
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     public void takeBetaScreenshot(@PathParam("username") String username,
                                @RestForm("image") @PartType(MediaType.APPLICATION_OCTET_STREAM) InputStream screenshot){
+
+        BufferedImage alphaFrame = null;
+
         try {
             // TODO: Sanitize username
             File directory = Paths.get(screenshotsPath, username).toFile();
@@ -92,7 +95,7 @@ public class ScreenshotResource {
 
             BufferedImage diffFrame = ImageIO.read(screenshot);
 
-            BufferedImage alphaFrame = ImageIO.read(Paths
+            alphaFrame = ImageIO.read(Paths
                     .get(
                             directory.getPath(),
                             "/alphaframe.png"
@@ -130,9 +133,10 @@ public class ScreenshotResource {
             );
         }
         catch (Exception e){
-            if (e instanceof java.io.IOException) {
+            if (alphaFrame == null) {
                 // thrown by ImageIO.read
                 screenshotService.requestAlphaFrame(username);
+                Log.warn("Had to request new alphaframe");
             } else {
                 e.printStackTrace();
             }
@@ -161,14 +165,16 @@ public class ScreenshotResource {
         try {
             File newestScreenshot = Collections.max(
                 Arrays.stream(files)
-                        .filter(file -> file.getName().endsWith("png"))
-                        .filter(file -> !file.getName().startsWith("alphaframe"))
+                        .filter(file -> file.getName().endsWith("png")) // has to be png
+                        .filter(file -> !file.getName().startsWith("alphaframe")) // cant be alphaframe
                         .toList(),
                 Comparator.comparing(File::getName)
             );
 
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-            BufferedImage image = ImageIO.read(newestScreenshot);
+            BufferedImage image = ImageIO.read(newestScreenshot); // here it errors -> no images
+
+            // possible cause: patrol mode bevor first non alpha image is send
 
             ImageIO.write(image, "png", byteArrayOutputStream);
             response = Response
@@ -176,7 +182,7 @@ public class ScreenshotResource {
                     .entity(new ByteArrayInputStream(byteArrayOutputStream.toByteArray()))
                     .build();
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
 
         return response;
@@ -195,6 +201,7 @@ public class ScreenshotResource {
         try{
             BufferedImage screenShot = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 
+            // if you click on disconnected user it errors here, if the folder is empty
             ByteArrayInputStream bis = (ByteArrayInputStream) getScreenshot(username).getEntity();
 
             if(bis == null)
