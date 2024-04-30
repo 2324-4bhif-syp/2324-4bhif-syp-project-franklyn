@@ -27,4 +27,14 @@ export class PatrolModeComponent {
 
     return returnString;
   }
+
+  getPatrolModeOnStateClass():string {
+    let returnString: string = "text-danger";
+
+    if (this.store.value.patrol.isPatrolModeOn) {
+      return "text-success";
+    }
+
+    return returnString;
+  }
 }
