@@ -20,6 +20,30 @@ async fn main() -> Result<()> {
 
         match msg.opcode {
             OpCode::Text | OpCode::Binary => {
+                let mut buf = Vec::<u8>::new();
+
+                xcap::Monitor::all().unwrap()
+                    .first().unwrap()
+                    .capture_image().unwrap()
+                    .write_to(
+                        &mut std::io::Cursor::new(&mut buf),
+                        image::ImageFormat::Png,
+                    )?;
+
+                let file_part = reqwest::multipart::Part::bytes(buf)
+                    .file_name("image.png")
+                    .mime_str("image/png")
+                    .unwrap();
+
+                let form = reqwest::multipart::Form::new().part("image", file_part);
+
+                let res = client.post("http://localhost:8080/screenshot/tobias/alpha")
+                    .multipart(form)
+                    .send()
+                    .await?;
+
+                println!("{res:?}");
+
             }
             OpCode::Close => {
                 break;
