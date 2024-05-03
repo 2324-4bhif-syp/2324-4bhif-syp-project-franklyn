@@ -1,4 +1,3 @@
-/*
 use std::future::Future;
 
 use bytes::Bytes;
@@ -44,6 +43,8 @@ pub async fn connect(path: &str) -> Result<FragmentCollector<TokioIo<Upgraded>>>
     Ok(FragmentCollector::new(ws))
 }
 
+
+/*
 #[tokio::main(flavor = "current_thread")]
 async fn main() -> Result<()> {
     let mut ws = connect("examinee/tobias").await?;

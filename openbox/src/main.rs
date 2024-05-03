@@ -10,15 +10,94 @@ use iced::{
     Theme,
 };
 
+use fastwebsockets::FragmentCollector;
+use hyper::upgrade::Upgraded;
+use hyper_util::rt::TokioIo;
+
+/*
 use futures::channel::mpsc;
 use futures::sink::SinkExt;
 use futures::stream::StreamExt;
 
 use async_tungstenite::tungstenite;
+*/
 
 fn main() -> iced::Result {
-    App::run(Settings::default())
+    Franklyn::run(Settings::default())
 }
+
+pub enum Franklyn {
+    Login,
+    Disconnected,
+    Connected(FragmentCollector<TokioIo<Upgraded>>),
+}
+
+pub enum Message {
+    Connected(FragmentCollector<TokioIo<Upgraded>>),
+    Disconnected,
+}
+
+impl std::fmt::Debug for Message {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            _ => write!(f, "not impl"),
+        }
+    }
+}
+
+impl Application for Franklyn {
+    type Message = Message;
+    type Theme = Theme;
+    type Executor = executor::Default;
+    type Flags = ();
+
+    fn new(_flags: ()) -> (Franklyn, Command<Message>) {
+        (
+            Franklyn::Login,
+            Command::none(),
+        )
+    }
+
+    fn title(&self) -> String {
+        String::from("Franklyn")
+    }
+
+    fn update(&mut self, msg: Message) -> Command<Message> {
+        Command::none()
+    }
+
+    fn subscription(&self) -> Subscription<Message> {
+        if matches!(self, Franklyn::Login) {
+            Subscription::none()
+        } else {
+
+            Subscription::none()
+        }
+    }
+
+    fn view(&self) -> Element<Message> {
+        let title = text("Franklyn");
+
+        column![title].into()
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+
 
 pub struct App {
     code: String,
@@ -250,3 +329,4 @@ impl Application for App {
             .into()
     }
 }
+*/
