@@ -9,14 +9,10 @@ channel = "nightly"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-fastwebsockets = { version = "0.7.1", features = ["upgrade"] }
-hyper = { version = "1", features = ["http1", "server", "client"] }
-hyper-util = { version = "0.1.0", features = ["tokio"] }
-http-body-util = { version = "0.1.0" }
-bytes = "1.4.0"
-tokio = { version = "1.37.0", features = ["full", "macros"] }
-anyhow = "1.0.82"
 reqwest = { version = "0.12.4", features = ["multipart"] }
 xcap = "0.0.9"
 image = "0.25.1"
-iced = "0.12.1"
+iced = { version = "0.12.1", features = ["tokio"] }
+futures = "0.3.30"
+async-tungstenite = { version = "0.25.1", features = ["tokio-rustls-webpki-roots"] }
+tokio = { version = "1.37.0", features = ["time"] }
