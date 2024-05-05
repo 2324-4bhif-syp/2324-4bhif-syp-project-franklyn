@@ -1,5 +1,5 @@
 use iced::executor;
-use iced::widget::{button, row, column, text, text_input, };
+use iced::widget::{button, container, row, column, text, text_input, };
 use iced::subscription::Subscription;
 use iced::{
     alignment::Vertical, Alignment, Application, 
@@ -79,14 +79,17 @@ impl Application for Franklyn {
             Franklyn::Login(code, firstname, lastname) => {
                 let code_input = text_input("Code", &code)
                     .on_input(Message::CodeChanged)
+                    .width(300)
                     .padding(10);
 
                 let firstname_input = text_input("Firstname", &firstname)
                     .on_input(Message::FirstnameChanged)
+                    .width(300)
                     .padding(10);
 
                 let lastname_input = text_input("Lastname", &lastname)
                     .on_input(Message::LastnameChanged)
+                    .width(300)
                     .padding(10);
 
                 let mut button = button(
@@ -112,11 +115,16 @@ impl Application for Franklyn {
             }
         };
 
-        column![title, content]
-            .width(Length::Fill)
-            .height(Length::Fill)
-            .padding(20)
-            .spacing(20)
-            .into()
+        container(
+            column![title, content]
+                .padding(20)
+                .spacing(20)
+                .align_items(Alignment::Center)
+        )
+        .width(Length::Fill)
+        .height(Length::Fill)
+        .center_x()
+        .center_y()
+        .into()
     }
 }
