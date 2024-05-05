@@ -9,6 +9,8 @@ import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
 import java.io.*;
 import java.nio.file.Paths;
+import java.util.Arrays;
+import java.util.logging.Logger;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -23,6 +25,8 @@ public class VideoResource {
     @ConfigProperty(name = "screenshots.path")
     String screenshotsPath;
 
+    Logger logger = Logger.getLogger(getClass().getName());
+    
     @GET
     @Path("/download")
     @Produces(MediaType.APPLICATION_OCTET_STREAM)
@@ -58,7 +62,14 @@ public class VideoResource {
             return Uni.createFrom().item(response.build());
         }
         catch (Exception e) {
-            throw new RuntimeException(e);
+            logger.warning("Type: " + e.getClass().getSimpleName());
+
+            Arrays.stream(e.getStackTrace())
+                    .filter(traceElement -> traceElement.getClassName().equals(getClass().getName()))
+                    .forEach(t -> logger.warning(t.toString()));
+
+            // server error
+            return Uni.createFrom().item(response.build());
         }
     }
 
@@ -93,7 +104,13 @@ public class VideoResource {
             return new File(zipPath);
         }
         catch (Exception e){
-            throw new RuntimeException(e);
+            logger.warning("Type: " + e.getClass().getSimpleName());
+
+            Arrays.stream(e.getStackTrace())
+                    .filter(traceElement -> traceElement.getClassName().equals(getClass().getName()))
+                    .forEach(t -> logger.warning(t.toString()));
+
+            return null;
         }
     }
 
@@ -127,7 +144,6 @@ public class VideoResource {
                     /*.map(video -> video.readEntity(InputStream.class))
                     .await()
                     .indefinitely(); // change to atMost() later
-
                      */
 
             ZipEntry zipEntry = new ZipEntry(String.format("%s.mp4", username));
@@ -155,7 +171,14 @@ public class VideoResource {
             return Uni.createFrom().item(response.build());
         }
         catch (Exception e){
-            throw new RuntimeException(e);
+            logger.warning("Type: " + e.getClass().getSimpleName());
+
+            Arrays.stream(e.getStackTrace())
+                    .filter(traceElement -> traceElement.getClassName().equals(getClass().getName()))
+                    .forEach(t -> logger.warning(t.toString()));
+
+            //Server Error
+            return Uni.createFrom().item(response.build());
         }
     }
 
@@ -207,7 +230,13 @@ public class VideoResource {
                     .header("Content-Disposition", "attachment; filename=\"" + returnFileName + "\"")
                     .build();
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            logger.warning("Type: " + e.getClass().getSimpleName());
+
+            Arrays.stream(e.getStackTrace())
+                    .filter(traceElement -> traceElement.getClassName().equals(getClass().getName()))
+                    .forEach(t -> logger.warning(t.toString()));
+
+            return Response.serverError().build();
         }
     }
 
