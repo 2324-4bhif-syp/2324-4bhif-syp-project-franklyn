@@ -12,8 +12,8 @@ use iced::subscription::{self, Subscription};
 use futures::channel::mpsc;
 use futures::sink::SinkExt;
 
-const _PROD_DOMAIN:  &str = "http://franklyn.ddns.net:8080";
-const DEV_DOMAIN:   &str = "http://localhost:8080";
+const _PROD_URL:  &str = "http://franklyn.ddns.net:8080";
+const DEV_URL:   &str = "http://localhost:8080";
 
 #[derive(Debug, Clone)]
 pub struct Data {
@@ -105,7 +105,7 @@ pub async fn handle_msg(user: &String, ws: &mut FragmentCollector<TokioIo<Upgrad
                 .mime_str("image/png")?;
 
             reqwest::Client::new()
-                .post(&format!("{}/screenshot/{user}/alpha", DEV_DOMAIN))
+                .post(&format!("{}/screenshot/{user}/alpha", DEV_URL))
                 .multipart(multipart::Form::new().part("image", file_part))
                 .send()
                 .await?;
@@ -118,12 +118,12 @@ pub async fn handle_msg(user: &String, ws: &mut FragmentCollector<TokioIo<Upgrad
 }
 
 pub async fn connect_ws(user: &String) -> Result<FragmentCollector<TokioIo<Upgraded>>> {
-    let stream = TcpStream::connect(&DEV_DOMAIN[7..]).await?;
+    let stream = TcpStream::connect(&DEV_URL[7..]).await?;
 
     let req = Request::builder()
         .method("GET")
-        .uri(format!("{}/examinee/{}", DEV_DOMAIN, user))
-        .header("Host", DEV_DOMAIN)
+        .uri(format!("{}/examinee/{}", DEV_URL, user))
+        .header("Host", DEV_URL)
         .header(UPGRADE, "websocket")
         .header(CONNECTION, "upgrade")
         .header(
