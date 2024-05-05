@@ -1,9 +1,9 @@
 use std::future::Future;
 
 use bytes::Bytes;
-use anyhow::Result;
-use fastwebsockets::{Frame, OpCode};
-use fastwebsockets::FragmentCollector;
+use reqwest::multipart;
+use anyhow::{Result, Context};
+use fastwebsockets::{Frame, OpCode, FragmentCollector};
 use http_body_util::Empty;
 use hyper::{header::{CONNECTION, UPGRADE}, upgrade::Upgraded, Request};
 use hyper_util::rt::TokioIo;
@@ -12,7 +12,8 @@ use iced::subscription::{self, Subscription};
 use futures::channel::mpsc;
 use futures::sink::SinkExt;
 
-const DOMAIN: &str = "localhost:8080";
+const _PROD_DOMAIN:  &str = "http://franklyn.ddns.net:8080";
+const DEV_DOMAIN:   &str = "http://localhost:8080";
 
 #[derive(Debug, Clone)]
 pub struct Data {
@@ -44,10 +45,9 @@ where
     }
 }
 
-pub fn connect(Data { code, lastname, firstname }: &Data) -> Subscription<Event> {
-    let _code = code;
-    let path = format!("examinee/{firstname}_{lastname}");
+pub fn connect(data: &Data) -> Subscription<Event> {
     struct Connect;
+    let user = format!("{}_{}", data.firstname, data.lastname);
 
     let ws_closure = |mut output: mpsc::Sender<_>| async move {
         let mut state = State::Disconnected;
@@ -55,17 +55,21 @@ pub fn connect(Data { code, lastname, firstname }: &Data) -> Subscription<Event>
         loop {
             match &mut state {
                 State::Disconnected => {
-                    if let Ok(ws) = connect_ws(&path).await {
-                        _ = output.send(Event::Connected).await;
-                        state = State::Connected(ws);
-                    } else {
-                        println!("Failed");
-                        tokio::time::sleep(tokio::time::Duration::from_secs(1)).await;
-                        _ = output.send(Event::Disconnected).await;
-                    }
+                    _ = output.send(match connect_ws(&user).await {
+                        Ok(ws) => {
+                            state = State::Connected(ws);
+                            Event::Connected
+                        }
+                        Err(e) => {
+                            eprintln!("e: {e:?}");
+                            tokio::time::sleep(tokio::time::Duration::from_secs(1)).await;
+                            state = State::Disconnected;
+                            Event::Disconnected
+                        }
+                    }).await;
                 }
                 State::Connected(ref mut ws) => {
-                    if handle_msg(ws).await.is_ok_and(|k| !k) {
+                    if handle_msg(&user, ws).await.is_ok_and(|k| !k) {
                         _ = output.send(Event::Disconnected).await;
                         state = State::Disconnected;
                     }
@@ -77,7 +81,7 @@ pub fn connect(Data { code, lastname, firstname }: &Data) -> Subscription<Event>
     subscription::channel(std::any::TypeId::of::<Connect>(), 100, ws_closure)
 }
 
-pub async fn handle_msg(ws: &mut FragmentCollector<TokioIo<Upgraded>>) -> Result<bool> {
+pub async fn handle_msg(user: &String, ws: &mut FragmentCollector<TokioIo<Upgraded>>) -> Result<bool> {
     let msg = match ws.read_frame().await {
         Ok(msg) => msg,
         Err(e)  => {
@@ -89,30 +93,22 @@ pub async fn handle_msg(ws: &mut FragmentCollector<TokioIo<Upgraded>>) -> Result
 
     match msg.opcode {
         OpCode::Text | OpCode::Binary => {
-            println!("{:?}", msg.payload);
             let mut buf = Vec::<u8>::new();
 
-            xcap::Monitor::all().unwrap()
-                .first().unwrap()
-                .capture_image().unwrap()
-                .write_to(
-                    &mut std::io::Cursor::new(&mut buf),
-                    image::ImageFormat::Png,
-                )?;
+            let image = xcap::Monitor::all()?
+                .first().context("ERROR: no monitor found")?
+                .capture_image()?;
+            image.write_to(&mut std::io::Cursor::new(&mut buf), image::ImageFormat::Png)?;
 
-            let file_part = reqwest::multipart::Part::bytes(buf)
+            let file_part = multipart::Part::bytes(buf)
                 .file_name("image.png")
-                .mime_str("image/png")
-                .unwrap();
+                .mime_str("image/png")?;
 
-            let form = reqwest::multipart::Form::new().part("image", file_part);
-
-            let res = reqwest::Client::new().post("http://localhost:8080/screenshot/tobias/alpha")
-                .multipart(form)
+            reqwest::Client::new()
+                .post(&format!("{}/screenshot/{user}/alpha", DEV_DOMAIN))
+                .multipart(multipart::Form::new().part("image", file_part))
                 .send()
                 .await?;
-
-            println!("{res:?}");
         }
         OpCode::Close => return Ok(false),
         _ => (),
@@ -121,13 +117,13 @@ pub async fn handle_msg(ws: &mut FragmentCollector<TokioIo<Upgraded>>) -> Result
     Ok(true)
 }
 
-pub async fn connect_ws(path: &str) -> Result<FragmentCollector<TokioIo<Upgraded>>> {
-    let stream = TcpStream::connect(DOMAIN).await?;
+pub async fn connect_ws(user: &String) -> Result<FragmentCollector<TokioIo<Upgraded>>> {
+    let stream = TcpStream::connect(&DEV_DOMAIN[7..]).await?;
 
     let req = Request::builder()
         .method("GET")
-        .uri(format!("http://{}/{}", DOMAIN, path))
-        .header("Host", DOMAIN)
+        .uri(format!("{}/examinee/{}", DEV_DOMAIN, user))
+        .header("Host", DEV_DOMAIN)
         .header(UPGRADE, "websocket")
         .header(CONNECTION, "upgrade")
         .header(

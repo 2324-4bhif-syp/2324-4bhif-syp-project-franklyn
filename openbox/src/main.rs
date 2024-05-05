@@ -62,7 +62,6 @@ impl Application for Franklyn {
             Franklyn::Connected(_) => {}
         }
 
-
         Command::none()
     }
 
@@ -121,4 +120,3 @@ impl Application for Franklyn {
             .into()
     }
 }
-
