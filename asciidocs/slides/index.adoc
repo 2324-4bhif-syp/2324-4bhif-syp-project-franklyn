@@ -26,11 +26,11 @@ endif::[]
 *** kein Kopieren von fertigen Programmen/Lösungen
 
 [.font-xx-large]
-=== Sprint 9: Änderungen
-* Überarbeitung des instructor-clients
-* Reset Button fix
-* Installationsanleitung aktualisiert
-* Deployment auf franklyn3 VM
+=== Sprint 10: Änderungen
+* Migrieren des Instructor-clients auf SSOT
+* Erster Openbox Prototyp in Rust
+* Multithreaded Erstellung von Videos
+* WIP: Mandantenfähigkeit
 
 === Live Demo
 
