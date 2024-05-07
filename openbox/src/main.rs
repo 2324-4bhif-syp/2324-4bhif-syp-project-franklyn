@@ -1,3 +1,4 @@
+use openbox::{Data, Event};
 use iced::executor;
 use iced::widget::{button, container, row, column, text, text_input, };
 use iced::subscription::Subscription;
@@ -12,18 +13,18 @@ fn main() -> iced::Result {
 
 enum Franklyn {
     Login(String, String, String),
-    Connected(openbox::Data),
+    Connected(Data),
 }
 
 #[derive(Debug, Clone)]
 enum Message {
-    Ev(openbox::Event),
+    Ev(Event),
 
     CodeChanged(String),
     LastnameChanged(String),
     FirstnameChanged(String),
 
-    Login(openbox::Data),
+    Login(Data),
 }
 
 impl Application for Franklyn {
@@ -50,16 +51,24 @@ impl Application for Franklyn {
                     Message::CodeChanged(cc) => *c = cc,
                     Message::LastnameChanged(lc) => *l = lc,
                     Message::FirstnameChanged(fc) => *f = fc,
-
                     Message::Login(data) => *self = Franklyn::Connected(data),
-                    Message::Ev(e) => {
-                        if matches!(e, openbox::Event::Disconnected) {
-                            eprintln!("ERROR: disconnected");
-                        }
-                    }
+                    _ => (),
                 }
             }
-            Franklyn::Connected(_) => {}
+            Franklyn::Connected(data) => {
+                match msg {
+                    Message::Ev(e) => {
+                        match e {
+                            Event::Connected(image) => data.image = image,
+                            Event::Disconnected => {
+                                data.image = None;
+                                eprintln!("ERROR: disconnected");
+                            }
+                        }
+                    }
+                    _ => (),
+                }
+            }
         }
 
         Command::none()
@@ -68,12 +77,12 @@ impl Application for Franklyn {
     fn subscription(&self) -> Subscription<Message> {
         match self {
             Franklyn::Login(_, _, _) => Subscription::none(),
-            Franklyn::Connected(data)=> openbox::connect(&data).map(Message::Ev),
+            Franklyn::Connected(data)=> openbox::connect(data.clone()).map(Message::Ev),
         }
     }
 
     fn view(&self) -> Element<Message> {
-        let title = text(self.title());
+        let title = text(self.title()).size(70);
 
         let content = match self {
             Franklyn::Login(code, firstname, lastname) => {
@@ -100,7 +109,13 @@ impl Application for Franklyn {
                 .padding([0, 20]);
 
                 if let Some((code, firstname, lastname)) = openbox::get_credentials(&code, &firstname, &lastname) {
-                    button = button.on_press(Message::Login(openbox::Data { code, lastname, firstname }));
+                    let data = openbox::Data {
+                        code,
+                        firstname,
+                        lastname,
+                        image: None,
+                    };
+                    button = button.on_press(Message::Login(data));
                 }
 
                 column![code_input, firstname_input, lastname_input, button]
@@ -109,9 +124,14 @@ impl Application for Franklyn {
             }
             Franklyn::Connected(data) => {
                 column![
-                    row![text(&data.firstname), text(&data.lastname)],
-                    text("Timer?")
+                    text(format!("code: {}", &data.code)).size(30),
+                    row![
+                        text(&data.firstname).size(50), 
+                        text(&data.lastname).size(50)
+                    ]
+                    .spacing(20)
                 ]
+                .align_items(Alignment::Center)
             }
         };
 
