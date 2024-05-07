@@ -1,9 +1,11 @@
 package at.htl.franklyn.server.entity;
 
+import at.htl.franklyn.server.control.Limits;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PastOrPresent;
+import jakarta.validation.constraints.Size;
 
 import java.time.LocalDateTime;
 
@@ -31,6 +33,13 @@ public class Image {
     Participation participation;
 
     @NotBlank(message = "Path to image can not be blank")
-    @Column(name = "I_PATH", nullable = true, length = 4095) // 4095 = Linux path limit
+    @Size(
+            message = "Image path must have a length between "
+                    + Limits.IMAGE_PATH_LENGTH_MIN + " and "
+                    + Limits.IMAGE_PATH_LENGTH_MAX + " characters",
+            min = Limits.IMAGE_PATH_LENGTH_MIN,
+            max = Limits.IMAGE_PATH_LENGTH_MAX
+    )
+    @Column(name = "I_PATH", nullable = true, length = Limits.IMAGE_PATH_LENGTH_MAX)
     String path;
 }

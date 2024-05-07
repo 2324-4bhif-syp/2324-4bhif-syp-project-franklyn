@@ -1,5 +1,6 @@
 package at.htl.franklyn.server.entity;
 
+import at.htl.franklyn.server.control.Limits;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 
@@ -29,12 +30,18 @@ public class Exam {
 
     @NotNull(message = "Title of exam can not be null")
     @NotBlank(message = "Title of exam can not be blank")
-    @Size(message = "Length of exam title must be between 3 and 100 characters", min = 3, max = 100)
-    @Column(name = "E_TITLE", nullable = false, length = 100)
+    @Size(
+            message = "Length of exam title must be between "
+                    + Limits.EXAM_PIN_MIN_VALUE + " and "
+                    + Limits.EXAM_TITLE_LENGTH_MAX + " characters",
+            min = Limits.EXAM_TITLE_LENGTH_MIN,
+            max = Limits.EXAM_TITLE_LENGTH_MAX
+    )
+    @Column(name = "E_TITLE", nullable = false, length = Limits.EXAM_TITLE_LENGTH_MAX)
     private String title;
 
-    @Min(message = "PIN can not be smaller than 0", value = 0)
-    @Max(message = "PIN can not be larger than 999", value = 999)
+    @Min(message = "PIN can not be smaller than " + Limits.EXAM_PIN_MIN_VALUE, value = Limits.EXAM_PIN_MIN_VALUE)
+    @Max(message = "PIN can not be larger than " + Limits.EXAM_PIN_MAX_VALUE, value = Limits.EXAM_PIN_MAX_VALUE)
     @Column(name = "E_PIN", nullable = false)
     private int pin;
 

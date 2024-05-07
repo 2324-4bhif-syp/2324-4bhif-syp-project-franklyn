@@ -1,5 +1,6 @@
 package at.htl.franklyn.server.entity;
 
+import at.htl.franklyn.server.control.Limits;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -15,14 +16,26 @@ public class Examinee {
 
     @NotNull(message = "Firstname can not be null")
     @NotBlank(message = "Firstname can not be blank")
-    @Size(message = "Firstname must have a length between 2 and 50 characters", min = 2, max = 50)
-    @Column(name = "E_FIRSTNAME", nullable = false, length = 50)
+    @Size(
+            message = "Firstname must have a length between "
+                    + Limits.EXAMINEE_FIRSTNAME_LENGTH_MIN + " and "
+                    + Limits.EXAMINEE_FIRSTNAME_LENGTH_MAX + " characters",
+            min = Limits.EXAMINEE_FIRSTNAME_LENGTH_MIN,
+            max = Limits.EXAMINEE_FIRSTNAME_LENGTH_MAX
+    )
+    @Column(name = "E_FIRSTNAME", nullable = false, length = Limits.EXAMINEE_FIRSTNAME_LENGTH_MAX)
     private String firstname;
 
     @NotNull(message = "Lastname can not be null")
     @NotBlank(message = "Lastname can not be blank")
-    @Size(message = "Lastname must have a length between 2 and 50 characters", min = 2, max = 50)
-    @Column(name = "E_LASTNAME", nullable = false, length = 50)
+    @Size(
+            message = "Lastname must have a length between "
+                + Limits.EXAMINEE_LASTNAME_LENGTH_MIN + " and "
+                + Limits.EXAMINEE_LASTNAME_LENGTH_MAX + " characters",
+            min = Limits.EXAMINEE_LASTNAME_LENGTH_MIN,
+            max = Limits.EXAMINEE_LASTNAME_LENGTH_MAX
+    )
+    @Column(name = "E_LASTNAME", nullable = false, length = Limits.EXAMINEE_LASTNAME_LENGTH_MAX)
     private String lastname;
 
     public Examinee() {

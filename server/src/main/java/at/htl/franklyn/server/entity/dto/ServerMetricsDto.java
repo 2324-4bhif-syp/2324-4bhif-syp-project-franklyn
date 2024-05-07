@@ -1,4 +1,4 @@
-package at.htl.franklyn.server.boundary.Dto;
+package at.htl.franklyn.server.entity.dto;
 
 public record ServerMetricsDto(
         double cpuUsagePercent,
