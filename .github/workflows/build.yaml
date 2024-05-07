@@ -53,16 +53,16 @@ jobs:
     steps:
     - uses: hecrj/setup-rust-action@v2
     - uses: actions/checkout@master
-    - name: Build todos binary
+    - name: Build openbox binary
       env:
         MACOSX_DEPLOYMENT_TARGET: 10.14
       run: |
         cd openbox
-        cargo build --verbose --profile release-opt --package openbox
+        cargo build --profile release-opt --package openbox
     - name: Open binary via double-click
       run: chmod +x openbox/target/release-opt/openbox
-    - name: Archive todos binary
+    - name: Archive openbox binary
       uses: actions/upload-artifact@v1
       with:
-        name: todos-x86_64-apple-darwin
+        name: openbox-x86_64-apple-darwin
         path: openbox/target/release-opt/openbox
