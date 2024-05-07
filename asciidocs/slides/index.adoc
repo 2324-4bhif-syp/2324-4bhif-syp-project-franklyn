@@ -46,8 +46,8 @@ plantuml::./plantuml/architecture.puml[]
 * *Server*: Quarkus backend zum Verwalten von Boxen und Aufzeichnungen
 * *Frontend*: Angular Frontend zum Anzeigen der aus den Boxen gewonnenen Daten
 
-=== Konfiguration
-* OraVM
+=== ERD
+plantuml::./plantuml/erd.puml[]
 
 [.font-xx-large]
 == Team

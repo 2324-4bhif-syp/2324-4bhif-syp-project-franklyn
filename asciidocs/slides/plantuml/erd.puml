@@ -1,0 +1,24 @@
+@startuml
+entity Exam {
+    id: number <<PK>>
+    pin: number
+    state: number
+    actual_end: timestamp
+    planned_end: timestamp
+    planned_start: timestamp
+    title: varchar(100)
+}
+
+entity Examinee {
+    id: number <<PK>>
+    firstname: varchar(50)
+    lastname: varchar(50)
+}
+
+entity Participation {
+    id: number <<PK>>
+}
+
+Exam "1" -- "n" Participation
+Participation "n" -- "1" Examinee
+@enduml
