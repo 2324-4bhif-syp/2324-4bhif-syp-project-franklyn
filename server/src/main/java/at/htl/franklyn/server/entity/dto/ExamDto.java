@@ -2,12 +2,11 @@ package at.htl.franklyn.server.entity.dto;
 
 import at.htl.franklyn.server.control.Limits;
 import at.htl.franklyn.server.entity.Exam;
-import jakarta.validation.constraints.FutureOrPresent;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+import io.quarkus.logging.Log;
+import jakarta.validation.constraints.*;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public record ExamDto(
     @NotNull(message = "Title of exam can not be null")
@@ -29,4 +28,8 @@ public record ExamDto(
     @FutureOrPresent(message = "End for a new exam can not be in the past")
     LocalDateTime end
 ) {
+    @AssertTrue(message = "Start timestamp can not be before end timestamp")
+    public boolean isStartBeforeEnd() {
+        return start.isBefore(end);
+    }
 }
