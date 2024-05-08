@@ -3,9 +3,12 @@ use iced::executor;
 use iced::widget::{button, container, row, column, text, text_input, };
 use iced::subscription::Subscription;
 use iced::{
-    alignment::Vertical, Alignment, Application, 
-    Command, Element, Length, Settings, Theme,
+    alignment::Vertical, Alignment, Command, 
+    Element, Length, Settings, Color, Theme,
+    Application, Vector, Shadow, border::Radius,
+    Border, Font, font::{Family, Weight}
 };
+use iced::theme::{Container, Palette};
 
 fn main() -> iced::Result {
     Franklyn::run(Settings::default())
@@ -33,10 +36,10 @@ impl Application for Franklyn {
     type Executor = executor::Default;
     type Flags = ();
 
-    fn new(_flags: ()) -> (Franklyn, Command<Message>) {
+    fn new(_flags: ()) -> (Self, Command<Message>) {
         (
-            Franklyn::Login(String::new(), String::new(), String::new()),
-            Command::none(),
+            Self::Login(String::new(), String::new(), String::new()),
+            Command::none()
         )
     }
 
@@ -82,7 +85,20 @@ impl Application for Franklyn {
     }
 
     fn view(&self) -> Element<Message> {
-        let title = text(self.title()).size(70);
+        let font = Font { 
+            family: Family::Monospace,
+            weight: Weight::Semibold,
+            ..Font::DEFAULT
+        };
+
+        let logo = row![
+            container(text("FRAN")
+                .size(70)
+                .font(font)
+            )
+            .style(Container::Custom(Box::new(LogoTheme::default()))),
+            text("KLYN").font(font).size(70),
+        ];
 
         let content = match self {
             Franklyn::Login(code, firstname, lastname) => {
@@ -136,7 +152,7 @@ impl Application for Franklyn {
         };
 
         container(
-            column![title, content]
+            column![logo, content]
                 .padding(20)
                 .spacing(20)
                 .align_items(Alignment::Center)
@@ -146,5 +162,36 @@ impl Application for Franklyn {
         .center_x()
         .center_y()
         .into()
+    }
+}
+
+pub struct LogoTheme {
+    palatte: Palette,
+}
+
+impl Default for LogoTheme {
+    fn default() -> Self {
+        Self {
+            palatte: Palette { 
+                background: Color::from([0.596078431372549, 0.7411764705882353, 0.9372549019607843]),
+                text: Color::from([1., 1., 1.]),
+                primary: Color::from([1., 1., 1.]),
+                success: Color::from([1., 1., 1.]),
+                danger: Color::from([1., 1., 1.]),
+            }
+        }
+    }
+}
+
+impl container::StyleSheet for LogoTheme {
+    type Style = Theme;
+
+    fn appearance(&self, _style: &Self::Style) -> container::Appearance {
+        container::Appearance {
+            text_color: Some(self.palatte.text),
+            background: Some(iced::Background::Color(self.palatte.background)),
+            border: Border { color: Color::from([1.,1.,1.]), width: 1., radius: Radius::from(1) },
+            shadow: Shadow { color: Color::from([1.,1.,1.]), offset: Vector::new(0., 0.), blur_radius: 0. },
+        }
     }
 }
