@@ -34,6 +34,9 @@ endif::[]
 
 === Live Demo
 
+=== ERD
+plantuml::./plantuml/erd.puml[]
+
 === Architektur
 plantuml::./plantuml/architecture.puml[]
 
@@ -45,9 +48,6 @@ plantuml::./plantuml/architecture.puml[]
 *** Mit der Franklyn Applikation kann diese Box geöffnet und daraus Informationen gewonnen werden (z.B. screenshot)
 * *Server*: Quarkus backend zum Verwalten von Boxen und Aufzeichnungen
 * *Frontend*: Angular Frontend zum Anzeigen der aus den Boxen gewonnenen Daten
-
-=== ERD
-plantuml::./plantuml/erd.puml[]
 
 [.font-xx-large]
 == Team
