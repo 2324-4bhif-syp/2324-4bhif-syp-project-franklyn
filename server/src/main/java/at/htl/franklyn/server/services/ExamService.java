@@ -52,14 +52,12 @@ public class ExamService {
     }
 
     /**
-     *
-     * @param id
-     * @return
+     * Queries a list of examinees for an exam with the given id
+     * @param id exam id for which to query students for
+     * @return list of examinee DTOs holding most of the relevant data of an exminee needed during the exam
      */
     public List<ExamineeDto> getExamineesOfExam(long id) {
-        List<Examinee> examinees = examRepository.getExamineesOfExam(id);
-
-        return null;
+        return examRepository.getExamineesOfExamWithConnectionState(id);
     }
 
     /**
