@@ -7,7 +7,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 @Entity
-@Table(name = "F_EXAMINEE")
+@Table(name = "F_EXAMINEE", uniqueConstraints = @UniqueConstraint(columnNames = { "E_FIRSTNAME", "E_LASTNAME"}))
 public class Examinee {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)

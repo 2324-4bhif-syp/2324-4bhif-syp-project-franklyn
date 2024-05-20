@@ -61,6 +61,24 @@ public class ExamService {
     }
 
     /**
+     * Checks wether the given pin belongs to an active exam, and thus is valid, or not
+     * @param pin pin to check
+     * @return true - pin is valid (belongs to an active exam) otherwise false
+     */
+    public boolean isValidPIN(int pin) {
+        return examRepository.count("from Exam e where e.actualEnd is null and pin = ?1", pin) != 0;
+    }
+
+    /**
+     * Returns the active exam with the given pin
+     * @param pin pin to search for
+     * @return the exam with the given pin
+     */
+    public Exam findByPIN(int pin) {
+        return examRepository.find("from Exam e where e.actualEnd is null and pin = ?1", pin).firstResult();
+    }
+
+    /**
      * Generates a new random PIN to be used for a new exam.
      * This function can theoretically loop endlessly if 1000 Exams are active at once.
      * @return a free PIN

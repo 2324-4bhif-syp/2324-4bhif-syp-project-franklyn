@@ -1,9 +1,14 @@
 package at.htl.franklyn.server.boundary;
 
 import at.htl.franklyn.server.control.ExamRepository;
+import at.htl.franklyn.server.control.ParticipationRepository;
 import at.htl.franklyn.server.entity.Exam;
+import at.htl.franklyn.server.entity.Examinee;
+import at.htl.franklyn.server.entity.Participation;
 import at.htl.franklyn.server.entity.dto.ExamDto;
+import at.htl.franklyn.server.entity.dto.ExamineeDto;
 import at.htl.franklyn.server.services.ExamService;
+import at.htl.franklyn.server.services.ExamineeService;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -21,7 +26,13 @@ public class ExamResource {
     ExamService examService;
 
     @Inject
+    ExamineeService examineeService;
+
+    @Inject
     ExamRepository examRepository;
+
+    @Inject
+    ParticipationRepository participationRepository;
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
@@ -92,6 +103,36 @@ public class ExamResource {
 
         return Response
                 .ok(examService.getExamineesOfExam(id))
+                .build();
+    }
+
+    @POST
+    @Transactional
+    @Path("/join/{pin}")
+    public Response joinExam(@PathParam("pin") int pin, @Valid ExamineeDto examineeDto, @Context UriInfo uriInfo) {
+        if(!examService.isValidPIN(pin)) {
+            return Response
+                    .status(Response.Status.BAD_REQUEST)
+                    .build();
+        }
+
+        // TODO: use existing participation for repeated calls to join instead of duping it
+
+        Examinee examinee = examineeService.getOrCreateExaminee(examineeDto.firstname(), examineeDto.lastname());
+        Exam exam = examService.findByPIN(pin);
+        Participation p = new Participation(examinee, exam);
+
+        participationRepository.persist(p);
+
+        // TODO: really thing through new location
+        URI uri = uriInfo
+                .getBaseUriBuilder()
+                .path("/connect/")
+                .path(p.getId().toString())
+                .build();
+
+        return Response
+                .created(uri)
                 .build();
     }
 }

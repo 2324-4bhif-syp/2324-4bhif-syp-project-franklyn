@@ -24,6 +24,15 @@ Accept: application/json
 GET http://localhost:8080/exams/1/examinees
 Accept: application/json
 
+### Join Exam
+POST http://localhost:8080/exams/join/413
+Content-Type: application/json
+
+{
+  "firstname": "Franz",
+  "lastname": "Höller"
+}
+
 
 
 
