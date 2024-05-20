@@ -8,9 +8,20 @@ Content-Type: application/json
   "end": "2030-03-18T16:30:00"
 }
 
-
 ### Get Exam by id
 GET http://localhost:8080/exams/1
+Accept: application/json
+
+### Get all exams
+GET http://localhost:8080/exams
+Accept: application/json
+
+### Delete exam by id
+DELETE http://localhost:8080/exams/1
+Accept: application/json
+
+### Get examinees of exam
+GET http://localhost:8080/exams/1/examinees
 Accept: application/json
 
 

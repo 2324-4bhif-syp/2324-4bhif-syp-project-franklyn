@@ -4,10 +4,13 @@ import at.htl.franklyn.server.control.ExamRepository;
 import at.htl.franklyn.server.control.Limits;
 import at.htl.franklyn.server.entity.Exam;
 import at.htl.franklyn.server.entity.ExamState;
+import at.htl.franklyn.server.entity.Examinee;
 import at.htl.franklyn.server.entity.dto.ExamDto;
+import at.htl.franklyn.server.entity.dto.ExamineeDto;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 
+import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
@@ -37,6 +40,26 @@ public class ExamService {
         examRepository.persist(exam);
 
         return exam;
+    }
+
+    /**
+     * Returns wether or not an exam with the given id exists
+     * @param id exam id to check
+     * @return true - when an exam with the given id exists otherwise false
+     */
+    public boolean exists(long id) {
+        return examRepository.count("from Exam where id = ?1", id) != 0;
+    }
+
+    /**
+     *
+     * @param id
+     * @return
+     */
+    public List<ExamineeDto> getExamineesOfExam(long id) {
+        List<Examinee> examinees = examRepository.getExamineesOfExam(id);
+
+        return null;
     }
 
     /**
