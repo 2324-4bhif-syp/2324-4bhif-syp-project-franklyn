@@ -8,6 +8,11 @@ Content-Type: application/json
   "end": "2030-03-18T16:30:00"
 }
 
+> {%
+client.global.set("pin", response.body.pin)
+console.log(client.global.get("pin"));
+%}
+
 ### Get Exam by id
 GET http://localhost:8080/exams/1
 Accept: application/json
@@ -25,7 +30,7 @@ GET http://localhost:8080/exams/1/examinees
 Accept: application/json
 
 ### Join Exam
-POST http://localhost:8080/exams/join/416
+POST http://localhost:8080/exams/join/{{pin}}
 Content-Type: application/json
 
 {
