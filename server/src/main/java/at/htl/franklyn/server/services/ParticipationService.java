@@ -12,6 +12,14 @@ public class ParticipationService {
     @Inject
     ParticipationRepository participationRepository;
 
+    /**
+     * Depending on whether a participation with the given examinee and exam exists or not this function either:
+     * 1) Creates a new participation and returns it
+     * 2) returns the existing participation
+     * @param examinee examinee part of the participation
+     * @param exam exam part of the participation
+     * @return a participation
+     */
     public Participation getOrCreateParticipation(Examinee examinee, Exam exam) {
         Participation p = participationRepository.getByExamAndExaminee(examinee.getId(), exam.getId());
 

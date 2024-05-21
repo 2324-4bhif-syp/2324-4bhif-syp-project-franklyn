@@ -29,13 +29,16 @@ public class ExamineeService {
      * @return examinee with the given first and lastname
      */
     public Examinee getOrCreateExaminee(String firstname, String lastname) {
-        if(exists(firstname, lastname)) {
-            return examineeRepostiory.find("select e from Examinee e where firstname = ?1 and lastname = ?2", firstname, lastname).firstResult();
+        Examinee examinee = examineeRepostiory
+                .find("select e from Examinee e where firstname = ?1 and lastname = ?2", firstname, lastname)
+                .firstResultOptional()
+                .orElse(null);
+
+        if(examinee == null) {
+            examinee = new Examinee(firstname, lastname);
+            examineeRepostiory.persist(examinee);
         }
 
-        Examinee e = new Examinee(firstname, lastname);
-        examineeRepostiory.persist(e);
-
-        return e;
+        return examinee;
     }
 }
