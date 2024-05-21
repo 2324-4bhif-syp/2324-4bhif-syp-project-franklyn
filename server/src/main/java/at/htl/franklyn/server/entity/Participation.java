@@ -2,12 +2,14 @@ package at.htl.franklyn.server.entity;
 
 import jakarta.persistence.*;
 
+import java.util.UUID;
+
 @Entity
-@Table(name = "T_PARTICIPATION")
+@Table(name = "T_PARTICIPATION", uniqueConstraints = @UniqueConstraint(columnNames = { "P_EXAM", "P_EXAMINEE" }))
 public class Participation {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY, cascade = {
         CascadeType.DETACH,
@@ -35,11 +37,11 @@ public class Participation {
         this.exam = exam;
     }
 
-    public Long getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 

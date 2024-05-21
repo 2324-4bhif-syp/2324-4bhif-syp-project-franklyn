@@ -7,7 +7,7 @@ import jakarta.validation.constraints.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "F_EXAM")
+@Table(name = "F_EXAM", uniqueConstraints = @UniqueConstraint(columnNames = { "E_ACTUAL_END", "E_PIN" }))
 public class Exam {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)

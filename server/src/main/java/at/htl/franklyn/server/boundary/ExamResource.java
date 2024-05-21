@@ -9,6 +9,7 @@ import at.htl.franklyn.server.entity.dto.ExamDto;
 import at.htl.franklyn.server.entity.dto.ExamineeDto;
 import at.htl.franklyn.server.services.ExamService;
 import at.htl.franklyn.server.services.ExamineeService;
+import at.htl.franklyn.server.services.ParticipationService;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -33,6 +34,9 @@ public class ExamResource {
 
     @Inject
     ParticipationRepository participationRepository;
+
+    @Inject
+    ParticipationService participationService;
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
@@ -116,19 +120,15 @@ public class ExamResource {
                     .build();
         }
 
-        // TODO: use existing participation for repeated calls to join instead of duping it
-
         Examinee examinee = examineeService.getOrCreateExaminee(examineeDto.firstname(), examineeDto.lastname());
         Exam exam = examService.findByPIN(pin);
-        Participation p = new Participation(examinee, exam);
+        Participation participation = participationService.getOrCreateParticipation(examinee, exam);
 
-        participationRepository.persist(p);
-
-        // TODO: really thing through new location
+        // TODO: really think through new location
         URI uri = uriInfo
                 .getBaseUriBuilder()
                 .path("/connect/")
-                .path(p.getId().toString())
+                .path(participation.getId().toString())
                 .build();
 
         return Response

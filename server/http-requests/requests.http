@@ -25,7 +25,7 @@ GET http://localhost:8080/exams/1/examinees
 Accept: application/json
 
 ### Join Exam
-POST http://localhost:8080/exams/join/413
+POST http://localhost:8080/exams/join/416
 Content-Type: application/json
 
 {
