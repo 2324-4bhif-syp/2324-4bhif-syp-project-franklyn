@@ -47,3 +47,22 @@ jobs:
         with:
           name: openbox-x86_64-debian-linux-gnu
           path: openbox/target/debian/openbox-x86_64-debian-linux-gnu.deb
+
+  openbox_macos:
+    runs-on: macOS-12
+    steps:
+    - uses: hecrj/setup-rust-action@v2
+    - uses: actions/checkout@master
+    - name: Build openbox binary
+      env:
+        MACOSX_DEPLOYMENT_TARGET: 10.14
+      run: |
+        cd openbox
+        cargo build --profile release-opt --package openbox
+    - name: Open binary via double-click
+      run: chmod +x openbox/target/release-opt/openbox
+    - name: Archive openbox binary
+      uses: actions/upload-artifact@v4
+      with:
+        name: openbox-x86_64-apple-darwin
+        path: openbox/target/release-opt/openbox
