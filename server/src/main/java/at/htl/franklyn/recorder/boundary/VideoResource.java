@@ -9,6 +9,12 @@ import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
 import java.io.*;
 import java.nio.file.Paths;
+import java.util.Arrays;
+import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+import java.util.logging.Logger;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -22,6 +28,8 @@ public class VideoResource {
 
     @ConfigProperty(name = "screenshots.path")
     String screenshotsPath;
+
+    Logger logger = Logger.getLogger(getClass().getName());
 
     @GET
     @Path("/download")
@@ -42,6 +50,17 @@ public class VideoResource {
                 return Uni.createFrom().item(response.build());
             }
 
+            ExecutorService executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+
+            for(File file : targetDirectories){
+                executor.execute(() -> {
+                    produceVideo(file.getName());
+                });
+            }
+
+            executor.shutdown();
+            executor.awaitTermination(Long.MAX_VALUE, TimeUnit.NANOSECONDS);
+
             response =  Response
                     .ok()
                     .header(
@@ -58,7 +77,14 @@ public class VideoResource {
             return Uni.createFrom().item(response.build());
         }
         catch (Exception e) {
-            throw new RuntimeException(e);
+            logger.warning("Type: " + e.getClass().getSimpleName());
+
+            Arrays.stream(e.getStackTrace())
+                    .filter(traceElement -> traceElement.getClassName().equals(getClass().getName()))
+                    .forEach(t -> logger.warning(t.toString()));
+
+            // server error
+            return Uni.createFrom().item(response.build());
         }
     }
 
@@ -68,14 +94,16 @@ public class VideoResource {
             FileOutputStream fos = new FileOutputStream(zipPath);
             ZipOutputStream zipOut = new ZipOutputStream(fos);
 
-            for(File files : targetDirectories){
-                String fileName = files.getName();
+            for(File folder : targetDirectories){
+                String fileName = folder.getName();
 
                 if(fileName.endsWith("zip")){
                     continue;
                 }
 
-                InputStream fis = getVideo(fileName).readEntity(FileInputStream.class);
+                String returnFileName = String.format("%s.mp4", fileName);
+
+                InputStream fis = new FileInputStream(Paths.get(folder.getPath(), returnFileName).toString());
                 ZipEntry zipEntry = new ZipEntry(String.format("%s.mp4", fileName));
                 zipOut.putNextEntry(zipEntry);
 
@@ -93,7 +121,13 @@ public class VideoResource {
             return new File(zipPath);
         }
         catch (Exception e){
-            throw new RuntimeException(e);
+            logger.warning("Type: " + e.getClass().getSimpleName());
+
+            Arrays.stream(e.getStackTrace())
+                    .filter(traceElement -> traceElement.getClassName().equals(getClass().getName()))
+                    .forEach(t -> logger.warning(t.toString()));
+
+            return null;
         }
     }
 
@@ -127,7 +161,6 @@ public class VideoResource {
                     /*.map(video -> video.readEntity(InputStream.class))
                     .await()
                     .indefinitely(); // change to atMost() later
-
                      */
 
             ZipEntry zipEntry = new ZipEntry(String.format("%s.mp4", username));
@@ -155,7 +188,14 @@ public class VideoResource {
             return Uni.createFrom().item(response.build());
         }
         catch (Exception e){
-            throw new RuntimeException(e);
+            logger.warning("Type: " + e.getClass().getSimpleName());
+
+            Arrays.stream(e.getStackTrace())
+                    .filter(traceElement -> traceElement.getClassName().equals(getClass().getName()))
+                    .forEach(t -> logger.warning(t.toString()));
+
+            //Server Error
+            return Uni.createFrom().item(response.build());
         }
     }
 
@@ -173,6 +213,38 @@ public class VideoResource {
             // Return if folder with this user does not exist
             if(targetDirectories == null || targetDirectories.length == 0 ){
                 return null;
+            }
+
+            File targetDirectory = targetDirectories[0];
+
+            produceVideo(username);
+
+            String returnFileName = String.format("%s.mp4", username);
+            return Response
+                    .ok(new FileInputStream(Paths.get(targetDirectory.getPath(), returnFileName).toString()))
+                    .header("Content-Disposition", "attachment; filename=\"" + returnFileName + "\"")
+                    .build();
+        } catch (Exception e) {
+            logger.warning("Type: " + e.getClass().getSimpleName());
+
+            Arrays.stream(e.getStackTrace())
+                    .filter(traceElement -> traceElement.getClassName().equals(getClass().getName()))
+                    .forEach(t -> logger.warning(t.toString()));
+
+            return Response.serverError().build();
+        }
+    }
+
+    private void produceVideo(String username){
+        try {
+            // Parent-folder
+            File screenshotFolder = new File(screenshotsPath);
+            // Input/Output-folder
+            File[] targetDirectories = screenshotFolder.listFiles((f, name) -> name.equals(username));
+
+            // Return if folder with this user does not exist
+            if(targetDirectories == null || targetDirectories.length == 0 ){
+                return;
             }
 
             File targetDirectory = targetDirectories[0];
@@ -200,16 +272,12 @@ public class VideoResource {
 
             r.freeMemory();
             r.gc();
-
-            String returnFileName = String.format("%s.mp4", username);
-            return Response
-                    .ok(new FileInputStream(Paths.get(targetDirectory.getPath(), returnFileName).toString()))
-                    .header("Content-Disposition", "attachment; filename=\"" + returnFileName + "\"")
-                    .build();
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            logger.warning("Type: " + e.getClass().getSimpleName());
+
+            Arrays.stream(e.getStackTrace())
+                    .filter(traceElement -> traceElement.getClassName().equals(getClass().getName()))
+                    .forEach(t -> logger.warning(t.toString()));
         }
     }
-
-
 }

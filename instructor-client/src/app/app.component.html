@@ -1,10 +1,10 @@
-<div class="min-vh-100">
+<header>
   <nav
     class="navbar navbar-expand bg-primary"
     data-bs-theme="dark">
     <div class="container-fluid">
       <!--title-->
-      <a class="navbar-brand fw-bold" href="#">Franklyn</a>
+      <a class="navbar-brand fw-bold" routerLink="/">Franklyn</a>
 
       <!--routes-->
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
@@ -35,7 +35,7 @@
              [class.active]="location.path() === '/metrics-dashboard'"
              routerLink="metrics-dashboard"
              (click)="changeRoute()">
-              Metrics Dashboard
+            Metrics Dashboard
           </a>
         </li>
       </ul>
@@ -45,12 +45,13 @@
         <!--scrollable when there are many fields (over 70% view height)-->
         <form class="dropdown-menu p-4 dropdown-menu-end settings-dropdown overflow-scroll" data-bs-theme="light">
           <div class="mb-3 form-check">
-            <input
-              type="checkbox"
-              class="form-check-input"
-              id="patrol-mode-check"
-              name="patrol-mode-check"
-              [(ngModel)]="examineeRepo.patrolModeOn">
+            <input #patrolModeOn
+                   type="checkbox"
+                   class="form-check-input"
+                   id="patrol-mode-check"
+                   name="patrol-mode-check"
+                   [value]="store.value.patrol.isPatrolModeOn"
+                   (change)="setPatrolMode(patrolModeOn.checked)">
             <label class="form-check-label" for="patrol-mode-check">
               Patrol-Mode
             </label>
@@ -59,52 +60,53 @@
             <label
               for="patrol-speed-range"
               class="form-label">
-              Patrol speed: {{patrolManagerService.getPatrolSpeedFormatted()}} sec
+              Patrol speed: {{this.store.value.timer.patrolSpeed}} sec
             </label>
-            <input
-              type="range"
-              class="form-range"
-              [min]="environment.minPatrolSpeed"
-              [max]="environment.maxPatrolSpeed"
-              id="patrol-speed-range"
-              name="patrol-speed-range"
-              [(ngModel)]="patrolManagerService.nextPatrol">
+            <input #patrolSpeed
+                   type="range"
+                   class="form-range"
+                   [min]="environment.minPatrolSpeed"
+                   [max]="environment.maxPatrolSpeed"
+                   id="patrol-speed-range"
+                   name="patrol-speed-range"
+                   [value]="store.value.timer.patrolSpeed"
+                   (input)="setPatrolSpeed(Number(patrolSpeed.value))">
           </div>
           <div class="mb-2">
             <label
               for="get-client-interval"
               class="form-label">
-              Get client interval: {{patrolManagerService.getNextClientTimeFormatted()}} sec
+              Get client interval: {{this.store.value.timer.nextClientTime}} sec
             </label>
-            <input
-              type="range"
-              class="form-range"
-              [min]="environment.minNextClientScheduleTime"
-              [max]="environment.maxNextClientScheduleTime"
-              id="get-client-interval"
-              name="get-client-interval"
-              [(ngModel)]="patrolManagerService.nextClientTime">
+            <input #nextClientTime
+                   type="range"
+                   class="form-range"
+                   [min]="environment.minNextClientScheduleTime"
+                   [max]="environment.maxNextClientScheduleTime"
+                   id="get-client-interval"
+                   name="get-client-interval"
+                   [value]="store.value.timer.nextClientTime"
+                   (input)="setNextClientTime(Number(nextClientTime.value))">
           </div>
           <div class="mb-4">
             <label
               for="patrol-screenshot-interval"
               class="form-label">
-              Screenshot capture interval: {{ examineeRepo.intervalSpeed}} sec
+              Screenshot capture interval: {{this.store.value.timer.screenshotCaptureInterval}} sec
             </label>
-            <input
-              type="range"
-              class="form-range"
-              [min]="environment.minNextClientScheduleTime"
-              [max]="environment.maxNextClientScheduleTime"
-              id="patrol-screenshot-interval"
-              (change)="screenshotCaptureIntervalUpdate()"
-              name="patrol-screenshot-interval"
-              [(ngModel)]="examineeRepo.intervalSpeed">
+            <input #screenshotInterval
+                   type="range"
+                   class="form-range"
+                   [min]="environment.minNextClientScheduleTime"
+                   [max]="environment.maxNextClientScheduleTime"
+                   id="patrol-screenshot-interval"
+                   name="patrol-screenshot-interval"
+                   [value]="store.value.timer.screenshotCaptureInterval"
+                   (input)="setScreenshotCaptureInterval(Number(screenshotInterval.value))">
           </div>
-
           <div>
             <button
-              (click)="emptyResetText()"
+              (click)="setResetText('')"
               class="btn btn-danger w-100"
               data-bs-toggle="modal"
               data-bs-target="#verification-modal">
@@ -112,7 +114,6 @@
             </button>
           </div>
         </form>
-
         <button
           role="button"
           href="#"
@@ -127,9 +128,11 @@
       </div>
     </div>
   </nav>
+</header>
 
+<main>
   <router-outlet></router-outlet>
-</div>
+</main>
 
 <!-- Modal -->
 <div
@@ -157,7 +160,11 @@
           have been recorded thus far.
         </p>
         <p class="fw-bold">Please confirm by typing '{{environment.wantedResetText}}' in the box below and then pressing the reset button.</p>
-        <input type="text" class="form-control" placeholder="{{environment.wantedResetText}}" [(ngModel)]="resetText">
+        <input #resetText
+               type="text"
+               class="form-control"
+               placeholder="{{environment.wantedResetText}}"
+               (keyup)="setResetText(resetText.value)">
       </div>
       <div class="modal-footer">
         <button
@@ -176,4 +183,3 @@
     </div>
   </div>
 </div>
-

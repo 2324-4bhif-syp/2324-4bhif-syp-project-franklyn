@@ -9,4 +9,8 @@ export const environment = {
   imageWidth: 1920,
   imageHeight: 1080,
   wantedResetText: "franklyn",
+  reloadDashboardInterval: 5,
+  metricsDashboardValueOkay: "#03c303",
+  metricsDashboardValueBarelyOkay: "#e6e604",
+  metricsDashboardValueNotOkay: "#cf0404",
 }

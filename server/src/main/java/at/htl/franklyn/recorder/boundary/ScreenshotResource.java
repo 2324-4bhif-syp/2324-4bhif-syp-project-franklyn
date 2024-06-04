@@ -2,6 +2,7 @@ package at.htl.franklyn.recorder.boundary;
 
 import at.htl.franklyn.recorder.dto.IntervalUpdateDto;
 import at.htl.franklyn.server.services.ScreenshotService;
+import com.sun.tools.javac.Main;
 import io.quarkus.logging.Log;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
@@ -21,6 +22,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.logging.Logger;
 
 @Path("/screenshot")
 public class ScreenshotResource {
@@ -36,6 +38,8 @@ public class ScreenshotResource {
 
     @Inject
     ScreenshotService screenshotService;
+
+    Logger logger = Logger.getLogger(getClass().getName());
 
     @POST
     @Path("{username}/alpha")
@@ -73,7 +77,11 @@ public class ScreenshotResource {
             );
         }
         catch (Exception e){
-            e.printStackTrace();
+            logger.warning("Type: " + e.getClass().getSimpleName());
+
+            Arrays.stream(e.getStackTrace())
+                    .filter(traceElement -> traceElement.getClassName().equals(getClass().getName()))
+                    .forEach(t -> logger.warning(t.toString()));
         }
     }
 
@@ -82,6 +90,9 @@ public class ScreenshotResource {
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     public void takeBetaScreenshot(@PathParam("username") String username,
                                @RestForm("image") @PartType(MediaType.APPLICATION_OCTET_STREAM) InputStream screenshot){
+
+        BufferedImage alphaFrame = null;
+
         try {
             // TODO: Sanitize username
             File directory = Paths.get(screenshotsPath, username).toFile();
@@ -92,7 +103,7 @@ public class ScreenshotResource {
 
             BufferedImage diffFrame = ImageIO.read(screenshot);
 
-            BufferedImage alphaFrame = ImageIO.read(Paths
+            alphaFrame = ImageIO.read(Paths
                     .get(
                             directory.getPath(),
                             "/alphaframe.png"
@@ -130,11 +141,16 @@ public class ScreenshotResource {
             );
         }
         catch (Exception e){
-            if (e instanceof java.io.IOException) {
+            if (alphaFrame == null) {
                 // thrown by ImageIO.read
                 screenshotService.requestAlphaFrame(username);
+                Log.warn("Had to request new alphaframe");
             } else {
-                e.printStackTrace();
+                logger.warning("Type: " + e.getClass().getSimpleName());
+
+                Arrays.stream(e.getStackTrace())
+                        .filter(traceElement -> traceElement.getClassName().equals(getClass().getName()))
+                        .forEach(t -> logger.warning(t.toString()));
             }
         }
     }
@@ -159,10 +175,10 @@ public class ScreenshotResource {
         }
 
         try {
-            File newestScreenshot = Collections.max(
+            File newestScreenshot = Collections.max( // errors here if there is no image
                 Arrays.stream(files)
-                        .filter(file -> file.getName().endsWith("png"))
-                        .filter(file -> !file.getName().startsWith("alphaframe"))
+                        .filter(file -> file.getName().endsWith("png")) // has to be png
+                        .filter(file -> !file.getName().startsWith("alphaframe")) // cant be alphaframe
                         .toList(),
                 Comparator.comparing(File::getName)
             );
@@ -170,13 +186,19 @@ public class ScreenshotResource {
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
             BufferedImage image = ImageIO.read(newestScreenshot);
 
+            // possible cause: patrol mode before first non alpha image is send
+
             ImageIO.write(image, "png", byteArrayOutputStream);
             response = Response
                     .ok()
                     .entity(new ByteArrayInputStream(byteArrayOutputStream.toByteArray()))
                     .build();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        } catch (Exception e) {
+            logger.warning("Type: " + e.getClass().getSimpleName());
+
+            Arrays.stream(e.getStackTrace())
+                    .filter(traceElement -> traceElement.getClassName().equals(getClass().getName()))
+                    .forEach(t -> logger.warning(t.toString()));
         }
 
         return response;
@@ -195,6 +217,7 @@ public class ScreenshotResource {
         try{
             BufferedImage screenShot = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 
+            // if you click on disconnected user it errors here, if the folder is empty
             ByteArrayInputStream bis = (ByteArrayInputStream) getScreenshot(username).getEntity();
 
             if(bis == null)
@@ -215,7 +238,11 @@ public class ScreenshotResource {
                     .build();
         }
         catch (Exception e){
-            e.printStackTrace();
+            logger.warning("Type: " + e.getClass().getSimpleName());
+
+            Arrays.stream(e.getStackTrace())
+                    .filter(traceElement -> traceElement.getClassName().equals(getClass().getName()))
+                    .forEach(t -> logger.warning(t.toString()));
         }
 
         return response;
