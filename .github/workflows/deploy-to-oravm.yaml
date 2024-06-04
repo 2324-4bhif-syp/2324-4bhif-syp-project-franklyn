@@ -26,7 +26,7 @@ jobs:
           merge-multiple: true
       - run: |
           pwd
-          ls -R builds
+          ls
 
   build-deploy-franklyn:
     name: Build and deploy Franklyn
