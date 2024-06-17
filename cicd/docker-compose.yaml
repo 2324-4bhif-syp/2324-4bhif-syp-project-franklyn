@@ -6,7 +6,7 @@ services:
     ports:
       - 8080:8080
     volumes:
-      - /var/lib/franklyn/screenshots:/var/lib/franklyn/screenshots
+      - /opt/docker/franklyn/screenshots:/var/lib/franklyn/screenshots
 
   franklyn-instructor-client:
     container_name: franklyn-instructor-client
@@ -16,3 +16,10 @@ services:
       - franklyn-server
     ports:
       - 8088:80
+networks:
+  default:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 10.1.0.0/24
