@@ -7,14 +7,32 @@ on:
     workflows: [ "Build docker images" ]
     branches:
       - main
+      - feat/openbox-rs
     types:
       - completed
   workflow_dispatch:
 
 jobs:
+  download-openbox:
+    name: Download openbox from artifacts
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: Download All Artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: builds
+          pattern: openbox-*
+          merge-multiple: true
+      - run: |
+          pwd
+          ls
+
   build-deploy-franklyn:
     name: Build and deploy Franklyn
     runs-on: ubuntu-22.04
+    needs: download-openbox
+
     if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
     steps:
       - uses: actions/checkout@v4
@@ -34,9 +52,11 @@ jobs:
           ssh -i $SSH_KEY_PATH $SSH_USER@$SSH_HOST "docker compose -f project-franklyn/cicd/docker-compose.yaml down"
           ssh -i $SSH_KEY_PATH $SSH_USER@$SSH_HOST "docker compose -f project-franklyn/cicd/docker-compose.yaml pull"
           ssh -i $SSH_KEY_PATH $SSH_USER@$SSH_HOST "docker compose -f project-franklyn/cicd/docker-compose.yaml up -d"
-          ssh -i $SSH_KEY_PATH $SSH_USER@$SSH_HOST "cd project-franklyn && ./cicd/build-openbox.sh"
           ssh -i $SSH_KEY_PATH $SSH_USER@$SSH_HOST "sudo cp -f project-franklyn/nginx/nginx.conf /etc/nginx/nginx.conf"
           ssh -i $SSH_KEY_PATH $SSH_USER@$SSH_HOST "sudo cp -f project-franklyn/nginx/index.html /var/www/html/"
-          ssh -i $SSH_KEY_PATH $SSH_USER@$SSH_HOST "sudo cp -f project-franklyn/dist/openbox/franklyn-student-client.jar /var/www/downloads/"
+          
+          # ssh -i $SSH_KEY_PATH $SSH_USER@$SSH_HOST "cd project-franklyn && ./cicd/build-openbox.sh"
+          # ssh -i $SSH_KEY_PATH $SSH_USER@$SSH_HOST "sudo cp -f project-franklyn/dist/openbox/franklyn-student-client.jar /var/www/downloads/"
+          
           ssh -i $SSH_KEY_PATH $SSH_USER@$SSH_HOST "sudo systemctl restart nginx.service"
         shell: bash

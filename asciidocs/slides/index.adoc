@@ -26,13 +26,16 @@ endif::[]
 *** kein Kopieren von fertigen Programmen/Lösungen
 
 [.font-xx-large]
-=== Sprint 9: Änderungen
-* Überarbeitung des instructor-clients
-* Reset Button fix
-* Installationsanleitung aktualisiert
-* Deployment auf franklyn3 VM
+=== Sprint 10: Änderungen
+* Migrieren des Instructor-clients auf SSOT
+* Erster Openbox Prototyp in Rust
+* Multithreaded Erstellung von Videos
+* WIP: Mandantenfähigkeit
 
 === Live Demo
+
+=== ERD
+plantuml::./plantuml/erd.puml[]
 
 === Architektur
 plantuml::./plantuml/architecture.puml[]
@@ -45,9 +48,6 @@ plantuml::./plantuml/architecture.puml[]
 *** Mit der Franklyn Applikation kann diese Box geöffnet und daraus Informationen gewonnen werden (z.B. screenshot)
 * *Server*: Quarkus backend zum Verwalten von Boxen und Aufzeichnungen
 * *Frontend*: Angular Frontend zum Anzeigen der aus den Boxen gewonnenen Daten
-
-=== Konfiguration
-* OraVM
 
 [.font-xx-large]
 == Team
