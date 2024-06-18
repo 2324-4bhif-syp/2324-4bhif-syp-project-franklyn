@@ -23,7 +23,7 @@ enum Franklyn {
 enum Message {
     Ev(Event),
 
-    CodeChanged(String),
+    PinChanged(String),
     LastnameChanged(String),
     FirstnameChanged(String),
 
@@ -51,7 +51,7 @@ impl Application for Franklyn {
         match self {
             Franklyn::Login(c, f, l) => {
                 match msg {
-                    Message::CodeChanged(cc) => *c = cc,
+                    Message::PinChanged(cc) => *c = cc,
                     Message::LastnameChanged(lc) => *l = lc,
                     Message::FirstnameChanged(fc) => *f = fc,
                     Message::Login(data) => *self = Franklyn::Connected(data),
@@ -101,9 +101,9 @@ impl Application for Franklyn {
         ];
 
         let content = match self {
-            Franklyn::Login(code, firstname, lastname) => {
-                let code_input = text_input("Code", &code)
-                    .on_input(Message::CodeChanged)
+            Franklyn::Login(pin, firstname, lastname) => {
+                let pin_input = text_input("Pin", &pin)
+                    .on_input(Message::PinChanged)
                     .width(300)
                     .padding(10);
 
@@ -124,9 +124,9 @@ impl Application for Franklyn {
                 )
                 .padding([0, 20]);
 
-                if let Some((code, firstname, lastname)) = openbox::get_credentials(&code, &firstname, &lastname) {
+                if let Some((pin, firstname, lastname)) = openbox::get_credentials(&pin, &firstname, &lastname) {
                     let data = openbox::Data {
-                        code,
+                        pin,
                         firstname,
                         lastname,
                         image: None,
@@ -134,13 +134,13 @@ impl Application for Franklyn {
                     button = button.on_press(Message::Login(data));
                 }
 
-                column![code_input, firstname_input, lastname_input, button]
+                column![pin_input, firstname_input, lastname_input, button]
                     .spacing(10)
                     .align_items(Alignment::Center)
             }
             Franklyn::Connected(data) => {
                 column![
-                    text(format!("code: {}", &data.code)).size(30),
+                    text(format!("pin: {}", &data.pin)).size(30),
                     row![
                         text(&data.firstname).size(50), 
                         text(&data.lastname).size(50)

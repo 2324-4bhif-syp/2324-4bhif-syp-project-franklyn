@@ -1,7 +1,7 @@
 use std::future::Future;
 
 use bytes::Bytes;
-use reqwest::multipart;
+use reqwest::{header::{CONTENT_TYPE, HeaderValue}, multipart};
 use anyhow::{Result, Context};
 use fastwebsockets::{Frame, OpCode, FragmentCollector};
 use http_body_util::Empty;
@@ -16,13 +16,13 @@ use image::{RgbaImage, ImageFormat};
 const _PROD_URL : &str = "http://franklyn3.htl-leonding.ac.at:8080";
 const _DEV_URL  : &str = "http://localhost:8080";
 
-const URL       : &str = _PROD_URL;
+const URL       : &str = _DEV_URL;
 
 type Ws = FragmentCollector<TokioIo<Upgraded>>;
 
 #[derive(Debug, Clone)]
 pub struct Data {
-    pub code: u32,
+    pub pin: u32,
     pub lastname: String,
     pub firstname: String,
     
@@ -54,15 +54,20 @@ where
 
 pub fn connect(data: Data) -> Subscription<Event> {
     struct Connect;
-    let user = format!("{}_{}", data.firstname, data.lastname);
 
-    let ws_closure = |mut output: mpsc::Sender<_>| async move {
+    let pin = data.pin;
+    let dto = Dto {
+        firstname: data.firstname.clone(),
+        lastname: data.lastname.clone(),
+    };
+
+    let ws_closure = move |mut output: mpsc::Sender<_>| async move {
         let mut state = State::Disconnected;
 
         loop {
             match &mut state {
                 State::Disconnected => {
-                    _ = output.send(match connect_ws(&user).await {
+                    _ = output.send(match connect_ws(pin, &dto).await {
                         Ok(ws) => {
                             state = State::Connected(ws);
                             Event::Connected(None)
@@ -76,7 +81,7 @@ pub fn connect(data: Data) -> Subscription<Event> {
                     }).await;
                 }
                 State::Connected(ref mut ws) => {
-                    _ = output.send(if let Ok(Some(image)) = handle_msg(&user, &data, ws).await {
+                    _ = output.send(if let Ok(Some(image)) = handle_msg(&dto, &data, ws).await {
                         Event::Connected(Some(image))
                     } else {
                         state = State::Disconnected;
@@ -90,7 +95,7 @@ pub fn connect(data: Data) -> Subscription<Event> {
     subscription::channel(std::any::TypeId::of::<Connect>(), 100, ws_closure)
 }
 
-pub async fn handle_msg(user: &String, _data: &Data, ws: &mut Ws) -> Result<Option<RgbaImage>> {
+pub async fn handle_msg(dto: &Dto, _data: &Data, ws: &mut Ws) -> Result<Option<RgbaImage>> {
     let msg = match ws.read_frame().await {
         Ok(msg) => msg,
         Err(e)  => {
@@ -113,23 +118,42 @@ pub async fn handle_msg(user: &String, _data: &Data, ws: &mut Ws) -> Result<Opti
                 .file_name("image.png")
                 .mime_str("image/png")?;
 
+            /*
             reqwest::Client::new()
                 .post(&format!("{}/screenshot/{user}/alpha", URL))
                 .multipart(multipart::Form::new().part("image", file_part))
                 .send()
                 .await?;
+            */
             return Ok(Some(image));
         }
         _ => Ok(None),
     }
 }
 
-pub async fn connect_ws(user: &String) -> Result<Ws> {
+#[derive(serde::Serialize)]
+struct Dto {
+    firstname: String,
+    lastname: String,
+}
+
+async fn connect_ws(pin: u32, dto: &Dto) -> Result<Ws> {
+    let join = reqwest::Client::new()
+        .post(&format!("{URL}/exams/join/{pin}"))
+        .json(dto)
+        .header(CONTENT_TYPE, HeaderValue::from_static("application/json"))
+        .send()
+        .await?;
+
+    let location = join.headers().get("location")
+        .context("no location header set")?
+        .to_str()?;
+
     let stream = TcpStream::connect(&URL[7..]).await?;
 
     let req = Request::builder()
         .method("GET")
-        .uri(format!("{}/examinee/{}", URL, user))
+        .uri(location)
         .header("Host", URL)
         .header(UPGRADE, "websocket")
         .header(CONNECTION, "upgrade")
@@ -144,13 +168,13 @@ pub async fn connect_ws(user: &String) -> Result<Ws> {
     Ok(FragmentCollector::new(ws))
 }
 
-pub fn get_credentials<'a>(code: &'a str, firstname: &'a str, lastname: &'a str) -> Option<(u32, String, String)> {
-    if firstname.is_empty() || lastname.is_empty() || code.len() != 3 {
+pub fn get_credentials<'a>(pin: &'a str, firstname: &'a str, lastname: &'a str) -> Option<(u32, String, String)> {
+    if firstname.is_empty() || lastname.is_empty() || pin.len() != 3 {
         return None;
     }
 
     Some((
-        code.parse::<u32>().ok()?,
+        pin.parse::<u32>().ok()?,
         firstname.to_string(),
         lastname.to_string(),
     ))
