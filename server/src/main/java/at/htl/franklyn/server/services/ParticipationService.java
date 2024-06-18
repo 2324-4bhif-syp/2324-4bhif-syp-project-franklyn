@@ -30,4 +30,8 @@ public class ParticipationService {
 
         return p;
     }
+
+    public boolean exists(String participationId) {
+        return participationRepository.count("from Participation where id = ?1", participationId) != 0;
+    }
 }

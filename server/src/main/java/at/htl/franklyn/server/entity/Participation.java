@@ -5,10 +5,11 @@ import jakarta.persistence.*;
 import java.util.UUID;
 
 @Entity
-@Table(name = "T_PARTICIPATION", uniqueConstraints = @UniqueConstraint(columnNames = { "P_EXAM", "P_EXAMINEE" }))
+@Table(name = "F_PARTICIPATION", uniqueConstraints = @UniqueConstraint(columnNames = { "P_EXAM", "P_EXAMINEE" }))
 public class Participation {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(name = "P_ID")
     private UUID id;
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY, cascade = {

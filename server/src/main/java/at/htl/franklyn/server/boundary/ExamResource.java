@@ -114,7 +114,7 @@ public class ExamResource {
     @Transactional
     @Path("/join/{pin}")
     public Response joinExam(@PathParam("pin") int pin, @Valid ExamineeDto examineeDto, @Context UriInfo uriInfo) {
-        if(!examService.isValidPIN(pin)) {
+        if(!examService.isValidPIN(pin) || examineeDto == null) {
             return Response
                     .status(Response.Status.BAD_REQUEST)
                     .build();

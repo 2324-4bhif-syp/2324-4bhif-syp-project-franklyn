@@ -8,6 +8,18 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "F_CONNECTION_STATE")
+@NamedNativeQueries({
+        @NamedNativeQuery(name = "ConnectionState.getTimedoutParticipants",
+        query = """
+        select p.p_id
+        from f_participation p join f_connection_state cs on (p.p_id = cs.cs_participation_id)
+            join f_exam e on (p.p_exam = e.e_id)
+        where cs.cs_is_connected = true
+            and e.e_state = 1 -- Exam State: Ongoing
+            and cs.cs_ping_timestamp = (select max(cs2.cs_ping_timestamp) from f_connection_state cs2 where cs.cs_participation_id = cs2.cs_participation_id)
+            and EXTRACT(EPOCH FROM (NOW() at time zone 'utc' - cs.cs_ping_timestamp at time zone 'utc')) >= :timeout
+        """, resultClass = String.class)
+})
 public class ConnectionState {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)

@@ -4,10 +4,11 @@ import at.htl.franklyn.server.entity.Examinee;
 import at.htl.franklyn.server.entity.Participation;
 import at.htl.franklyn.server.entity.dto.ExamineeDto;
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
+import io.quarkus.hibernate.orm.panache.PanacheRepositoryBase;
 import jakarta.enterprise.context.ApplicationScoped;
 
 @ApplicationScoped
-public class ParticipationRepository implements PanacheRepository<Participation> {
+public class ParticipationRepository implements PanacheRepositoryBase<Participation, String> {
     public Participation getByExamAndExaminee(long examineeId, long examId) {
         return getEntityManager()
                 .createQuery(
