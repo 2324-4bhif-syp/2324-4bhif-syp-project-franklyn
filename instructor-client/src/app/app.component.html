@@ -8,20 +8,33 @@
 
       <!--routes-->
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <!--Patrol-Mode-->
+        <!--Test-Overview-->
         <li class="nav-item"
             routerLinkActive="active"
             [routerLinkActiveOptions]="{exact:true}"
             (click)="changeRoute()">
           <a class="nav-link"
-             [class.active]="location.path() === '/patrol-mode'"
+             [class.active]="location.path() === '/test-overview'"
              routerLink="/"
+             (click)="changeRoute()">
+            Test-Overview
+          </a>
+        </li>
+        <!--Patrol-Mode-->
+        <li class="nav-item"
+            routerLinkActive="active"
+            (click)="changeRoute()">
+          <a class="nav-link"
+             [class.active]="location.path() === '/patrol-mode'"
+             routerLink="patrol-mode"
              (click)="changeRoute()">
             Patrol-Mode
           </a>
         </li>
         <!--Video-Viewer-->
-        <li class="nav-item" routerLinkActive="active" (click)="changeRoute()">
+        <li class="nav-item"
+            routerLinkActive="active"
+            (click)="changeRoute()">
           <a class="nav-link"
              [class.active]="location.path() === '/video-viewer'"
              routerLink="video-viewer"
@@ -30,7 +43,9 @@
           </a>
         </li>
         <!--Metrics-Dashboard-->
-        <li class="nav-item" routerLinkActive="active" (click)="changeRoute()">
+        <li class="nav-item"
+            routerLinkActive="active"
+            (click)="changeRoute()">
           <a class="nav-link"
              [class.active]="location.path() === '/metrics-dashboard'"
              routerLink="metrics-dashboard"
