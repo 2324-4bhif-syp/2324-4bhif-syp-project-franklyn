@@ -26,6 +26,6 @@ export class DownloadExamineeComponent {
   }
 
   getDownloadUrl(): string {
-    return `${environment.serverBaseUrl}/video/download/${this.examinee?.username}`
+    return `${environment.serverBaseUrl}/video/download/${this.examinee?.firstname}-${this.examinee?.lastname}`
   }
 }

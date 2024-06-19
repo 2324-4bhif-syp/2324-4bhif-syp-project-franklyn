@@ -19,13 +19,13 @@ export class PatrolPageExamineeComponent {
   @Input() showImage: boolean = false;
 
   getScreenshotAddress() {
-    return `${environment.serverBaseUrl}/screenshot/${this.examinee!.username}/${environment.imageWidth}/${environment.imageHeight}?cachebust=${this.store.value.cacheBuster.cachebustNum}`;
+    return `${environment.serverBaseUrl}/screenshot/${this.examinee!.firstname}-${this.examinee!.lastname}/${environment.imageWidth}/${environment.imageHeight}?cachebust=${this.store.value.cacheBuster.cachebustNum}`; //TODO: get new screenshot-address
   }
 
   getActivity(): string {
     let activity: string = "";
 
-    if (this.examinee && !this.showImage && this.examinee.connected) {
+    if (this.examinee && !this.showImage && this.examinee.isConnected) {
       activity =  "btn-success";
     } else if (this.examinee && !this.showImage){
       activity = "btn-danger";

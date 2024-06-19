@@ -4,6 +4,8 @@ import {Examinee, ServerMetrics} from "../model";
 import {environment} from "../../../env/environment";
 import {lastValueFrom} from "rxjs";
 import {set} from "../model";
+import {Exam} from "../model/entity/Exam";
+import {ExamDto} from "../model/entity/dto/exam-dto";
 
 @Injectable({
   providedIn: 'root'
@@ -12,9 +14,9 @@ export class WebApiService {
   private httpClient = inject(HttpClient);
   private headers: HttpHeaders = new HttpHeaders().set('Accept', 'application/json');
 
-  public async getExamineesFromServer(): Promise<void> {
+  public async getExamineesFromServer(examId: number): Promise<void> {
       this.httpClient.get<Examinee[]>(
-        `${environment.serverBaseUrl}/examinees`,
+        `${environment.serverBaseUrl}/exams/${examId}/examinees`,
         {headers: this.headers})
         .subscribe({
         "next": (examinees) => set((model) => {
@@ -28,14 +30,18 @@ export class WebApiService {
     this.httpClient.post(
       `${environment.serverBaseUrl}/state/reset`,
       {}
-    ).subscribe();
+    ).subscribe({
+      error: err => console.error(err),
+    });
   }
 
   public async updateScreenshotCaptureInterval(updateInterval: number): Promise<void> {
     this.httpClient.post(
       `${environment.serverBaseUrl}/screenshot/updateInterval`,
       {newInterval: updateInterval}
-    ).subscribe();
+    ).subscribe({
+      error: err => console.error(err),
+    });
   }
 
   public async getIntervalSpeed(): Promise<void> {
@@ -65,4 +71,58 @@ export class WebApiService {
       model.serverMetrics = serverMetrics;
     });
   }
+
+  public async getExamsFromServer(): Promise<void> {
+    this.httpClient.get<Exam[]>(
+      `${environment.serverBaseUrl}/exams`,
+      {headers: this.headers})
+      .subscribe({
+        "next": (exams) => set((model) => {
+          model.examData.exams = exams;
+        }),
+        "error": (err) => console.error(err),
+      });
+  }
+
+  public async getExamByIdFromServer(id: number): Promise<void> {
+    this.httpClient.get<Exam>(
+      `${environment.serverBaseUrl}/exams/${id}`,
+      {headers: this.headers})
+      .subscribe({
+        "next": (exam) => set((model) => {
+          let index: number = model.examData.exams
+            .findIndex((e) => e.id === id);
+
+          if (index >= 0 && !Number.isNaN(index)) {
+            model.examData.exams[index] = exam;
+          }
+        }),
+        "error": (err) => console.error(err),
+      });
+  }
+
+  public async createNewExam(exam: ExamDto): Promise<void> {
+    this.httpClient.post<Exam>(
+      `${environment.serverBaseUrl}/exams`,
+      exam
+    ).subscribe({
+      next: (exam) => {
+        this.getExamsFromServer();
+      },
+      error: err => console.error(err)
+    });
+  }
+
+  public async deleteExamByIdFromServer(id: number): Promise<void> {
+    this.httpClient.delete(
+      `${environment.serverBaseUrl}/exams/${id}`,
+      {headers: this.headers})
+      .subscribe({
+        next: () => {
+          this.getExamsFromServer();
+        },
+        error: (error) => console.log(error)
+      });
+  }
+
 }

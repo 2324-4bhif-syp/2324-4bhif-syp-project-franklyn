@@ -1,4 +1,5 @@
 export interface Examinee {
-  username: string,
-  connected: boolean
+  firstname: string,
+  lastname: string,
+  isConnected: boolean
 }
