@@ -1,5 +1,5 @@
 <div class="px-2">
-  @for (examinee of examinees | async; track examinee.username) {
+  @for (examinee of examinees | async; track examinee.firstname + examinee.lastname) {
     <div class="pb-3 mb-3">
       <app-patrol-page-examinee
         [examinee]="examinee">

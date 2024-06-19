@@ -1,6 +1,6 @@
 @if (showVideo() && examinee) {
   <div class="container-fluid">
-    <h3>{{examinee.username}}</h3>
+    <h3>{{examinee.firstname}} {{examinee.lastname}}</h3>
     <video id="videoTag"
            controls
            [defaultMuted]="true"

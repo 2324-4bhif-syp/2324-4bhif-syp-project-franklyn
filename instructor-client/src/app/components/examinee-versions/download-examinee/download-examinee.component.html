@@ -4,14 +4,14 @@
       <tr>
         <td>
         <span class="examinee-btn-label text-center examinee-label-width">
-          {{examinee.username}}
+          {{examinee.firstname}} {{examinee.lastname}}
         </span>
         </td>
         <td class="col-1">
           <div class="btn-group w-100" role="group">
             <a
               href="{{getDownloadUrl()}}"
-              download="{{examinee.username}}.zip"
+              download="{{examinee.firstname}}-{{examinee.lastname}}.zip"
               class="btn btn-primary w-50"
               role="button">
               <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" class="bi bi-download d-flex align-items-center justify-content-center" viewBox="0 0 16 16">

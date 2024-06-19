@@ -16,11 +16,12 @@ export class VideoExamineeComponent {
   @Input() examinee: Examinee | undefined;
 
   getVideoUrl(): string {
-    return `${environment.serverBaseUrl}/video/${this.examinee?.username}?cache=${this.store.value.cacheBuster.cachebustNum}`; //examinee gets checked in the html
+    return `${environment.serverBaseUrl}/video/${this.examinee?.firstname}-${this.examinee?.lastname}?cache=${this.store.value.cacheBuster.cachebustNum}`; //TODO: get new video url //examinee gets checked in the html
   }
 
   showVideo(): boolean {
     return this.examinee !== undefined &&
-      this.store.value.patrol.patrolExaminee?.username === this.examinee.username;
+      this.store.value.patrol.patrolExaminee?.firstname === this.examinee.firstname &&
+      this.store.value.patrol.patrolExaminee?.lastname === this.examinee.lastname;
   }
 }

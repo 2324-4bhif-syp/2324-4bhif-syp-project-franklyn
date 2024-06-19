@@ -7,7 +7,7 @@
     Download All
   </a>
 
-  @for (examinee of examinees | async; track examinee.username) {
+  @for (examinee of examinees | async; track examinee.firstname+examinee.lastname) {
     <div class="pb-3 w-100">
       <app-download-examinee [examinee]="examinee"></app-download-examinee>
     </div>

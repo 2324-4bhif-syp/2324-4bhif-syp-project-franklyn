@@ -12,7 +12,7 @@ export class ExamineeService {
   private location = inject(Location);
 
   constructor(private webApi: WebApiService) {
-    this.webApi.getExamineesFromServer();
+    this.webApi.getExamineesFromServer(0); //TODO: For exam
   }
 
   resetExaminees(): void {
@@ -38,7 +38,7 @@ export class ExamineeService {
 
   newPatrolExaminee(examinee?: Examinee, ignoreConnection: boolean = false) {
     // if a valid examinee is specified to be the patrol-examinee
-    if (examinee !== undefined && (examinee.connected || ignoreConnection)) {
+    if (examinee !== undefined && (examinee.isConnected || ignoreConnection)) {
       set((model) => {
         model.patrol.isPatrolModeOn = false;
         model.patrol.patrolExaminee = examinee;
@@ -48,7 +48,7 @@ export class ExamineeService {
       * potential new valid patrol examinees
       * (they are connected and not the current patrol-examinee)
       */
-      let examinees: Examinee[] = this.get(e => e?.connected && e.username !== this.store.value.patrol.patrolExaminee?.username);
+      let examinees: Examinee[] = this.get(e => e?.isConnected && e.firstname !== this.store.value.patrol.patrolExaminee?.firstname && e.lastname !== this.store.value.patrol.patrolExaminee?.lastname);
 
       // if length = 0 then there are no valid patrol-examinees
       if (examinees.length === 0) {
@@ -65,7 +65,7 @@ export class ExamineeService {
         * isn't connected so this is a way to check if the
         * current chosen (patrol) examinee is still connected
         */
-        if (!this.store.value.patrol.patrolExaminee?.connected) {
+        if (!this.store.value.patrol.patrolExaminee?.isConnected) {
           set((model) => {
             model.patrol.patrolExaminee = undefined;
           });
