@@ -2,7 +2,7 @@ import {Component, inject} from '@angular/core';
 import {StoreService} from "../../../services/store.service";
 import {
   ExamineeDownloadListComponent
-} from "../../examinee-lists/examinee-download-list/examinee-download-list.component";
+} from "../../entity-lists/examinee-download-list/examinee-download-list.component";
 import {VideoExamineeComponent} from "../../entity-components/video-examinee/video-examinee.component";
 
 @Component({
