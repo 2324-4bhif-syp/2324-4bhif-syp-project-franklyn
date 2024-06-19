@@ -4,7 +4,7 @@ import {RouterLink, RouterLinkActive, RouterOutlet} from '@angular/router';
 import {environment} from "../../env/environment";
 import {StoreService} from "./services/store.service";
 import {ExamineeService} from "./services/examinee.service";
-import {set, store} from "./model";
+import {set} from "./model";
 import {WebApiService} from "./services/web-api.service";
 import {ScheduleService} from "./services/schedule.service";
 import {FormsModule} from "@angular/forms";

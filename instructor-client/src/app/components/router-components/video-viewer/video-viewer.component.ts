@@ -3,7 +3,7 @@ import {StoreService} from "../../../services/store.service";
 import {
   ExamineeDownloadListComponent
 } from "../../examinee-lists/examinee-download-list/examinee-download-list.component";
-import {VideoExamineeComponent} from "../../examinee-versions/video-examinee/video-examinee.component";
+import {VideoExamineeComponent} from "../../entity-components/video-examinee/video-examinee.component";
 
 @Component({
   selector: 'app-video-viewer',

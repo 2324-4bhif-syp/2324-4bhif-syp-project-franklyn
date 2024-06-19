@@ -1,8 +1,8 @@
 import {Component, inject} from '@angular/core';
 import {StoreService} from "../../../services/store.service";
 import {ExamineeListComponent} from "../../examinee-lists/examinee-list/examinee-list.component";
-import {PatrolPageExamineeComponent} from "../../examinee-versions/patrol-page-examinee/patrol-page-examinee.component";
 import {FormsModule} from "@angular/forms";
+import {PatrolPageExamineeComponent} from "../../entity-components/patrol-page-examinee/patrol-page-examinee.component";
 
 @Component({
   selector: 'app-patrol-mode',

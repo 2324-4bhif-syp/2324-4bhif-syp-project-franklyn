@@ -1,9 +1,9 @@
 import {Component, inject} from '@angular/core';
 import {environment} from "../../../../../env/environment";
-import {DownloadExamineeComponent} from "../../examinee-versions/download-examinee/download-examinee.component";
 import {StoreService} from "../../../services/store.service";
 import {distinctUntilChanged, map} from "rxjs";
 import {AsyncPipe} from "@angular/common";
+import {DownloadExamineeComponent} from "../../entity-components/download-examinee/download-examinee.component";
 
 @Component({
   selector: 'app-examinee-download-list',
