@@ -25,7 +25,8 @@ const initialState: Model = {
     examinees: []
   },
   examData: {
-    exams: []
+    exams: [],
+    curExam: undefined
   },
   patrol: {
     isPatrolModeOn: false,

@@ -63,7 +63,8 @@ export class ScheduleService {
     if (this.store.value.timer.clientScheduleTimerId === undefined) {
       this.store.value.timer.clientScheduleTimerId = setInterval(() => {
         this.examineeRepo.updateScreenshots();
-        this.webApi.getExamineesFromServer(0); //TODO: get for current test
+        if (this.store.value.examData.curExam)
+          this.webApi.getExamineesFromServer(this.store.value.examData.curExam.id);
       }, this.store.value.timer.nextClientTimeMilliseconds);
     }
   }

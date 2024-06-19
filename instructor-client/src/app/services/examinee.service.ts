@@ -12,7 +12,8 @@ export class ExamineeService {
   private location = inject(Location);
 
   constructor(private webApi: WebApiService) {
-    this.webApi.getExamineesFromServer(0); //TODO: For exam
+    if (this.store.value.examData.curExam)
+      this.webApi.getExamineesFromServer(this.store.value.examData.curExam.id);
   }
 
   resetExaminees(): void {
