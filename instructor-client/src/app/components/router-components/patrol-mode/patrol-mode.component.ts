@@ -1,6 +1,6 @@
 import {Component, inject} from '@angular/core';
 import {StoreService} from "../../../services/store.service";
-import {ExamineeListComponent} from "../../examinee-lists/examinee-list/examinee-list.component";
+import {ExamineeListComponent} from "../../entity-lists/examinee-list/examinee-list.component";
 import {FormsModule} from "@angular/forms";
 import {PatrolPageExamineeComponent} from "../../entity-components/patrol-page-examinee/patrol-page-examinee.component";
 
