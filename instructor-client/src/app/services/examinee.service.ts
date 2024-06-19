@@ -10,8 +10,9 @@ import {Examinee, set} from "../model";
 export class ExamineeService {
   private store = inject(StoreService).store;
   private location = inject(Location);
+  private webApi = inject(WebApiService);
 
-  constructor(private webApi: WebApiService) {
+  constructor() {
     if (this.store.value.examData.curExam)
       this.webApi.getExamineesFromServer(this.store.value.examData.curExam.id);
   }
