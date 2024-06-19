@@ -78,7 +78,7 @@ export class WebApiService {
       {headers: this.headers})
       .subscribe({
         "next": (exams) => set((model) => {
-          model.examData.exams = exams;
+          model.examData.exams = this.sortExams(exams);
         }),
         "error": (err) => console.error(err),
       });
@@ -96,6 +96,8 @@ export class WebApiService {
           if (index >= 0 && !Number.isNaN(index)) {
             model.examData.exams[index] = exam;
           }
+
+          model.examData.exams = this.sortExams(model.examData.exams);
         }),
         "error": (err) => console.error(err),
       });
@@ -125,4 +127,13 @@ export class WebApiService {
       });
   }
 
+  private sortExams(exams: Exam[]): Exam[] {
+    return exams.sort((a, b) => {
+      if (a.plannedStart === b.plannedStart) {
+        return (a > b) ? 1 : -1;
+      }
+
+      return (a.plannedStart > b.plannedStart) ? 1 : -1
+    })
+  };
 }
