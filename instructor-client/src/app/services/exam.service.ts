@@ -19,10 +19,6 @@ export class ExamService {
   }
 
   reloadAllExams(): void {
-    set((model) => {
-      model.examData.exams = [];
-    })
-
     this.webApi.getExamsFromServer();
   }
 

@@ -1,0 +1,7 @@
+<div class="px-2">
+  @for (exam of exams | async; track exam.title + exam.plannedStart.toDateString()) {
+    <div class="pb-3 mb-3">
+      <app-exam [exam]="exam"></app-exam>
+    </div>
+  }
+</div>

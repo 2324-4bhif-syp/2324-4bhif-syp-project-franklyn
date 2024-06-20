@@ -130,10 +130,10 @@ export class WebApiService {
   private sortExams(exams: Exam[]): Exam[] {
     return exams.sort((a, b) => {
       if (a.plannedStart === b.plannedStart) {
-        return (a > b) ? 1 : -1;
+        return (a.title < b.title) ? 1 : -1;
       }
 
-      return (a.plannedStart > b.plannedStart) ? 1 : -1
+      return (a.plannedStart < b.plannedStart) ? 1 : -1
     })
   };
 }
