@@ -6,6 +6,7 @@ import {lastValueFrom} from "rxjs";
 import {set} from "../model";
 import {Exam} from "../model/entity/Exam";
 import {ExamDto} from "../model/entity/dto/exam-dto";
+import {ExamState} from "../model/entity/Exam-State";
 
 @Injectable({
   providedIn: 'root'
@@ -73,7 +74,7 @@ export class WebApiService {
   }
 
   public async getExamsFromServer(): Promise<void> {
-    this.httpClient.get<Exam[]>(
+    /*this.httpClient.get<Exam[]>(
       `${environment.serverBaseUrl}/exams`,
       {headers: this.headers})
       .subscribe({
@@ -81,7 +82,51 @@ export class WebApiService {
           model.examData.exams = this.sortExams(exams);
         }),
         "error": (err) => console.error(err),
-      });
+      });*/
+
+    let date = Date.now()
+
+    set((model) => {
+      model.examData.exams = [
+        {
+          id: 0,
+          plannedStart: new Date(date),
+          plannedEnd: new Date(date),
+          actualEnd: new Date(date),
+          title: "a1",
+          pin: 123,
+          state: ExamState.CREATED
+        },
+        {
+          id: 1,
+          plannedStart: new Date(new Date().setHours(3)),
+          plannedEnd: new Date(date),
+          actualEnd: new Date(date),
+          title: "a2",
+          pin: 123,
+          state: ExamState.CREATED
+        },
+        {
+          id: 2,
+          plannedStart: new Date(date),
+          plannedEnd: new Date(date),
+          actualEnd: new Date(date),
+          title: "a3",
+          pin: 123,
+          state: ExamState.CREATED
+        },
+        {
+          id: 3,
+          plannedStart: new Date(new Date(date).setHours(1)),
+          plannedEnd: new Date(date),
+          actualEnd: new Date(date),
+          title: "a4",
+          pin: 123,
+          state: ExamState.CREATED
+        },
+      ];
+      model.examData.exams = this.sortExams(model.examData.exams);
+    })
   }
 
   public async getExamByIdFromServer(id: number): Promise<void> {

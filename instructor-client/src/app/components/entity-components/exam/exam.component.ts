@@ -1,5 +1,4 @@
 import {Component, inject, Input} from '@angular/core';
-import {StoreService} from "../../../services/store.service";
 import {Exam} from "../../../model/entity/Exam";
 import {ExamService} from "../../../services/exam.service";
 
@@ -11,7 +10,6 @@ import {ExamService} from "../../../services/exam.service";
   styleUrl: './exam.component.css'
 })
 export class ExamComponent {
-  private store = inject(StoreService).store;
   private examSvc = inject(ExamService);
 
   @Input() exam: Exam | undefined;
