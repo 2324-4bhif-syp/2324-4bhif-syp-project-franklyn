@@ -2,55 +2,43 @@
   <div class="test-overview-height">
     <table class="w-100">
       <tr>
-        <td class="p-2">
+        <td class="p-2 col-1">
           <div class="card w-100">
-            <div class="card-body">
-              <h6 class="card-subtitle mb-2 text-body-secondary">Titel</h6>
-              <h5 class="card-title">{{exam.title}}</h5>
+            <div class="card-body d-flex justify-content-between">
+              <div>
+                <h6 class="card-subtitle mb-2 text-body-secondary">Titel</h6>
+                <h5 class="card-title">{{exam.title}}</h5>
+              </div>
+              <div class="me-5">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="currentColor"
+                  class="bi bi-clipboard w-auto h-100"
+                  viewBox="0 0 16 16">
+                  <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1z"/>
+                  <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0z"/>
+                </svg>
+              </div>
             </div>
           </div>
         </td>
-        <td class="p-2 text-end">
+        <td class="p-2 col-1 text-end">
           <div class="card w-100">
-            <div class="card-body">
-              <h6 class="card-subtitle mb-2 text-body-secondary">Klasse</h6>
-              <h5 class="card-title">Klassenname</h5>
-            </div>
-          </div>
-        </td>
-      </tr>
-      <tr>
-        <td class="p-2">
-          <div class="card w-100">
-            <div class="card-body">
-              <h6 class="card-subtitle mb-2 text-body-secondary">Datum</h6>
-              <h5 class="card-title">{{getDateFromExam()}}</h5>
-            </div>
-          </div>
-        </td>
-        <td class="p-2 text-end">
-          <div class="card w-100">
-            <div class="card-body">
-              <h6 class="card-subtitle mb-2 text-body-secondary">Zeit</h6>
-              <h5 class="card-title">{{getFormattedTimeFrom(exam.plannedStart)}}-{{getFormattedTimeFrom(exam.plannedEnd)}} Uhr</h5>
-            </div>
-          </div>
-        </td>
-      </tr>
-      <tr>
-        <td class="p-2">
-          <div class="card w-100">
-            <div class="card-body">
-              <h6 class="card-subtitle mb-2 text-body-secondary">Tatsächlich Ende</h6>
-              <h5 class="card-title">{{getFormattedTimeFrom(exam.actualEnd)}} Uhr</h5>
-            </div>
-          </div>
-        </td>
-        <td class="p-2 text-end">
-          <div class="card w-100">
-            <div class="card-body">
-              <h6 class="card-subtitle mb-2 text-body-secondary">Pin</h6>
-              <h5 class="card-title">{{exam.pin}}</h5>
+            <div class="card-body w-100 d-flex justify-content-between">
+              <div class="me-5">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="currentColor"
+                  class="bi bi-mortarboard-fill w-auto h-100"
+                  viewBox="0 0 16 16">
+                  <path d="M8.211 2.047a.5.5 0 0 0-.422 0l-7.5 3.5a.5.5 0 0 0 .025.917l7.5 3a.5.5 0 0 0 .372 0L14 7.14V13a1 1 0 0 0-1 1v2h3v-2a1 1 0 0 0-1-1V6.739l.686-.275a.5.5 0 0 0 .025-.917z"/>
+                  <path d="M4.176 9.032a.5.5 0 0 0-.656.327l-.5 1.7a.5.5 0 0 0 .294.605l4.5 1.8a.5.5 0 0 0 .372 0l4.5-1.8a.5.5 0 0 0 .294-.605l-.5-1.7a.5.5 0 0 0-.656-.327L8 10.466z"/>
+                </svg>
+              </div>
+              <div>
+                <h6 class="card-subtitle mb-2 text-body-secondary">Klasse</h6>
+                <h5 class="card-title">Klassenname</h5>
+              </div>
             </div>
           </div>
         </td>
@@ -58,17 +46,124 @@
       <tr>
         <td class="p-2">
           <div class="card w-100">
-            <div class="card-body">
-              <h6 class="card-subtitle mb-2 text-body-secondary">Eingeschriebene Schüler</h6>
-              <h5 class="card-title">Nummer 42</h5>
+            <div class="card-body d-flex justify-content-between">
+              <div>
+                <h6 class="card-subtitle mb-2 text-body-secondary">Datum</h6>
+                <h5 class="card-title">{{getDateFromExam()}}</h5>
+              </div>
+              <div class="me-5">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="currentColor"
+                  class="bi bi-calendar-date w-auto h-100"
+                  viewBox="0 0 16 16">
+                  <path d="M6.445 11.688V6.354h-.633A13 13 0 0 0 4.5 7.16v.695c.375-.257.969-.62 1.258-.777h.012v4.61zm1.188-1.305c.047.64.594 1.406 1.703 1.406 1.258 0 2-1.066 2-2.871 0-1.934-.781-2.668-1.953-2.668-.926 0-1.797.672-1.797 1.809 0 1.16.824 1.77 1.676 1.77.746 0 1.23-.376 1.383-.79h.027c-.004 1.316-.461 2.164-1.305 2.164-.664 0-1.008-.45-1.05-.82zm2.953-2.317c0 .696-.559 1.18-1.184 1.18-.601 0-1.144-.383-1.144-1.2 0-.823.582-1.21 1.168-1.21.633 0 1.16.398 1.16 1.23"/>
+                  <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5M1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4z"/>
+                </svg>
+              </div>
             </div>
           </div>
         </td>
         <td class="p-2 text-end">
           <div class="card w-100">
-            <div class="card-body">
-              <h6 class="card-subtitle mb-2 text-body-secondary">Status</h6>
-              <h5 class="card-title">{{ExamState[exam.state]}}</h5>
+            <div class="card-body d-flex justify-content-between">
+              <div class="me-5">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="currentColor"
+                  class="bi bi-clock w-auto h-100"
+                  viewBox="0 0 16 16">
+                  <path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71z"/>
+                  <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16m7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0"/>
+                </svg>
+              </div>
+              <div>
+                <h6 class="card-subtitle mb-2 text-body-secondary">Zeit</h6>
+                <h5 class="card-title">{{getFormattedTimeFrom(exam.plannedStart)}}-{{getFormattedTimeFrom(exam.plannedEnd)}} Uhr</h5>
+              </div>
+            </div>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td class="p-2">
+          <div class="card w-100">
+            <div class="card-body d-flex justify-content-between">
+              <div>
+                <h6 class="card-subtitle mb-2 text-body-secondary">Tatsächliches Ende</h6>
+                <h5 class="card-title">{{getFormattedTimeFrom(exam.actualEnd)}} Uhr</h5>
+              </div>
+              <div class="me-5">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="currentColor"
+                  class="bi bi-clock-history w-auto h-100"
+                  viewBox="0 0 16 16">
+                  <path d="M8.515 1.019A7 7 0 0 0 8 1V0a8 8 0 0 1 .589.022zm2.004.45a7 7 0 0 0-.985-.299l.219-.976q.576.129 1.126.342zm1.37.71a7 7 0 0 0-.439-.27l.493-.87a8 8 0 0 1 .979.654l-.615.789a7 7 0 0 0-.418-.302zm1.834 1.79a7 7 0 0 0-.653-.796l.724-.69q.406.429.747.91zm.744 1.352a7 7 0 0 0-.214-.468l.893-.45a8 8 0 0 1 .45 1.088l-.95.313a7 7 0 0 0-.179-.483m.53 2.507a7 7 0 0 0-.1-1.025l.985-.17q.1.58.116 1.17zm-.131 1.538q.05-.254.081-.51l.993.123a8 8 0 0 1-.23 1.155l-.964-.267q.069-.247.12-.501m-.952 2.379q.276-.436.486-.908l.914.405q-.24.54-.555 1.038zm-.964 1.205q.183-.183.35-.378l.758.653a8 8 0 0 1-.401.432z"/>
+                  <path d="M8 1a7 7 0 1 0 4.95 11.95l.707.707A8.001 8.001 0 1 1 8 0z"/>
+                  <path d="M7.5 3a.5.5 0 0 1 .5.5v5.21l3.248 1.856a.5.5 0 0 1-.496.868l-3.5-2A.5.5 0 0 1 7 9V3.5a.5.5 0 0 1 .5-.5"/>
+                </svg>
+              </div>
+            </div>
+          </div>
+        </td>
+        <td class="p-2 text-end">
+          <div class="card w-100">
+            <div class="card-body d-flex justify-content-between">
+              <div class="me-5">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="currentColor"
+                  class="bi bi-lock-fill w-auto h-100"
+                  viewBox="0 0 16 16">
+                  <path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2m3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2"/>
+                </svg>
+              </div>
+              <div>
+                <h6 class="card-subtitle mb-2 text-body-secondary">Pin</h6>
+                <h5 class="card-title">{{exam.pin}}</h5>
+              </div>
+            </div>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td class="p-2">
+          <div class="card w-100">
+            <div class="card-body d-flex justify-content-between">
+              <div>
+                <h6 class="card-subtitle mb-2 text-body-secondary">Eingeschriebene Schüler</h6>
+                <h5 class="card-title">Nummer 42</h5>
+              </div>
+              <div class="me-5">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="currentColor"
+                  class="bi bi-people-fill w-auto h-100"
+                  viewBox="0 0 16 16">
+                  <path d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6m-5.784 6A2.24 2.24 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.3 6.3 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1zM4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5"/>
+                </svg>
+              </div>
+            </div>
+          </div>
+        </td>
+        <td class="p-2 text-end">
+          <div class="card w-100">
+            <div class="card-body d-flex justify-content-between">
+              <div class="me-5">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="currentColor"
+                  class="bi bi-info-circle w-auto h-100"
+                  viewBox="0 0 16 16">
+                  <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+                  <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0"/>
+                </svg>
+              </div>
+              <div>
+                <h6 class="card-subtitle mb-2 text-body-secondary">Status</h6>
+                <h5 class="card-title">{{ExamState[exam.state]}}</h5>
+              </div>
             </div>
           </div>
         </td>
