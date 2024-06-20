@@ -1,58 +1,78 @@
 @if (exam) {
-  <table class="w-100">
-    <tr>
-      <td class="p-2">
-        <div class="card w-100">
-          <div class="card-body">
-            <h6 class="card-subtitle mb-2 text-body-secondary">Titel</h6>
-            <h5 class="card-title">{{exam.title}}</h5>
+  <div class="test-overview-height">
+    <table class="w-100">
+      <tr>
+        <td class="p-2">
+          <div class="card w-100">
+            <div class="card-body">
+              <h6 class="card-subtitle mb-2 text-body-secondary">Titel</h6>
+              <h5 class="card-title">{{exam.title}}</h5>
+            </div>
           </div>
-        </div>
-      </td>
-      <td class="p-2 text-end">
-        <div class="card w-100">
-          <div class="card-body">
-            <h6 class="card-subtitle mb-2 text-body-secondary">Pin</h6>
-            <h5 class="card-title">{{exam.pin}}</h5>
+        </td>
+        <td class="p-2 text-end">
+          <div class="card w-100">
+            <div class="card-body">
+              <h6 class="card-subtitle mb-2 text-body-secondary">Klasse</h6>
+              <h5 class="card-title">Klassenname</h5>
+            </div>
           </div>
-        </div>
-      </td>
-    </tr>
-    <tr>
-      <td class="p-2">
-        <div class="card w-100">
-          <div class="card-body">
-            <h6 class="card-subtitle mb-2 text-body-secondary">Datum</h6>
-            <h5 class="card-title">{{getDateFromExam()}}</h5>
+        </td>
+      </tr>
+      <tr>
+        <td class="p-2">
+          <div class="card w-100">
+            <div class="card-body">
+              <h6 class="card-subtitle mb-2 text-body-secondary">Datum</h6>
+              <h5 class="card-title">{{getDateFromExam()}}</h5>
+            </div>
           </div>
-        </div>
-      </td>
-      <td class="p-2 text-end">
-        <div class="card w-100">
-          <div class="card-body">
-            <h6 class="card-subtitle mb-2 text-body-secondary">Zeit</h6>
-            <h5 class="card-title">{{getFormattedTimeFrom(exam.plannedStart)}}-{{getFormattedTimeFrom(exam.plannedEnd)}} Uhr</h5>
+        </td>
+        <td class="p-2 text-end">
+          <div class="card w-100">
+            <div class="card-body">
+              <h6 class="card-subtitle mb-2 text-body-secondary">Zeit</h6>
+              <h5 class="card-title">{{getFormattedTimeFrom(exam.plannedStart)}}-{{getFormattedTimeFrom(exam.plannedEnd)}} Uhr</h5>
+            </div>
           </div>
-        </div>
-      </td>
-    </tr>
-    <tr>
-      <td class="p-2">
-        <div class="card w-100">
-          <div class="card-body">
-            <h6 class="card-subtitle mb-2 text-body-secondary">Tatsächlich Ende</h6>
-            <h5 class="card-title">{{getFormattedTimeFrom(exam.actualEnd)}} Uhr</h5>
+        </td>
+      </tr>
+      <tr>
+        <td class="p-2">
+          <div class="card w-100">
+            <div class="card-body">
+              <h6 class="card-subtitle mb-2 text-body-secondary">Tatsächlich Ende</h6>
+              <h5 class="card-title">{{getFormattedTimeFrom(exam.actualEnd)}} Uhr</h5>
+            </div>
           </div>
-        </div>
-      </td>
-      <td class="p-2 text-end">
-        <div class="card w-100">
-          <div class="card-body">
-            <h6 class="card-subtitle mb-2 text-body-secondary">Status</h6>
-            <h5 class="card-title">{{ExamState[exam.state]}}</h5>
+        </td>
+        <td class="p-2 text-end">
+          <div class="card w-100">
+            <div class="card-body">
+              <h6 class="card-subtitle mb-2 text-body-secondary">Pin</h6>
+              <h5 class="card-title">{{exam.pin}}</h5>
+            </div>
           </div>
-        </div>
-      </td>
-    </tr>
-  </table>
+        </td>
+      </tr>
+      <tr>
+        <td class="p-2">
+          <div class="card w-100">
+            <div class="card-body">
+              <h6 class="card-subtitle mb-2 text-body-secondary">Eingeschriebene Schüler</h6>
+              <h5 class="card-title">Nummer 42</h5>
+            </div>
+          </div>
+        </td>
+        <td class="p-2 text-end">
+          <div class="card w-100">
+            <div class="card-body">
+              <h6 class="card-subtitle mb-2 text-body-secondary">Status</h6>
+              <h5 class="card-title">{{ExamState[exam.state]}}</h5>
+            </div>
+          </div>
+        </td>
+      </tr>
+    </table>
+  </div>
 }

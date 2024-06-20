@@ -19,4 +19,20 @@ export class ExamComponent {
       this.examSvc.setCurExam(this.exam);
     }
   }
+
+  getDateFromExam(): string {
+    if (!this.exam)
+      return "";
+
+    return (this.exam.plannedStart.getMonth() + 1) + '.' +
+      this.exam.plannedStart.getDate() + '.' +
+      this.exam.plannedStart.getFullYear();
+  }
+
+  getTimeFromExam(): string {
+    if (!this.exam)
+      return "";
+
+    return this.exam.plannedStart.getHours() + ":" + this.exam.plannedStart.getMinutes();
+  }
 }
