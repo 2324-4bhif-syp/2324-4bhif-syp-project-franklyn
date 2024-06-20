@@ -4,11 +4,11 @@
       <td class="bg-light align-top pt-3 left-bar-width">
         <div class="overflow-scroll test-overview-height">
           <h6 class="fw-bold text-center">Tests</h6>
-          <!--app-test-list-->
+          <app-exam-selection-list></app-exam-selection-list>
         </div>
       </td>
       <td class="selector-width w-auto align-top pt-2 px-3">
-        <!--current shown test-->
+        <app-exam [exam]="store.value.examData.curExam"></app-exam>
       </td>
     </tr>
   </table>
