@@ -80,6 +80,10 @@ export class WebApiService {
       .subscribe({
         "next": (exams) => set((model) => {
           model.examData.exams = this.sortExams(exams);
+
+          if (model.examData.exams.length >= 1) {
+            model.examData.curExam = model.examData.exams[0];
+          };
         }),
         "error": (err) => console.error(err),
       });*/
@@ -126,6 +130,10 @@ export class WebApiService {
         },
       ];
       model.examData.exams = this.sortExams(model.examData.exams);
+
+      if (model.examData.exams.length >= 1) {
+        model.examData.curExam = model.examData.exams[0];
+      };
     })
   }
 
