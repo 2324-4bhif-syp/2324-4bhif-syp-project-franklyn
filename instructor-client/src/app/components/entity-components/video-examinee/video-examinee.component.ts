@@ -2,11 +2,15 @@ import {Component, inject, Input} from '@angular/core';
 import {StoreService} from "../../../services/store.service";
 import {Examinee} from "../../../model";
 import {environment} from "../../../../../env/environment";
+import {RouterLink, RouterLinkActive} from "@angular/router";
 
 @Component({
   selector: 'app-video-examinee',
   standalone: true,
-  imports: [],
+    imports: [
+        RouterLink,
+        RouterLinkActive
+    ],
   templateUrl: './video-examinee.component.html',
   styleUrl: './video-examinee.component.css'
 })

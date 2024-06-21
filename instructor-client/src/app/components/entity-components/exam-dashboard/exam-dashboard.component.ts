@@ -2,16 +2,21 @@ import {Component, inject, Input} from '@angular/core';
 import {ExamService} from "../../../services/exam.service";
 import {Exam} from "../../../model/entity/Exam";
 import {ExamState} from "../../../model/entity/Exam-State";
+import {RouterLink, RouterLinkActive} from "@angular/router";
+import {set} from "../../../model";
 
 @Component({
   selector: 'app-exam-dashboard',
   standalone: true,
-  imports: [],
+  imports: [
+    RouterLink,
+    RouterLinkActive
+  ],
   templateUrl: './exam-dashboard.component.html',
   styleUrl: './exam-dashboard.component.css'
 })
 export class ExamDashboardComponent {
-  private examSvc = inject(ExamService);
+  protected examSvc = inject(ExamService);
 
   @Input() exam: Exam | undefined;
 
