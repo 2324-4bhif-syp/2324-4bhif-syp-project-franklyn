@@ -1,23 +1,29 @@
 package at.htl.franklyn.server.control;
 
-import at.htl.franklyn.server.entity.Examinee;
 import at.htl.franklyn.server.entity.Participation;
-import at.htl.franklyn.server.entity.dto.ExamineeDto;
-import io.quarkus.hibernate.orm.panache.PanacheRepository;
-import io.quarkus.hibernate.orm.panache.PanacheRepositoryBase;
+import io.quarkus.hibernate.reactive.panache.PanacheRepositoryBase;
+import io.smallrye.mutiny.Uni;
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+import org.hibernate.reactive.mutiny.Mutiny;
+
+import java.util.UUID;
 
 @ApplicationScoped
-public class ParticipationRepository implements PanacheRepositoryBase<Participation, String> {
-    public Participation getByExamAndExaminee(long examineeId, long examId) {
-        return getEntityManager()
+public class ParticipationRepository implements PanacheRepositoryBase<Participation, UUID> {
+    @Inject
+    Mutiny.SessionFactory sf;
+
+    public Uni<Participation> getByExamAndExaminee(long examineeId, long examId) {
+        return sf.withSession(session -> session
                 .createQuery(
-                        """
-                        select p From Participation p where p.exam.id = ?2 and p.examinee.id = ?1
-                        """, Participation.class)
+                    """
+                    select p From Participation p where p.exam.id = ?2 and p.examinee.id = ?1
+                    """, Participation.class)
                 .setParameter(1, examineeId)
                 .setParameter(2, examId)
                 .getResultList()
-                .stream().findFirst().orElse(null);
+                .onItem().transform(i -> i.stream().findFirst().orElse(null))
+        );
     }
 }

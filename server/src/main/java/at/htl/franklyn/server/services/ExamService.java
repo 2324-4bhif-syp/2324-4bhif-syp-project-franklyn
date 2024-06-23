@@ -7,8 +7,10 @@ import at.htl.franklyn.server.entity.ExamState;
 import at.htl.franklyn.server.entity.Examinee;
 import at.htl.franklyn.server.entity.dto.ExamDto;
 import at.htl.franklyn.server.entity.dto.ExamineeDto;
+import io.smallrye.mutiny.Uni;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import org.hibernate.reactive.mutiny.Mutiny;
 
 import java.util.List;
 import java.util.Random;
@@ -19,6 +21,9 @@ public class ExamService {
     @Inject
     ExamRepository examRepository;
 
+    @Inject
+    Mutiny.SessionFactory sf;
+
     /**
      * Creates a new Exam from a Dto.
      * This business logic method assigns additional parameters which are not included in the dto.
@@ -27,19 +32,21 @@ public class ExamService {
      * @param examDto exam dto from which a new exam is built
      * @return the newly created exam
      */
-    public Exam createExam(ExamDto examDto) {
-        Exam exam = new Exam();
-        exam.setTitle(examDto.title());
-        exam.setPlannedStart(examDto.start());
-        exam.setPlannedEnd(examDto.end());
+    public Uni<Exam> createExam(ExamDto examDto) {
+        return getFreePIN()
+                .onItem().transform(p -> {
+                    Exam exam = new Exam();
+                    exam.setTitle(examDto.title());
+                    exam.setPlannedStart(examDto.start());
+                    exam.setPlannedEnd(examDto.end());
 
-        // Initial exam state is always created
-        exam.setState(ExamState.CREATED);
-        exam.setPin(getFreePIN()); // TODO: Fix potential Race condition
+                    // Initial exam state is always created
+                    exam.setState(ExamState.CREATED);
+                    exam.setPin(p); // TODO: Fix potential Race condition
+                    return exam;
+                })
+                .chain(examRepository::persist);
 
-        examRepository.persist(exam);
-
-        return exam;
     }
 
     /**
@@ -47,8 +54,9 @@ public class ExamService {
      * @param id exam id to check
      * @return true - when an exam with the given id exists otherwise false
      */
-    public boolean exists(long id) {
-        return examRepository.count("from Exam where id = ?1", id) != 0;
+    public Uni<Boolean> exists(long id) {
+        return examRepository.count("from Exam where id = ?1", id)
+                .onItem().transform(c -> c != 0);
     }
 
     /**
@@ -56,7 +64,7 @@ public class ExamService {
      * @param id exam id for which to query students for
      * @return list of examinee DTOs holding most of the relevant data of an exminee needed during the exam
      */
-    public List<ExamineeDto> getExamineesOfExam(long id) {
+    public Uni<List<ExamineeDto>> getExamineesOfExam(long id) {
         return examRepository.getExamineesOfExamWithConnectionState(id);
     }
 
@@ -65,8 +73,9 @@ public class ExamService {
      * @param pin pin to check
      * @return true - pin is valid (belongs to an active exam) otherwise false
      */
-    public boolean isValidPIN(int pin) {
-        return examRepository.count("from Exam e where e.actualEnd is null and pin = ?1", pin) != 0;
+    public Uni<Boolean> isValidPIN(int pin) {
+        return examRepository.count("from Exam e where e.actualEnd is null and pin = ?1", pin)
+                .onItem().transform(c -> c != 0);
     }
 
     /**
@@ -74,8 +83,10 @@ public class ExamService {
      * @param pin pin to search for
      * @return the exam with the given pin
      */
-    public Exam findByPIN(int pin) {
-        return examRepository.find("from Exam e where e.actualEnd is null and pin = ?1", pin).firstResult();
+    public Uni<Exam> findByPIN(int pin) {
+        return examRepository
+                .find("from Exam e where e.actualEnd is null and pin = ?1", pin)
+                .firstResult();
     }
 
     /**
@@ -83,15 +94,16 @@ public class ExamService {
      * This function can theoretically loop endlessly if 1000 Exams are active at once.
      * @return a free PIN
      */
-    private int getFreePIN() {
+    private Uni<Integer> getFreePIN() {
         Random rnd = new Random();
-        Set<Integer> takenPINs = examRepository.getPINsInUse();
+        return examRepository.getPINsInUse()
+                .onItem().transform(takenPINs -> {
+                    int pin;
+                    do {
+                        pin = rnd.nextInt(Limits.EXAM_PIN_MIN_VALUE, Limits.EXAM_PIN_MAX_VALUE + 1);
+                    } while(takenPINs.contains(pin));
 
-        int pin;
-        do {
-            pin = rnd.nextInt(Limits.EXAM_PIN_MIN_VALUE, Limits.EXAM_PIN_MAX_VALUE + 1);
-        } while(takenPINs.contains(pin));
-
-        return pin;
+                    return pin;
+                });
     }
 }

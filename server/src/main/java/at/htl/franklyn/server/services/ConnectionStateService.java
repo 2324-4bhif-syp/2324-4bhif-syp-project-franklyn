@@ -4,12 +4,15 @@ import at.htl.franklyn.server.control.ConnectionStateRepository;
 import at.htl.franklyn.server.control.ParticipationRepository;
 import at.htl.franklyn.server.entity.ConnectionState;
 import at.htl.franklyn.server.entity.Participation;
+import io.quarkus.logging.Log;
+import io.smallrye.mutiny.Uni;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.List;
+import java.util.UUID;
 
 @ApplicationScoped
 public class ConnectionStateService {
@@ -19,25 +22,20 @@ public class ConnectionStateService {
     @Inject
     ParticipationRepository participationRepository;
 
-    public void insertConnected(String participationId, boolean state) {
-        Participation p = participationRepository
-                .findById(participationId);
-
-        // given participation is invalid
-        if (p == null) {
-            return;
-        }
-
-        ConnectionState connectionState = new ConnectionState(
-                LocalDateTime.now(ZoneOffset.UTC),
-                p,
-                state
-        );
-
-        stateRepository.persist(connectionState);
+    public Uni<Void> insertConnected(String participationId, boolean state) {
+        return participationRepository
+                .findById(UUID.fromString(participationId))
+                .onItem().ifNotNull()
+                .transform(p -> new ConnectionState(
+                        LocalDateTime.now(ZoneOffset.UTC),
+                        p,
+                        state
+                ))
+                .chain(cs -> stateRepository.persist(cs))
+                .replaceWithVoid();
     }
 
-    public List<String> getTimedoutParticipants(int timeout) {
+    public Uni<List<String>> getTimedoutParticipants(int timeout) {
         return stateRepository.getTimedoutParticipants(timeout);
     }
 }

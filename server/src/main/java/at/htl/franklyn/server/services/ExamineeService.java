@@ -2,6 +2,8 @@ package at.htl.franklyn.server.services;
 
 import at.htl.franklyn.server.control.ExamineeRepostiory;
 import at.htl.franklyn.server.entity.Examinee;
+import io.quarkus.logging.Log;
+import io.smallrye.mutiny.Uni;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 
@@ -16,8 +18,10 @@ public class ExamineeService {
      * @param lastname lastname of the examinee
      * @return true - in case the examinee exists otherwise false
      */
-    public boolean exists(String firstname, String lastname) {
-        return examineeRepostiory.count("from Examinee where firstname = ?1 and lastname = ?2", firstname, lastname) != 0;
+    public Uni<Boolean> exists(String firstname, String lastname) {
+        return examineeRepostiory
+                .count("from Examinee where firstname = ?1 and lastname = ?2", firstname, lastname)
+                .onItem().transform(c -> c != 0);
     }
 
     /**
@@ -28,17 +32,17 @@ public class ExamineeService {
      * @param lastname lastname of the examinee
      * @return examinee with the given first and lastname
      */
-    public Examinee getOrCreateExaminee(String firstname, String lastname) {
-        Examinee examinee = examineeRepostiory
+    public Uni<Examinee> getOrCreateExaminee(String firstname, String lastname) {
+        return examineeRepostiory
                 .find("select e from Examinee e where firstname = ?1 and lastname = ?2", firstname, lastname)
-                .firstResultOptional()
-                .orElse(null);
-
-        if(examinee == null) {
-            examinee = new Examinee(firstname, lastname);
-            examineeRepostiory.persist(examinee);
-        }
-
-        return examinee;
+                .firstResult()
+                .onItem().ifNull().continueWith(new Examinee(firstname, lastname))
+                .chain((e) -> {
+                    if (e.getId() == null) {
+                        return examineeRepostiory.persist(e);
+                    } else {
+                        return Uni.createFrom().item(e);
+                    }
+                });
     }
 }

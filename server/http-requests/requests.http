@@ -10,11 +10,13 @@ Content-Type: application/json
 
 > {%
 client.global.set("pin", response.body.pin)
+client.global.set("id", response.body.id)
 console.log(client.global.get("pin"));
+console.log(client.global.get("id"));
 %}
 
 ### Get Exam by id
-GET http://localhost:8080/exams/1
+GET http://localhost:8080/exams/{{id}}
 Accept: application/json
 
 ### Get all exams
@@ -22,11 +24,11 @@ GET http://localhost:8080/exams
 Accept: application/json
 
 ### Delete exam by id
-DELETE http://localhost:8080/exams/1
+DELETE http://localhost:8080/exams/{{id}}
 Accept: application/json
 
 ### Get examinees of exam
-GET http://localhost:8080/exams/1/examinees
+GET http://localhost:8080/exams/{{id}}/examinees
 Accept: application/json
 
 ### Join Exam
@@ -37,6 +39,8 @@ Content-Type: application/json
   "firstname": "Franz",
   "lastname": "Höller"
 }
+
+###
 
 
 ### Old

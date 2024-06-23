@@ -10,6 +10,9 @@ import at.htl.franklyn.server.entity.dto.ExamineeDto;
 import at.htl.franklyn.server.services.ExamService;
 import at.htl.franklyn.server.services.ExamineeService;
 import at.htl.franklyn.server.services.ParticipationService;
+import io.quarkus.hibernate.reactive.panache.common.WithSession;
+import io.quarkus.hibernate.reactive.panache.common.WithTransaction;
+import io.smallrye.mutiny.Uni;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -41,98 +44,139 @@ public class ExamResource {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    @Transactional
-    public Response createExam(@Valid ExamDto examDto, @Context UriInfo uriInfo) {
-        Exam exam = examService.createExam(examDto);
-
-        URI uri = uriInfo
-                .getAbsolutePathBuilder()
-                .path(exam.getId().toString())
-                .build();
-
-        return Response
-                .created(uri)
-                .entity(exam)
-                .build();
+    @WithTransaction
+    public Uni<Response> createExam(@Valid ExamDto examDto, @Context UriInfo uriInfo) {
+        return examService.createExam(examDto)
+                .onItem().transform(e -> {
+                    URI uri = uriInfo
+                            .getAbsolutePathBuilder()
+                            .path(e.getId().toString())
+                            .build();
+                    return Response
+                            .created(uri)
+                            .entity(e)
+                            .build();
+                });
     }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("{id}")
-    public Response getExamById(@PathParam("id") long id) {
-        if (!examService.exists(id)) {
-            return Response
-                    .status(Response.Status.NOT_FOUND)
-                    .build();
-        }
-
-        return Response
-                .ok(examRepository.findById(id))
-                .build();
+    @WithSession
+    public Uni<Response> getExamById(@PathParam("id") long id) {
+        return examService.exists(id)
+                .chain(exists -> {
+                    if (!exists) {
+                        return Uni.createFrom().item(Response.status(Response.Status.NOT_FOUND).build());
+                    } else {
+                        return examRepository.findById(id)
+                                .onItem().transform(exam -> Response.ok(exam).build());
+                    }
+                });
     }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getAllExams() {
-        return Response
-                .ok(examRepository.listAll())
-                .build();
+    @WithSession
+    public Uni<Response> getAllExams() {
+        return examRepository.listAll()
+                .onItem().transform(exams -> Response.ok(exams).build());
     }
 
     @DELETE
     @Path("{id}")
-    @Transactional
-    public Response deleteExamById(@PathParam("id") long id) {
-        if (!examService.exists(id)) {
-            return Response
-                    .status(Response.Status.NOT_FOUND)
-                    .build();
-        }
-
-        examRepository.deleteById(id);
-
-        return Response
-                .noContent()
-                .build();
+    @WithTransaction
+    public Uni<Response> deleteExamById(@PathParam("id") long id) {
+        return examRepository.deleteById(id)
+                .onItem().transform(deleted -> {
+                    if (deleted) {
+                        return Response
+                                .noContent()
+                                .build();
+                    } else {
+                        return Response
+                                .status(Response.Status.NOT_FOUND)
+                                .build();
+                    }
+                });
     }
 
     @GET
     @Path("{id}/examinees")
-    public Response getExamineesOfExam(@PathParam("id") long id) {
-        if (!examService.exists(id)) {
-            return Response
-                    .status(Response.Status.NOT_FOUND)
-                    .build();
+    @WithSession
+    public Uni<Response> getExamineesOfExam(@PathParam("id") long id) {
+        return examService.exists(id)
+                .chain(e -> {
+                    if (e) {
+                        return examService.getExamineesOfExam(id)
+                                .onItem().transform(exam -> Response.ok(exam).build());
+                    } else {
+                        return Uni.createFrom().item(Response.status(Response.Status.NOT_FOUND).build());
+                    }
+                });
+    }
+
+    @POST
+    @WithTransaction
+    @Path("/join/{pin}")
+    public Uni<Response> joinExam(@PathParam("pin") int pin, @Valid ExamineeDto examineeDto, @Context UriInfo uriInfo) {
+        if (examineeDto == null) {
+            return Uni.createFrom().item(
+                    Response
+                            .status(Response.Status.BAD_REQUEST)
+                            .build()
+            );
         }
 
-        return Response
-                .ok(examService.getExamineesOfExam(id))
-                .build();
+        return examService.isValidPIN(pin)
+                .chain(valid -> {
+                    if (valid) {
+                        return examineeService.getOrCreateExaminee(examineeDto.firstname(), examineeDto.lastname())
+                                .chain(examinee -> examService.findByPIN(pin)
+                                        .chain(exam -> participationService.getOrCreateParticipation(examinee, exam))
+                                )
+                                .onItem().transform(p -> {
+                                    URI uri = uriInfo
+                                            .getBaseUriBuilder()
+                                            .path("/connect/")
+                                            .path(p.getId().toString())
+                                            .build();
+
+                                    return Response
+                                            .created(uri)
+                                            .build();
+                                });
+                    } else {
+                        return Uni.createFrom().item(
+                                Response
+                                        .status(Response.Status.BAD_REQUEST)
+                                        .build()
+                        );
+                    }
+                });
+    }
+
+
+    /*
+    @POST
+    @Transactional
+    @Path("/start/{id}")
+    public Response startExam(@PathParam("id") long id) {
+        return null;
     }
 
     @POST
     @Transactional
-    @Path("/join/{pin}")
-    public Response joinExam(@PathParam("pin") int pin, @Valid ExamineeDto examineeDto, @Context UriInfo uriInfo) {
-        if(!examService.isValidPIN(pin) || examineeDto == null) {
-            return Response
-                    .status(Response.Status.BAD_REQUEST)
-                    .build();
-        }
-
-        Examinee examinee = examineeService.getOrCreateExaminee(examineeDto.firstname(), examineeDto.lastname());
-        Exam exam = examService.findByPIN(pin);
-        Participation participation = participationService.getOrCreateParticipation(examinee, exam);
-
-        // TODO: really think through new location
-        URI uri = uriInfo
-                .getBaseUriBuilder()
-                .path("/connect/")
-                .path(participation.getId().toString())
-                .build();
-
-        return Response
-                .created(uri)
-                .build();
+    @Path("/complete/{id}")
+    public Response completeExam(@PathParam("id") long id) {
+        return null;
     }
+
+    @POST
+    @Transactional
+    @Path("/deleteTelemetry/{id}")
+    public Response deleteTelementryOfExam(@PathParam("id") long id) {
+        return null;
+    }
+     */
 }
