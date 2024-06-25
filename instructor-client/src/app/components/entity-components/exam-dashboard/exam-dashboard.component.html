@@ -1,5 +1,5 @@
 @if (exam) {
-  <div class="test-overview-height position-relative">
+  <div class="screen-height position-relative">
     <table class="w-100">
       <tr>
         <td class="p-2 col-1">
@@ -172,11 +172,10 @@
 
     <div class="d-flex position-absolute bottom-0 justify-content-between p-2 w-100"
          routerLinkActive="active">
-      <button
-        (click)="2 + 2"
-        class="btn btn-primary button-width">
+      <a routerLink="edit-test-view"
+         class="btn btn-primary button-width">
         Edit
-      </button>
+      </a>
       <button
         (click)="examSvc.reloadSpecificExam(exam)"
         class="btn btn-success button-width">
