@@ -42,10 +42,10 @@ endif::backend-html5[]
 |SYP-Unterricht
 
 |von-bis
-|Di. 01.10.2024, 7. EH 14:15
+|Di. 01.10.2024, 7. EH 14:55
 
 |Dauer
-| X min
+| 40 min
 |===
 
 == Besprochene Themen
