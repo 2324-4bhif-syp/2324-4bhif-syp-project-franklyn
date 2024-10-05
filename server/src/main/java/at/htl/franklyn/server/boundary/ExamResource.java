@@ -156,27 +156,24 @@ public class ExamResource {
                 });
     }
 
-
-    /*
     @POST
-    @Transactional
+    @WithTransaction
     @Path("/start/{id}")
-    public Response startExam(@PathParam("id") long id) {
+    public Uni<Response> startExam(@PathParam("id") long id) {
         return null;
     }
 
     @POST
-    @Transactional
+    @WithTransaction
     @Path("/complete/{id}")
-    public Response completeExam(@PathParam("id") long id) {
+    public Uni<Response> completeExam(@PathParam("id") long id) {
         return null;
     }
 
     @POST
-    @Transactional
+    @WithTransaction
     @Path("/deleteTelemetry/{id}")
-    public Response deleteTelementryOfExam(@PathParam("id") long id) {
+    public Uni<Response> deleteTelemetryOfExam(@PathParam("id") long id) {
         return null;
     }
-     */
 }

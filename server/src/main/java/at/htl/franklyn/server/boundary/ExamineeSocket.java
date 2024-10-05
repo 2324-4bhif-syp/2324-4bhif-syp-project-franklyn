@@ -27,9 +27,6 @@ public class ExamineeSocket {
     @Inject
     OpenConnections openConnections;
 
-    // Key: participationId
-    //private final ConcurrentHashMap<String, Session> sessions = new ConcurrentHashMap<>();
-
     @ConfigProperty(name = "websocket.client-timeout-seconds")
     int clientTimeoutSeconds;
 
@@ -37,7 +34,6 @@ public class ExamineeSocket {
     @WithSession
     public Uni<Void> onOpen() {
         String participationId = connection.pathParam("participationId");
-        Log.infof("Hello %s", participationId);
         return participationService.exists(participationId)
                 .onItem().invoke(exists -> {
                     if (exists) {
@@ -104,7 +100,6 @@ public class ExamineeSocket {
                     ).andFailFast().replaceWithVoid();
                 })
                 .onItem().transformToUniAndConcatenate(a -> a)
-                .toUni()
-                .replaceWithVoid();
+                .toUni();
     }
 }
