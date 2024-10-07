@@ -6,6 +6,24 @@ ifndef::imagesdir[:imagesdir: images]
 :sectnums:
 :toc: left
 
+== Getting started
+A guide on how to set up the project can be found <<./setup.adoc#, here>>
+
+== Current developments
+Current development is focused on allowing franklyn to manage multiple tests concurrently. Read more in the <<./multitest.adoc#, multitest capabilities specification>>
+
+== Status-Berichte
+<<./status-reports/2024-10-07-status-report.adoc#, 2024-10-07>>
+
+== Additional Documentation
+
+=== Youtrack-Diagram von stefnotch
+
+<<./additional-documentation/youtrack-diagram-by-stefnotch.adoc#, Youtrack-Diagram von Stefnotch>>
+
+== Slides
+RevealJs Slides can be found https://2324-4bhif-syp.github.io/2324-4bhif-syp-project-franklyn/slides[here^]
+
 == Minutes of Meeting
 <<./mom/2023-10-17.adoc#, 2023-10-17>>
 
@@ -35,19 +53,3 @@ ifndef::imagesdir[:imagesdir: images]
 
 <<./mom/2024-10-01.adoc#, 2024-10-01>>
 
-== Additional Documentation
-
-=== Youtrack-Diagram von stefnotch
-
-<<./additional-documentation/youtrack-diagram-by-stefnotch.adoc#, Youtrack-Diagram von Stefnotch>>
-
-=== Status-Berichte
-
-<<./status-reports/2024-10-07-status-report.adoc#, 2024-10-07>>
-
-
-== Slides
-RevealJs Slides can be found https://2324-4bhif-syp.github.io/2324-4bhif-syp-project-franklyn/slides[here^]
-
-== Getting started
-A guide on how to set up the project can be found <<./setup.adoc#, here>>
