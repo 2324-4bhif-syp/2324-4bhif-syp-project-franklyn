@@ -21,15 +21,7 @@ ifndef::imagesdir[:imagesdir: ../images]
 .Architektur
 [%collapsible]
 ====
-plantuml::../../slides/plantuml/architecture.puml[]
-====
-
-=== ERD
-
-.ERD
-[%collapsible]
-====
-plantuml::../../slides/plantuml/erd.puml[]
+plantuml::../plantuml/architecture.puml[]
 ====
 
 == Aktueller Stand
