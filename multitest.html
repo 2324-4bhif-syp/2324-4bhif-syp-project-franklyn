@@ -752,10 +752,43 @@ As Franklyn is still under heavy development, no interfaces, components and desi
 </div>
 <div class="sect3">
 <h4 id="_description_of_external_interfaces"><a class="anchor" href="#_description_of_external_interfaces"></a>5.2.1. Description of external interfaces</h4>
+<div class="sect4">
+<h5 id="_introduction_datatypes"><a class="anchor" href="#_introduction_datatypes"></a>Introduction: Datatypes</h5>
 <div class="paragraph">
-<p><strong>TODO</strong>: Datatypes<br>
-<strong>TODO</strong>: Implementation types<br>
-<strong>TODO</strong>: Overview of all endpoints (one-liners)</p>
+<p>The interfaces below mostly use <code>JSON</code> for transferring data. The <code>JSON</code> format includes types instead of example values to ease implementation. The following datatypes are used:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Composite types (<code>type1 | type2 | &#8230;&#8203;</code>): Composite types signal that the field contains a value of one of the types. In this example the type is either <code>type1</code> or <code>type2</code></p>
+</li>
+<li>
+<p>Composite constants (<code>"CONST1" | "CONST2" | &#8230;&#8203;</code>): Composite constants are similar to composite types however they signal, that the value of the field is one of the listed constants. In this example the value is either <code>CONST1</code> or <code>CONST2</code></p>
+</li>
+<li>
+<p><code>string</code>: All valid json strings</p>
+</li>
+<li>
+<p><code>number</code>: All valid json numbers</p>
+</li>
+<li>
+<p><code>isodatetime</code>: String formatted as an ISO 8601 Datetime string</p>
+</li>
+<li>
+<p><code>null</code>: null value (value missing)</p>
+</li>
+<li>
+<p><code>boolean</code>: boolean value meaning either <code>true</code> or <code>false</code></p>
+</li>
+<li>
+<p><code>object</code>: another <code>JSON</code> object (<code>{}</code>) with unspecified contents</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p><strong>TODO</strong>: Implementation status definitions<br>
+<strong>TODO</strong>: Overview of all endpoints</p>
+</div>
 </div>
 <div class="sect4">
 <h5 id="_manage_exams"><a class="anchor" href="#_manage_exams"></a>Manage Exams</h5>
@@ -1365,7 +1398,81 @@ As Franklyn is still under heavy development, no interfaces, components and desi
 <div class="sect4">
 <h5 id="_command_socket"><a class="anchor" href="#_command_socket"></a>Command Socket</h5>
 <div class="paragraph">
-<p><strong>TODO</strong></p>
+<p>The command socket allows bidirectional communication between franklyn-server and the student-client. It uses the <code>Websocket</code> protocol. Even though the websocket server is running on franklyn-server this interface is a required interface of the server, since currently only the server sends commands through this bidirectional tunnel. The client&#8217;s response is provided by it calling REST endpoints. The websocket server is available under <code>/connect/{session-id}</code></p>
+</div>
+<div class="sect5">
+<h6 id="_general_command_structure"><a class="anchor" href="#_general_command_structure"></a>General command structure</h6>
+<div class="paragraph">
+<p>A command sent to the student-client generally looks like the following:</p>
+</div>
+<div class="paragraph">
+<p>+</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="json"><span class="p">{</span><span class="w">
+  </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"CAPTURE_SCREEN"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"payload"</span><span class="p">:</span><span class="w"> </span><span class="err">object</span><span class="w"> </span><span class="err">|</span><span class="w"> </span><span class="kc">null</span><span class="w">
+</span><span class="p">}</span></code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Currently, there is only one command type <code>CAPTURE_SCREEN</code>, however in the future there may be more and the datatype will look similar to: <code>"CMD1" | "CMD2" | "CMD3" | &#8230;&#8203;</code>
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect5">
+<h6 id="_request_screenshot"><a class="anchor" href="#_request_screenshot"></a>Request screenshot</h6>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Description</strong>: Requests a screencapture from the student-client (openbox)</p>
+</li>
+<li>
+<p><strong>Command structure</strong>:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="json"><span class="p">{</span><span class="w">
+  </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"CAPTURE_SCREEN"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"payload"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"frame_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ALPHA"</span><span class="w"> </span><span class="err">|</span><span class="w"> </span><span class="s2">"BETA"</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span></code></pre>
+</div>
+</div>
+</li>
+<li>
+<p><strong>Expected Response</strong>: <code>POST</code> request to the telemetry endpoint for the given frametype. I.e. <code>/telemetry/by-session/{session-id}/screen/upload/alpha</code> for alpha frames and <code>/telemetry/by-session/{session-id}/screen/upload/beta</code> for beta frames</p>
+</li>
+<li>
+<p><strong>Additional Notes</strong>: N/A</p>
+</li>
+<li>
+<p><strong>Status</strong>: Not implemented</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect5">
+<h6 id="_heartbeat_pingpong"><a class="anchor" href="#_heartbeat_pingpong"></a>Heartbeat (Ping/Pong)</h6>
+<div class="paragraph">
+<p>Besides requesting commands, the server periodically sends small <code>PING</code> packets and expects <code>PONG</code> responses. This is an exception to the rule, that the server does not accept its responses over the websocket tunnel. Since <code>PING</code>/<code>PONG</code> is implemented on a protocol level for <code>Websockets</code>, simplifying implementations for breaking "rules" is a tradeoff made here.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Status: Not implemented</p>
+</li>
+</ul>
+</div>
 </div>
 </div>
 <div class="sect4">
@@ -1513,7 +1620,7 @@ e.g. <code><a href="http://localhost:8080/connect/a353a68b-26f2-4803-8abf-80d4bb
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-10-08 06:14:00 UTC
+Last updated 2024-10-08 10:29:15 UTC
 </div>
 </div>
 </body>
