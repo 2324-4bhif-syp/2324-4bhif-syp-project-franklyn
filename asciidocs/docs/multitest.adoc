@@ -124,9 +124,20 @@ component "openbox" <<component>>
 @enduml
 ----
 ==== Description of external interfaces
-*TODO*: Datatypes +
-*TODO*: Implementation types +
-*TODO*: Overview of all endpoints (one-liners)
+===== Introduction: Datatypes
+The interfaces below mostly use `JSON` for transferring data. The `JSON` format includes types instead of example values to ease implementation. The following datatypes are used:
+
+1. Composite types (`type1 | type2 | ...`): Composite types signal that the field contains a value of one of the types. In this example the type is either `type1` or `type2`
+1. Composite constants (`"CONST1" | "CONST2" | ...`): Composite constants are similar to composite types however they signal, that the value of the field is one of the listed constants. In this example the value is either `CONST1` or `CONST2`
+1. `string`: All valid json strings
+1. `number`: All valid json numbers
+1. `isodatetime`: String formatted as an ISO 8601 Datetime string
+1. `null`: null value (value missing)
+1. `boolean`: boolean value meaning either `true` or `false`
+1. `object`: another `JSON` object (`{}`) with unspecified contents
+
+*TODO*: Implementation status definitions +
+*TODO*: Overview of all endpoints
 
 ===== Manage Exams
 The manage Exams interface of franklyn-server is a `REST` interface under the path `/exams` and provides the following endpoints:
@@ -397,7 +408,42 @@ The manage Recordings interface is a `REST` resource of franklyn-server used for
 * *Status*: Not implemented
 
 ===== Command Socket
-*TODO*
+The command socket allows bidirectional communication between franklyn-server and the student-client. It uses the `Websocket` protocol. Even though the websocket server is running on franklyn-server this interface is a required interface of the server, since currently only the server sends commands through this bidirectional tunnel. The client's response is provided by it calling REST endpoints. The websocket server is available under `/connect/{session-id}`
+
+====== General command structure
+A command sent to the student-client generally looks like the following:
++
+[source, json]
+----
+{
+  "type": "CAPTURE_SCREEN",
+  "payload": object | null
+}
+----
+NOTE: Currently, there is only one command type `CAPTURE_SCREEN`, however in the future there may be more and the datatype will look similar to: `"CMD1" | "CMD2" | "CMD3" | ...`
+
+====== Request screenshot
+* *Description*: Requests a screencapture from the student-client (openbox)
+* *Command structure*:
++
+[source, json]
+----
+{
+  "type": "CAPTURE_SCREEN",
+  "payload": {
+    "frame_type": "ALPHA" | "BETA"
+  }
+}
+----
+* *Expected Response*: `POST` request to the telemetry endpoint for the given frametype. I.e. `/telemetry/by-session/{session-id}/screen/upload/alpha` for alpha frames and `/telemetry/by-session/{session-id}/screen/upload/beta` for beta frames
+* *Additional Notes*: N/A
+* *Status*: Not implemented
+
+====== Heartbeat (Ping/Pong)
+Besides requesting commands, the server periodically sends small `PING` packets and expects `PONG` responses. This is an exception to the rule, that the server does not accept its responses over the websocket tunnel. Since `PING`/`PONG` is implemented on a protocol level for `Websockets`, simplifying implementations for breaking "rules" is a tradeoff made here.
+
+* Status: Not implemented
+
 
 ===== Telemetry upload
 Telemetry upload is another `REST` endpoint of the franklyn-server which acts as an interface for the student-client (openbox) to upload its captured telemetry. Currently, this resource is mostly used image data.
