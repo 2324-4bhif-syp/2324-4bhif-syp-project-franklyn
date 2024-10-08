@@ -27,7 +27,7 @@ endif::[]
 
 [.font-xx-large]
 === Änderungen
-* Dokumentation des bisher erledigten
+* Dokumentation des bisher Erledigten
 * Spezifikation der Schnittstellen der Mehrtestfähigkeit
 * Aufbereitung YouTrack
 
