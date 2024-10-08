@@ -154,7 +154,7 @@ Unterschiede zum Main-Branch:
 ** Holen des Intervalls als Integer Response.
 
 . POST "/screenshot/updateInterval"
-** Updaten des Intervalls mit dem die Screenshots von den Openbox-Clients geholt werden.
+** Updaten des Intervalls (in Sekunden) mit dem die Screenshots von den Openbox-Clients geholt werden.
 ** IntervalUpdateDto:
 *** Format:
 
