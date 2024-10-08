@@ -5,9 +5,9 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.20">
-<meta name="author" content="Arwed Schnalzenberger">
+<meta name="author" content="Schnalzenberger Arwed">
 <link rel="icon" type="image/png" href="themes/favicon.png">
-<title>10. Sprint-Planning 2024-04-23</title>
+<title>Status Bericht des 07.10.2024</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /*! Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
@@ -435,276 +435,791 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 @media amzn-kf8{#header,#content,#footnotes,#footer{padding:0}}
 </style>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+pre.rouge table td { padding: 5px; }
+pre.rouge table pre { margin: 0; }
+pre.rouge, pre.rouge .w {
+  color: #24292f;
+  background-color: #f6f8fa;
+}
+pre.rouge .k, pre.rouge .kd, pre.rouge .kn, pre.rouge .kp, pre.rouge .kr, pre.rouge .kt, pre.rouge .kv {
+  color: #cf222e;
+}
+pre.rouge .gr {
+  color: #f6f8fa;
+}
+pre.rouge .gd {
+  color: #82071e;
+  background-color: #ffebe9;
+}
+pre.rouge .nb {
+  color: #953800;
+}
+pre.rouge .nc {
+  color: #953800;
+}
+pre.rouge .no {
+  color: #953800;
+}
+pre.rouge .nn {
+  color: #953800;
+}
+pre.rouge .sr {
+  color: #116329;
+}
+pre.rouge .na {
+  color: #116329;
+}
+pre.rouge .nt {
+  color: #116329;
+}
+pre.rouge .gi {
+  color: #116329;
+  background-color: #dafbe1;
+}
+pre.rouge .kc {
+  color: #0550ae;
+}
+pre.rouge .l, pre.rouge .ld, pre.rouge .m, pre.rouge .mb, pre.rouge .mf, pre.rouge .mh, pre.rouge .mi, pre.rouge .il, pre.rouge .mo, pre.rouge .mx {
+  color: #0550ae;
+}
+pre.rouge .sb {
+  color: #0550ae;
+}
+pre.rouge .bp {
+  color: #0550ae;
+}
+pre.rouge .ne {
+  color: #0550ae;
+}
+pre.rouge .nl {
+  color: #0550ae;
+}
+pre.rouge .py {
+  color: #0550ae;
+}
+pre.rouge .nv, pre.rouge .vc, pre.rouge .vg, pre.rouge .vi, pre.rouge .vm {
+  color: #0550ae;
+}
+pre.rouge .o, pre.rouge .ow {
+  color: #0550ae;
+}
+pre.rouge .gh {
+  color: #0550ae;
+  font-weight: bold;
+}
+pre.rouge .gu {
+  color: #0550ae;
+  font-weight: bold;
+}
+pre.rouge .s, pre.rouge .sa, pre.rouge .sc, pre.rouge .dl, pre.rouge .sd, pre.rouge .s2, pre.rouge .se, pre.rouge .sh, pre.rouge .sx, pre.rouge .s1, pre.rouge .ss {
+  color: #0a3069;
+}
+pre.rouge .nd {
+  color: #8250df;
+}
+pre.rouge .nf, pre.rouge .fm {
+  color: #8250df;
+}
+pre.rouge .err {
+  color: #f6f8fa;
+  background-color: #82071e;
+}
+pre.rouge .c, pre.rouge .ch, pre.rouge .cd, pre.rouge .cm, pre.rouge .cp, pre.rouge .cpf, pre.rouge .c1, pre.rouge .cs {
+  color: #6e7781;
+}
+pre.rouge .gl {
+  color: #6e7781;
+}
+pre.rouge .gt {
+  color: #6e7781;
+}
+pre.rouge .ni {
+  color: #24292f;
+}
+pre.rouge .si {
+  color: #24292f;
+}
+pre.rouge .ge {
+  color: #24292f;
+  font-style: italic;
+}
+pre.rouge .gs {
+  color: #24292f;
+  font-weight: bold;
+}
+</style>
 </head>
 <body class="article toc2 toc-left">
 <div id="header">
-<h1>10. Sprint-Planning 2024-04-23</h1>
+<h1>Status Bericht des 07.10.2024</h1>
 <div class="details">
-<span id="author" class="author">Arwed Schnalzenberger</span><br>
+<span id="author" class="author">Schnalzenberger Arwed</span><br>
 <span id="revnumber">version 1.0,</span>
-<span id="revdate">2024-04-23</span>
-<br><span id="revremark">sprint planning</span>
+<span id="revdate">2024-10-07</span>
+<br><span id="revremark">status-report</span>
 </div>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
-<li><a href="#_besprochene_themen">1. Besprochene Themen</a>
+<li><a href="#_was_ist_franklyn">1. Was ist Franklyn?</a>
 <ul class="sectlevel2">
-<li><a href="#_9_sprint">1.1. 9. Sprint</a></li>
-<li><a href="#_für_die_zukunft">1.2. Für die Zukunft</a></li>
-<li><a href="#_10_sprint">1.3. 10. Sprint</a></li>
+<li><a href="#_architektur">1.1. Architektur</a></li>
 </ul>
 </li>
-<li><a href="#_vereinbarungen_und_entscheidungen">2. Vereinbarungen und Entscheidungen</a></li>
+<li><a href="#_aktueller_stand">2. Aktueller Stand</a>
+<ul class="sectlevel2">
+<li><a href="#_main_branch">2.1. main-Branch</a></li>
+<li><a href="#_develop_branch">2.2. develop-Branch</a></li>
+<li><a href="#_schnittstellen">2.3. Schnittstellen</a></li>
+<li><a href="#_development_workflow">2.4. Development Workflow</a></li>
+</ul>
+</li>
+<li><a href="#_nächste_schritte">3. Nächste Schritte</a></li>
 </ul>
 </div>
 </div>
 <div id="content">
-<div id="preamble">
+<div class="sect1">
+<h2 id="_was_ist_franklyn"><a class="anchor" href="#_was_ist_franklyn"></a>1. Was ist Franklyn?</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>Ermöglicht praxisnahes Arbeiten bei Leistungsfeststellungen</p>
+</li>
+<li>
+<p>Besonders: Recherche im Internet</p>
+<div class="ulist">
+<ul>
+<li>
+<p>z.B. Stack Overflow, Dokumentation</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Gleichzeitige Gewissheit für Lehrpersonen</p>
+<div class="ulist">
+<ul>
+<li>
+<p>einhalten von Regeln</p>
+<div class="ulist">
+<ul>
+<li>
+<p>keine Kommunikation zwischen den Schülern</p>
+</li>
+<li>
+<p>kein Kopieren von fertigen Programmen/Lösungen</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="sect2">
+<h3 id="_architektur"><a class="anchor" href="#_architektur"></a>1.1. Architektur</h3>
+<details>
+<summary class="title">Architektur</summary>
+<div class="content">
+<div class="imageblock">
+<div class="content">
+<img src="images/architecture.png" alt="Diagram" width="678" height="601">
+</div>
+</div>
+</div>
+</details>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_aktueller_stand"><a class="anchor" href="#_aktueller_stand"></a>2. Aktueller Stand</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_main_branch"><a class="anchor" href="#_main_branch"></a>2.1. main-Branch</h3>
+<div class="sect3">
+<h4 id="_server"><a class="anchor" href="#_server"></a>2.1.1. Server:</h4>
+<div class="ulist">
+<ul>
+<li>
+<p>Programmiert in: Java mit Quarkus</p>
+</li>
+<li>
+<p>Recorder-Part</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Holt sich die Screenshots in bestimmten veränderbaren Intervallen von den Openboxen und speichert diese ab.</p>
+</li>
+<li>
+<p>Auf Anfrage wird hier aus den gesammelten Screenshots ein Video erstellt.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Server-Part</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Stellt Websocket-Verbindungen mit den verschiedenen Openbox-Clients und managed diese.</p>
+</li>
+<li>
+<p>Stellt die verschiedenen Server-Metrics über Endpoints zur Verfügung</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_openbox"><a class="anchor" href="#_openbox"></a>2.1.2. Openbox:</h4>
+<div class="ulist">
+<ul>
+<li>
+<p>Programmiert in: Rust</p>
+</li>
+<li>
+<p>Sendet Screenshots an den Server bei Anfrage.</p>
+</li>
+<li>
+<p>Hier können sich Schüler dann bei einem Test einschreiben.</p>
+</li>
+</ul>
+</div>
+<details>
+<summary class="title">Openbox</summary>
+<div class="content">
+<div class="imageblock">
+<div class="content">
+<img src="images/status-report-2024-10-07-openbox.png" alt="status report 2024 10 07 openbox">
+</div>
+</div>
+</div>
+</details>
+<details>
+<summary class="title">Openbox Logged-In</summary>
+<div class="content">
+<div class="imageblock">
+<div class="content">
+<img src="images/status-report-2024-10-07-openbox-logged-in.png" alt="status report 2024 10 07 openbox logged in">
+</div>
+</div>
+</div>
+</details>
+</div>
+<div class="sect3">
+<h4 id="_instructor_frontend"><a class="anchor" href="#_instructor_frontend"></a>2.1.3. Instructor Frontend:</h4>
+<div class="ulist">
+<ul>
+<li>
+<p>Programmiert in: Angular</p>
+</li>
+<li>
+<p>Patrol-Mode</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Hierbei handelt es sich um eine Anzeige aller Schüler (Openbox-Clients), die der Server kennt.</p>
+</li>
+<li>
+<p>Man kann sehen, ob ein Schüler eingeloggt ist</p>
+</li>
+<li>
+<p>Wenn man auf einen Schüler klickt, sieht man dessen aktuellen Screenshot, welcher in einem Intervall neu geholt wird.</p>
+</li>
+<li>
+<p>Unten kann man in einer eigenen Statusleiste den aktuellen Stand der Applikation sehen (Einstellungen).</p>
+</li>
+<li>
+<p>Settings</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Patrol Mode:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Die Ansicht wird automatisch zwischen den verschiedenen eingeloggten Schülern gewechselt.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Patrol-Speed</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Die Geschwindigkeit, mit der zwischen den Schülern gewechselt wird, wenn der Patrol-Mode an ist.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Get client interval</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Die Geschwindigkeit mit der überprüft wird, ob der Server neue Schüler "kennt" und die neuesten Fotos vom Server holt.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Screenshot capture interval</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Die Geschwindigkeit mit der sich der Server die neuen Screenshots von den Openbox-Clients holt.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<details>
+<summary class="title">Settings</summary>
+<div class="content">
+<div class="imageblock">
+<div class="content">
+<img src="images/status-report-2024-10-07-instructor-frontend-settings.png" alt="status report 2024 10 07 instructor frontend settings">
+</div>
+</div>
+</div>
+</details>
+<details>
+<summary class="title">Patrol-Mode</summary>
+<div class="content">
+<div class="imageblock">
+<div class="content">
+<img src="images/status-report-2024-10-07-instructor-frontend-patrol-mode.png" alt="status report 2024 10 07 instructor frontend patrol mode">
+</div>
+</div>
+</div>
+</details>
+<div class="ulist">
+<ul>
+<li>
+<p>Video-Viewer</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Der Video-Viewer ist eine Anzeige aller vorhandenen Videos, die der Server bis jetzt aufgenommen hat.</p>
+</li>
+<li>
+<p>Man kann sich die Videos auch einzeln oder alle auf einmal herunterladen.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<details>
+<summary class="title">Video-Viewer</summary>
+<div class="content">
+<div class="imageblock">
+<div class="content">
+<img src="images/status-report-2024-10-07-instructor-frontend-video-viewer.png" alt="status report 2024 10 07 instructor frontend video viewer">
+</div>
+</div>
+</div>
+</details>
+<div class="ulist">
+<ul>
+<li>
+<p>Metrics-Dashboard</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Das Metrics-Dashboard ist eine Anzeige für die verschiedenen Daten des Servers (CPU utilization, Disk usage, Memory utilization).</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<details>
+<summary class="title">Metrics Dashboard</summary>
+<div class="content">
+<div class="imageblock">
+<div class="content">
+<img src="images/status-report-2024-10-07-instructor-frontend-metrics-dashboard.png" alt="status report 2024 10 07 instructor frontend metrics dashboard">
+</div>
+</div>
+</div>
+</details>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_develop_branch"><a class="anchor" href="#_develop_branch"></a>2.2. develop-Branch</h3>
+<div class="paragraph">
+<p>Unterschiede zum Main-Branch:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Einige fixes + Dokumentation</p>
+</li>
+<li>
+<p>Andere Branches:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Umbau zur Mehrtestfähigkeit im Frontend, Server und in der Openbox.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_schnittstellen"><a class="anchor" href="#_schnittstellen"></a>2.3. Schnittstellen</h3>
+<div class="sect3">
+<h4 id="_screenshots"><a class="anchor" href="#_screenshots"></a>2.3.1. Screenshots</h4>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>POST "/screenshot/{username}/alpha" oder POST "{username}/beta"</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Posten von Alpha und Beta Frames als Stream zusammen mit dem Benutzernamen als.</p>
+</li>
+<li>
+<p>Username:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>PathParam: "username"</p>
+</li>
+<li>
+<p>String</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Bild:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>RestForm: "image"</p>
+</li>
+<li>
+<p>APPLICATION_OCTET_STREAM</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Die Daten werden in gewissen festgelegten Intervallen übertragen.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>GET "/screenshot/{username}"</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Abholen von Screenshots ohne spezifische Dimensionen:</p>
+</li>
+<li>
+<p>Username:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>PathParam: "username"</p>
+</li>
+<li>
+<p>String</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Rückgabewert:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Bild als ByteArrayOutputStream.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>GET "/screenshot/{username}/{width}/{height}"</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Abholen von Screenshots mit spezifischen Dimensionen:</p>
+</li>
+<li>
+<p>Username:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>PathParam: "username"</p>
+</li>
+<li>
+<p>String</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Breite:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>PathParam: "width"</p>
+</li>
+<li>
+<p>int</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Höhe:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>PathParam: "height"</p>
+</li>
+<li>
+<p>int</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Rückgabewert:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Bild als ByteArrayOutputStream.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>GET "/screenshot/intervalSpeed"</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Holen des Intervalls als Integer Response.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>POST "/screenshot/updateInterval"</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Updaten des Intervalls mit dem die Screenshots von den Openbox-Clients geholt werden.</p>
+</li>
+<li>
+<p>IntervalUpdateDto:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Format:</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</li>
+</ol>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="json"><span class="p">{</span><span class="w">
+    </span><span class="nl">"newInterval"</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="w">
+</span><span class="p">}</span></code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_videos"><a class="anchor" href="#_videos"></a>2.3.2. Videos</h4>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>GET "/video/download"</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Es werden Videos mit den Screenshots, der am Server eingetragenen User, erstellt und in eine ".zip" Datei verpackt und als APPLICATION_OCTET_STREAM zurückgesendet.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>GET "/video/download/{username}"</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Es wird ein Video mit den Screenshots, eines am Server eingetragenen Users, erstellt und in eine ".zip" Datei verpackt und als APPLICATION_OCTET_STREAM zurückgesendet.</p>
+</li>
+<li>
+<p>Username:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>PathParam: "username"</p>
+</li>
+<li>
+<p>String</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>GET "/video/{username}"</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Es wird ein Video mit den Screenshots, eines am Server eingetragenen Users, erstellt und als APPLICATION_OCTET_STREAM zurückgesendet.</p>
+</li>
+<li>
+<p>Username:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>PathParam: "username"</p>
+</li>
+<li>
+<p>String</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_state"><a class="anchor" href="#_state"></a>2.3.3. State</h4>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>POST "/state/reset"</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Trennt die Verbindung mit allen Examinees und löscht alle Screenshots und Videos vom Server.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>GET "/state/system-metrics"</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Sendet alle aktuellen System-Daten des Servers zurück.</p>
+</li>
+<li>
+<p>Format:</p>
+</li>
+</ul>
+</div>
+</li>
+</ol>
+</div>
+<div class="listingblock">
+<div class="title">System-Metrics-Dto</div>
+<div class="content">
+<pre class="rouge highlight"><code data-lang="json"><span class="p">{</span><span class="w">
+        </span><span class="nl">"cpuUsagePercent"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.0</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"totalDiskSpaceInBytes"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.0</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"remainingDiskSpaceInBytes"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.0</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"savedScreenshotsSizeInBytes"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.0</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"maxAvailableMemoryInBytes"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.0</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"totalUsedMemoryInBytes"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.0</span><span class="w">
+</span><span class="p">}</span></code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_examinees"><a class="anchor" href="#_examinees"></a>2.3.4. Examinees</h4>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Examinee Websocket</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Openbox-Clients können sich hierhin verbinden und es wird periodisch überprüft, ob sie noch verbunden sind und über diese Verbindung bekommt der Server die Alpha- und Beta-Frames der Openbox-Clients.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>GET "/examinees"</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Holt alle Examinees und deren Connection-Status</p>
+</li>
+<li>
+<p>Format:</p>
+</li>
+</ul>
+</div>
+</li>
+</ol>
+</div>
+<div class="listingblock">
+<div class="title">Examinee-Dto</div>
+<div class="content">
+<pre class="rouge highlight"><code data-lang="json"><span class="p">{</span><span class="w">
+  </span><span class="nl">"username"</span><span class="p">:</span><span class="w"> </span><span class="s2">"test-user"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"connected"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span><span class="p">}</span></code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_development_workflow"><a class="anchor" href="#_development_workflow"></a>2.4. Development Workflow</h3>
+<div class="paragraph">
+<p>Wir haben unterschiedliche CI/CD Scripts, sowie einen Workflow, der uns bei einer Pull Request auf den Main-Branch einen neuen Release, sowie eine Dokumentation aller Commits per Person seit dem letzten Release erstellt.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_nächste_schritte"><a class="anchor" href="#_nächste_schritte"></a>3. Nächste Schritte</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p><span class="icon"><a class="image" href="https://raw.githubusercontent.com/htl-leonding-college/asciidoctor-docker-template/master/asciidocs/2024-04-23.adoc"><i class="fa fa-file-text-o"></i></a></span> ‏ ‏ ‎
-<span class="icon"><a class="image" href="https://github.com/htl-leonding-college/asciidoctor-docker-template"><i class="fa fa-github-square"></i></a></span> ‏ ‏ ‎
-<span class="icon"><a class="image" href="https://htl-leonding.github.io/"><i class="fa fa-home"></i></a></span></p>
+<p>Mehrtestfähigkeit in allen Bereichen</p>
 </div>
-<table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 1. Teilnehmer (alphabetisch)</caption>
-<colgroup>
-<col style="width: 50%;">
-<col style="width: 50%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">anwesend</th>
-<th class="tableblock halign-left valign-top">Verteiler</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Aberger C.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Aberger C.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Aichinger T.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Aichinger T.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Cvijić L.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Cvijić L.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Schludermann J.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Schludermann J.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Schnalzenberger A.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Schnalzenberger A.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Stütz T.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Stütz T.</p></td>
-</tr>
-</tbody>
-</table>
-<table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 2. Ort und Zeit</caption>
-<colgroup>
-<col style="width: 50%;">
-<col style="width: 50%;">
-</colgroup>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Ort</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">SYP-Unterricht</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">von-bis</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Di. 23.04.2024, 5. + 6. EH</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Dauer</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">80 min</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_besprochene_themen"><a class="anchor" href="#_besprochene_themen"></a>1. Besprochene Themen</h2>
-<div class="sectionbody">
-<div class="sect2">
-<h3 id="_9_sprint"><a class="anchor" href="#_9_sprint"></a>1.1. 9. Sprint</h3>
-<div class="ulist">
-<ul>
-<li>
-<p>"der User will ein Feedback haben"</p>
-<div class="ulist">
-<ul>
-<li>
-<p>Einstellungen passen rechts oben, aber wir wollen die aktuellen Einstellungen unten sehen. (falls der patrol-mode zum Beispiel ausgeschalten ist und anderes.)</p>
-</li>
-</ul>
-</div>
-</li>
-<li>
-<p>https auf nginx mit certbot während dem Meeting außerhalb von docker, geregelt.</p>
-</li>
-</ul>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_für_die_zukunft"><a class="anchor" href="#_für_die_zukunft"></a>1.2. Für die Zukunft</h3>
-<div class="ulist">
-<ul>
-<li>
-<p><strong>Grafik mit allen Ports, Komponenten, usw.</strong></p>
-<div class="ulist">
-<ul>
-<li>
-<p>Model&#8658;vereinfachtes Abbild der Realität</p>
-</li>
-</ul>
-</div>
-</li>
-<li>
-<p>Openbox mit electron oder ähnlichem</p>
-<div class="ulist">
-<ul>
-<li>
-<p>DAU&#8658;"Dümmster anzunehmender User"</p>
-</li>
-<li>
-<p>Ermöglicht das Starten der Anwendung mit einem Doppelklick</p>
-</li>
-</ul>
-</div>
-</li>
-<li>
-<p>Authentifizierung für die Professoren</p>
-</li>
-<li>
-<p>Eine Möglichkeit um einzelne Schüler zu "kicken"</p>
-</li>
-<li>
-<p>Multi-Test-Fähigkeit</p>
-</li>
-<li>
-<p>Sehen welches Video gerade angezeigt wird, wie im Patrol-Mode</p>
-</li>
-<li>
-<p>Zeitleiste bei Videos, um zu sehen, wann Leute, wie lange weg sind (im Frontend)</p>
-<div class="ulist">
-<ul>
-<li>
-<p>eine Zeitleiste in Grün und Rot, um zu sehen, wann ein Schüler connected war (von der Aufnahmezeit des ersten Bildes bis zur Aufnahmezeit des letzten Bildes)</p>
-</li>
-</ul>
-</div>
-</li>
-<li>
-<p>sourcecode aktualisieren (mit gitignore respektieren, dass z.B. node_modules nicht synchronisiert wird)</p>
-</li>
-<li>
-<p>Speicherung der IP und des Hostnamen (bei IP-Änderungen, gibt es einen zweiten Namen)</p>
-</li>
-<li>
-<p>Optimierungsfähigkeit auf einen User um es mit möglichkeit (wie in bytello) auf das Instructor Frontend zu beamen</p>
-<div class="ulist">
-<ul>
-<li>
-<p><strong>streaming mode</strong></p>
-</li>
-<li>
-<p>man könnte zum Beispiel den Unterricht mitstreamen</p>
-</li>
-<li>
-<p>möglicherweise sogar als 2. Projekt</p>
-</li>
-</ul>
-</div>
-</li>
-<li>
-<p>Ein Lehrer hat seinen eigenen Arbeitsbereich und seine eigenen Tests.</p>
-</li>
-<li>
-<p>Durch Klicken auf das Bild, soll dieses im Full-Screen-Mode sein (ein und ausschalten)</p>
-</li>
-<li>
-<p>Statusdiagramm, welche Stati ein Test haben kann</p>
-</li>
-<li>
-<p>Wenn der Speicherplatz unter einen gewissen Prozentsatz fällt, müssen alte Tests gelöscht werden.</p>
-<div class="ulist">
-<ul>
-<li>
-<p>2 Jahre alte Tests zum Beispiel</p>
-</li>
-<li>
-<p>Einspruch-Möglichkeit abwarten</p>
-</li>
-<li>
-<p>Vielleicht mit System: nach 6 Monaten nur die Bilder verwerfen, aber Videos behalten, falls der Speicher knapp wird usw.</p>
-</li>
-</ul>
-</div>
-</li>
-</ul>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_10_sprint"><a class="anchor" href="#_10_sprint"></a>1.3. 10. Sprint</h3>
-<div class="ulist">
-<ul>
-<li>
-<p>Mandantenfähigkeit</p>
-</li>
-<li>
-<p>"Single source of truth" Architektur im Frontend implementieren</p>
-</li>
-<li>
-<p>automatische Abschaltung der Openbox nach einer gewissen Zeit</p>
-<div class="ulist">
-<ul>
-<li>
-<p>Es sollen nicht aus Versehen die Clients einfach im Hintergrund weiterlaufen.</p>
-</li>
-</ul>
-</div>
-</li>
-<li>
-<p><strong>Sprint bis:</strong>
-**</p>
-</li>
-</ul>
-</div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_vereinbarungen_und_entscheidungen"><a class="anchor" href="#_vereinbarungen_und_entscheidungen"></a>2. Vereinbarungen und Entscheidungen</h2>
-<div class="sectionbody">
-<table class="tableblock frame-all grid-all fit-content">
-<caption class="title">Table 3. Was wurde vereinbart?</caption>
-<colgroup>
-<col>
-<col>
-<col>
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">wer</th>
-<th class="tableblock halign-left valign-top">macht was</th>
-<th class="tableblock halign-left valign-top">bis wann</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">TODO</p></td>
-<td class="tableblock halign-left valign-top"></td>
-<td class="tableblock halign-left valign-top"></td>
-</tr>
-</tbody>
-</table>
 </div>
 </div>
 </div>
