@@ -26,16 +26,12 @@ endif::[]
 *** kein Kopieren von fertigen Programmen/Lösungen
 
 [.font-xx-large]
-=== Sprint 10: Änderungen
-* Migrieren des Instructor-clients auf SSOT
-* Erster Openbox Prototyp in Rust
-* Multithreaded Erstellung von Videos
-* WIP: Mandantenfähigkeit
+=== Änderungen
+* Dokumentation des bisher erledigten
+* Spezifikation der Schnittstellen der Mehrtestfähigkeit
+* Aufbereitung YouTrack
 
 === Live Demo
-
-=== ERD
-plantuml::./plantuml/erd.puml[]
 
 === Architektur
 plantuml::./plantuml/architecture.puml[]
