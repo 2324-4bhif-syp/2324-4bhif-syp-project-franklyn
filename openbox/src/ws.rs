@@ -1,27 +1,20 @@
-use iced::stream;
-use iced::Subscription;
+use iced::{stream, Subscription};
 
-use futures::Stream;
 use futures::SinkExt;
 use std::future::Future;
 use tokio::net::TcpStream;
 
+use anyhow::{Context, Result};
 use bytes::Bytes;
-use anyhow::{Result, Context};
-
-use hyper::Request;
-use hyper::header::UPGRADE;
-use hyper::header::CONNECTION;
-use hyper::upgrade::Upgraded;
-use hyper_util::rt::TokioIo;
 
 use http_body_util::Empty;
+use hyper::header::{CONNECTION, UPGRADE};
+use hyper::upgrade::Upgraded;
+use hyper::Request;
+use hyper_util::rt::TokioIo;
 
 use image::ImageFormat;
-
-use reqwest::multipart;
-use reqwest::multipart::Part;
-use reqwest::multipart::Form;
+use reqwest::multipart::{Form, Part};
 
 use fastwebsockets::{handshake, FragmentCollector, Frame, OpCode};
 
@@ -44,10 +37,13 @@ pub enum State {
 
 #[derive(Debug, Clone)]
 pub enum Event {
-    Nothing
+    Nothing,
 }
 
-pub async fn connect(server_address: &str, user: &str) -> Result<FragmentCollector<TokioIo<Upgraded>>> {
+pub async fn connect(
+    server_address: &str,
+    user: &str,
+) -> Result<FragmentCollector<TokioIo<Upgraded>>> {
     let stream = TcpStream::connect(&server_address).await?;
 
     let req = Request::builder()
@@ -56,16 +52,13 @@ pub async fn connect(server_address: &str, user: &str) -> Result<FragmentCollect
         .header("Host", server_address)
         .header(UPGRADE, "websocket")
         .header(CONNECTION, "upgrade")
-        .header(
-            "Sec-WebSocket-Key",
-            handshake::generate_key(),
-        )
+        .header("Sec-WebSocket-Key", handshake::generate_key())
         .header("Sec-WebSocket-Version", "13")
         .body(Empty::<Bytes>::new())?;
 
     let (ws, _) = handshake::client(&SpawnExecutor, req, stream).await?;
     Ok(FragmentCollector::new(ws))
-} 
+}
 
 pub fn subscribe(server_address: String, pin: u32, username: String) -> Subscription<Event> {
     let connection_cloj = stream::channel(100, move |mut output| async move {
@@ -73,22 +66,19 @@ pub fn subscribe(server_address: String, pin: u32, username: String) -> Subscrip
 
         loop {
             match &mut state {
-                State::Disconnected => {
-                    println!("DIS");
-                    match connect(&server_address, &username).await {
-                        Ok(ws) => {
-                            state = State::Connected(ws);
-                            let _ = output.send(Event::Nothing).await;
-                        }
-                        Err(e) => {
-                            println!("{e:?}");
-                            tokio::time::sleep(tokio::time::Duration::from_secs(1)).await;
-                            let _ = output.send(Event::Nothing).await;
-                        }
+                State::Disconnected => match connect(&server_address, &username).await {
+                    Ok(ws) => {
+                        state = State::Connected(ws);
+                        let _ = output.send(Event::Nothing).await;
                     }
-                }
+                    Err(e) => {
+                        eprintln!("{e:?}");
+
+                        tokio::time::sleep(tokio::time::Duration::from_secs(1)).await;
+                        let _ = output.send(Event::Nothing).await;
+                    }
+                },
                 State::Connected(ws) => {
-                    println!("CON");
                     handle_message(&server_address, &username, ws).await;
                     let _ = output.send(Event::Nothing).await;
                 }
@@ -100,12 +90,18 @@ pub fn subscribe(server_address: String, pin: u32, username: String) -> Subscrip
     Subscription::run_with_id(std::any::TypeId::of::<Connect>(), connection_cloj)
 }
 
-pub async fn handle_message(server_address: &str, username: &str, ws: &mut FragmentCollector<TokioIo<Upgraded>>) {
+pub async fn handle_message(
+    server_address: &str,
+    username: &str,
+    ws: &mut FragmentCollector<TokioIo<Upgraded>>,
+) {
     let msg = match ws.read_frame().await {
         Ok(msg) => msg,
-        Err(e)  => {
-            println!("Error: {}", e);
-            ws.write_frame(Frame::close_raw(vec![].into())).await.unwrap();
+        Err(e) => {
+            eprintln!("{e:?}");
+            ws.write_frame(Frame::close_raw(vec![].into()))
+                .await
+                .unwrap();
             return;
         }
     };
@@ -114,22 +110,31 @@ pub async fn handle_message(server_address: &str, username: &str, ws: &mut Fragm
         OpCode::Text | OpCode::Binary => {
             let mut buf = Vec::<u8>::new();
 
-            let image = xcap::Monitor::all().unwrap()
-                .first().context("ERROR: no monitor found").unwrap()
-                .capture_image().unwrap();
-            image.write_to(&mut std::io::Cursor::new(&mut buf), ImageFormat::Png).unwrap();
+            let image = xcap::Monitor::all()
+                .unwrap()
+                .first()
+                .context("ERROR: no monitor found")
+                .unwrap()
+                .capture_image()
+                .unwrap();
+            image
+                .write_to(&mut std::io::Cursor::new(&mut buf), ImageFormat::Png)
+                .unwrap();
 
-            let file_part = multipart::Part::bytes(buf)
+            let file_part = Part::bytes(buf)
                 .file_name("image.png")
-                .mime_str("image/png").unwrap();
+                .mime_str("image/png")
+                .unwrap();
 
             reqwest::Client::new()
-                .post(&format!("http://{server_address}/screenshot/{username}/alpha"))
-                .multipart(multipart::Form::new().part("image", file_part))
+                .post(&format!(
+                    "http://{server_address}/screenshot/{username}/alpha"
+                ))
+                .multipart(Form::new().part("image", file_part))
                 .send()
-                .await.unwrap();
+                .await
+                .unwrap();
         }
         _ => (),
     }
 }
-

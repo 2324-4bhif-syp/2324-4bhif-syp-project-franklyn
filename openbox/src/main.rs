@@ -1,14 +1,16 @@
-use iced::futures::StreamExt;
-use iced::widget::{button, container, row, column, text, text_input, };
-use iced::{color, Theme, Subscription, Element, Font, Task};
+use iced::{
+    Center, Element, Subscription, Task, Theme,
+    widget::{button, center, column, container, row, text, text_input},
+};
 
-const _PROD_URL : &str = "franklyn3.htl-leonding.ac.at:8080";
-const _DEV_URL  : &str = "localhost:8080";
+const _PROD_URL: &str = "franklyn3.htl-leonding.ac.at:8080";
+const _DEV_URL: &str = "localhost:8080";
 
 #[derive(Debug, Clone)]
 enum Message {
     PinChanged(String),
-    UsernameChanged(String),
+    FirstnameChanged(String),
+    LastnameChanged(String),
 
     Ev(openbox::ws::Event),
     Connect(u32),
@@ -18,13 +20,14 @@ enum Message {
 enum ConnectionState {
     Idle,
     Connected,
-    Reconnecting,
+    Reconnecting(u32),
     Disconnected,
 }
 
 struct Openbox<'a> {
     pin: String,
-    username: String,
+    firstname: String,
+    lastname: String,
 
     connection: ConnectionState,
     server_address: &'a str,
@@ -35,13 +38,18 @@ impl<'a> Openbox<'a> {
         (
             Self {
                 pin: String::new(),
-                username: String::new(),
+                firstname: String::new(),
+                lastname: String::new(),
 
                 connection: ConnectionState::Idle,
                 server_address: _DEV_URL,
             },
-            Task::none()
+            Task::none(),
         )
+    }
+
+    fn to_username(&self) -> String {
+        format!("{}_{}", self.firstname, self.lastname)
     }
 
     fn update(&mut self, message: Message) -> Task<Message> {
@@ -50,17 +58,17 @@ impl<'a> Openbox<'a> {
                 self.pin = pin;
                 Task::none()
             }
-            Message::UsernameChanged(username) => {
-                self.username = username;
+            Message::FirstnameChanged(firstname) => {
+                self.firstname = firstname;
                 Task::none()
             }
-            Message::Ev(_) => {
-                println!("ev");
+            Message::LastnameChanged(lastname) => {
+                self.lastname = lastname;
                 Task::none()
             }
+            Message::Ev(_) => Task::none(),
             Message::Connect(pin) => {
-                println!("{pin}: {}", self.username);
-                self.connection = ConnectionState::Reconnecting;
+                self.connection = ConnectionState::Reconnecting(pin);
 
                 Task::none()
             }
@@ -68,46 +76,63 @@ impl<'a> Openbox<'a> {
     }
 
     fn subscription(&self) -> Subscription<Message> {
-        println!("sub");
-
         match self.connection {
-            ConnectionState::Connected
-            | ConnectionState::Reconnecting
-            | ConnectionState::Disconnected
-            => openbox::ws::subscribe(
-                self.server_address.to_string(),
-                self.pin.parse::<u32>().unwrap(),
-                self.username.clone()).map(Message::Ev),
-            ConnectionState::Idle => Subscription::none(),
+            ConnectionState::Reconnecting(pin) => {
+                openbox::ws::subscribe(self.server_address.to_string(), pin, self.to_username())
+                    .map(Message::Ev)
+            }
+            ConnectionState::Disconnected => Subscription::none(),
+            ConnectionState::Idle | ConnectionState::Connected => Subscription::none(),
         }
     }
 
     fn view(&self) -> Element<Message> {
-        let font = Font::default();
-
         let logo = row![
-            container(text("FRAN").size(70).font(font)),
-            text("KLYN").size(70).font(font).color(color!(0x0000ff)),
-        ];
+            container(text("FRAN").size(70))
+                .style(|_| openbox::theme::LogoTheme::default().to_style()),
+            text("KLYN").size(70),
+        ]
+        .align_y(Center);
 
-        if self.connection == ConnectionState::Idle {
+        center(if self.connection == ConnectionState::Idle {
             let pin_input = text_input("pin", &self.pin)
-                .on_input(Message::PinChanged).width(300).padding(10);
-            let username_input = text_input("username", &self.username)
-                .on_input(Message::UsernameChanged).width(300).padding(10);
+                .on_input(Message::PinChanged)
+                .width(300)
+                .padding(10);
+            let firstname_input = text_input("firstname", &self.firstname)
+                .on_input(Message::FirstnameChanged)
+                .width(300)
+                .padding(10);
+            let lastname_input = text_input("lastname", &self.lastname)
+                .on_input(Message::LastnameChanged)
+                .width(300)
+                .padding(10);
 
             let mut button = button(text("connect").height(40)).padding([0, 20]);
 
             let pin = self.pin.parse::<u32>();
 
-            if pin.is_ok() && !self.username.is_empty() {
+            if pin.is_ok() && !self.firstname.is_empty() && !self.lastname.is_empty() {
                 button = button.on_press(Message::Connect(pin.unwrap()));
             }
 
-            column![logo, pin_input, username_input, button].into()
+            column![logo, pin_input, firstname_input, lastname_input, button]
+                .spacing(10)
+                .align_x(Center)
         } else {
-            column![logo].into()
-        }
+            column![
+                logo,
+                text(format!("Pin: {}", self.pin)).size(30),
+                row![
+                    text(&self.firstname).size(50),
+                    text(&self.lastname).size(50)
+                ]
+                .spacing(20)
+            ]
+            .spacing(20)
+            .align_x(Center)
+        })
+        .into()
     }
 
     fn theme(&self) -> Theme {
@@ -121,4 +146,3 @@ pub fn main() -> iced::Result {
         .subscription(Openbox::subscription)
         .run_with(Openbox::new)
 }
-
