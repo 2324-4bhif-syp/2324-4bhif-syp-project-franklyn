@@ -7,7 +7,7 @@
 <meta name="generator" content="Asciidoctor 2.0.20">
 <meta name="author" content="Arwed Schnalzenberger">
 <link rel="icon" type="image/png" href="themes/favicon.png">
-<title>Drittes Sprint-Planning 2023-11-21</title>
+<title>01. Mehrtestfähigkeit Sprint-Planning 2024-10-08</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /*! Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
@@ -438,22 +438,17 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </head>
 <body class="article toc2 toc-left">
 <div id="header">
-<h1>Drittes Sprint-Planning 2023-11-21</h1>
+<h1>01. Mehrtestfähigkeit Sprint-Planning 2024-10-08</h1>
 <div class="details">
 <span id="author" class="author">Arwed Schnalzenberger</span><br>
 <span id="revnumber">version 1.0,</span>
-<span id="revdate">2023-11-21</span>
+<span id="revdate">2024-10-08</span>
 <br><span id="revremark">sprint planning</span>
 </div>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
-<li><a href="#_besprochene_themen">1. Besprochene Themen</a>
-<ul class="sectlevel2">
-<li><a href="#_2_sprint">1.1. 2. Sprint</a></li>
-<li><a href="#_3_sprint">1.2. 3. Sprint</a></li>
-</ul>
-</li>
+<li><a href="#_besprochene_themen">1. Besprochene Themen</a></li>
 <li><a href="#_vereinbarungen_und_entscheidungen">2. Vereinbarungen und Entscheidungen</a></li>
 </ul>
 </div>
@@ -462,7 +457,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p><span class="icon"><a class="image" href="https://raw.githubusercontent.com/htl-leonding-college/asciidoctor-docker-template/master/asciidocs/2023-11-21.adoc"><i class="fa fa-file-text-o"></i></a></span> ‏ ‏ ‎
+<p><span class="icon"><a class="image" href="https://raw.githubusercontent.com/htl-leonding-college/asciidoctor-docker-template/master/asciidocs/2024-10-08.adoc"><i class="fa fa-file-text-o"></i></a></span> ‏ ‏ ‎
 <span class="icon"><a class="image" href="https://github.com/htl-leonding-college/asciidoctor-docker-template"><i class="fa fa-github-square"></i></a></span> ‏ ‏ ‎
 <span class="icon"><a class="image" href="https://htl-leonding.github.io/"><i class="fa fa-home"></i></a></span></p>
 </div>
@@ -479,10 +474,6 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </tr>
 </thead>
 <tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Aberger C.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Aberger C.</p></td>
-</tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Aichinger T.</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Aichinger T.</p></td>
@@ -518,11 +509,11 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">von-bis</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Di. 21.11.2023, 6. EH</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Di. 08.10.2024, 8. EH</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Dauer</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">50 min</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">60 min</p></td>
 </tr>
 </tbody>
 </table>
@@ -534,85 +525,121 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="ulist">
 <ul>
 <li>
-<p>Bewertung</p>
+<p>Problem bei Template mit Plantuml</p>
 <div class="ulist">
 <ul>
 <li>
-<p>Aichinger: 1</p>
+<p>in docs kann ein Fehler sein</p>
 </li>
 <li>
-<p>Cvijić: 2</p>
+<p>muss aus dem folder der geparsed ist raus manövrieren</p>
 </li>
 <li>
-<p>Schludermann: 1</p>
-</li>
-<li>
-<p>Schnalzenberger: 2</p>
-</li>
-</ul>
-</div>
-</li>
-</ul>
-</div>
-<div class="sect2">
-<h3 id="_2_sprint"><a class="anchor" href="#_2_sprint"></a>1.1. 2. Sprint</h3>
+<p>Versuchen mit ifdev/ifndev</p>
 <div class="ulist">
 <ul>
 <li>
-<p>Sprint review.</p>
+<p>ansonsten asciidocs/scripts/docker-convert-util.sh bei zeile 12 mit -e oder so</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>bilder zu svg script</p>
 <div class="ulist">
 <ul>
 <li>
-<p>Gutes Architektur-Diagramm</p>
+<p>der Professor Stütz schickt uns das Script per dc</p>
 </li>
 <li>
-<p>Gute Benennung</p>
+<p>cp zu richtigen folder in docs</p>
 </li>
 </ul>
 </div>
 </li>
 <li>
-<p>Code Review nach dem ersten Sprint:</p>
+<p>Instructor frontend 'Schüler die sich eingeloggt haben'</p>
 <div class="ulist">
 <ul>
 <li>
-<p>Var ist nur gut bei generischen Listen (Erwähnung vom Professor Stütz. Es war bei uns okay.)</p>
+<p>Stati</p>
+</li>
+<li>
+<p>technischere sprache</p>
+</li>
+<li>
+<p>siehe screenshot</p>
 </li>
 </ul>
 </div>
 </li>
-</ul>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_3_sprint"><a class="anchor" href="#_3_sprint"></a>1.2. 3. Sprint</h3>
+<li>
+<p>relativ konstante und schnelle Geschwindigkeit für die Openboxen &#8594; gleich video am Client</p>
 <div class="ulist">
 <ul>
 <li>
-<p>Domain soll erstellt werden</p>
+<p>Intervall: wie bei minute von video bei aichinger dc</p>
+</li>
+<li>
+<p>istzustand-analyse</p>
+</li>
+<li>
+<p><strong>&#8594; möglichst guter Film</strong></p>
+</li>
+<li>
+<p>Nur einmal einstellbar (Screenshot capture interval)</p>
+</li>
+<li>
+<p>tooltip für Erklärung der Einstellung</p>
+</li>
+<li>
+<p>max alle 5 sec</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Werden Screenshots komprimiert?</p>
+</li>
+<li>
+<p>Alte Tests löschen mit Anzeige, bei Speicherplatz Problem</p>
+</li>
+<li>
+<p>Patrol-Mode tab anders benennen</p>
 <div class="ulist">
 <ul>
 <li>
-<p>1-er Port sollte gehen</p>
+<p>Button nicht in settings menü</p>
+</li>
+<li>
+<p>max und min zahl anzeigen</p>
 </li>
 </ul>
 </div>
 </li>
 <li>
-<p>Screenshots sollen werden(Server) und die Namen(Datenbank)</p>
+<p>Ram statt Memory Utilization</p>
 </li>
 <li>
-<p>Sprintdauer</p>
-<div class="ulist">
-<ul>
+<p>Wie viel Speicherplatz per Professor</p>
+</li>
 <li>
-<p>bis <strong>12.12.2023</strong></p>
+<p>Download Zeichen neben "Download all"</p>
+</li>
+<li>
+<p>Video viewer - Markierung, welches video läuft</p>
+</li>
+<li>
+<p>Schriftart der Docs ändern</p>
+</li>
+<li>
+<p><strong>Sprint bis:</strong>
+**</p>
 </li>
 </ul>
-</div>
-</li>
-</ul>
-</div>
 </div>
 </div>
 </div>
@@ -636,8 +663,8 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <tbody>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">TODO</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Beschreibung</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">05.12.2023</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
 </tr>
 </tbody>
 </table>
