@@ -2,3 +2,5 @@
 dist/
 target/
 Cargo.lock
+keys/
+server/old
