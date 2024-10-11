@@ -55,4 +55,6 @@ RevealJs Slides can be found https://2324-4bhif-syp.github.io/2324-4bhif-syp-pro
 
 <<./mom/2024-10-08.adoc#, 2024-10-08>>
 
+<<./mom/2024-10-11.adoc#, 2024-10-11>>
+
 
