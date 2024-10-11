@@ -11,6 +11,7 @@
   "private": true,
   "dependencies": {
     "@angular/animations": "^17.0.0",
+    "@angular/cdk": "^17.3.10",
     "@angular/common": "^17.0.0",
     "@angular/compiler": "^17.0.0",
     "@angular/core": "^17.0.0",
@@ -22,7 +23,7 @@
     "bootstrap-icons": "^1.11.3",
     "chart.js": "^4.4.2",
     "immer": "^10.0.4",
-    "ng2-charts": "^6.0.0",
+    "ng2-charts": "^6.0.1",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.14.2"
