@@ -785,9 +785,154 @@ As Franklyn is still under heavy development, no interfaces, components and desi
 </li>
 </ol>
 </div>
-<div class="paragraph">
-<p><strong>TODO</strong>: Implementation status definitions<br>
-<strong>TODO</strong>: Overview of all endpoints</p>
+</div>
+<div class="sect4">
+<h5 id="_implementation_status"><a class="anchor" href="#_implementation_status"></a>Implementation status</h5>
+<div class="ulist">
+<ul>
+<li>
+<p>🔴 = Not Implemented</p>
+</li>
+<li>
+<p>🟡 = Partial Implementation</p>
+</li>
+<li>
+<p>🟢 = Implemented</p>
+</li>
+</ul>
+</div>
+<div class="sect5">
+<h6 id="_rest_endpoints"><a class="anchor" href="#_rest_endpoints"></a>REST Endpoints</h6>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 12.5%;">
+<col style="width: 87.5%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">Status</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Path</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">🟡</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>POST /exams</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">🟡</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>GET /exams/{id}</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">🟡</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>GET /exams</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">🟡</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>DELETE /exams/{id}</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">🔴</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>POST /exams/{id}/start</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">🔴</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>POST /exams/{id}/complete</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">🔴</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>DELETE /exams/{id}/telementry</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">🟡</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>GET /exams/{id}/examinees</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">🔴</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>GET /telemetry/by-user/{user-id}/{exam-id}/screen/download</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">🔴</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>POST /telemetry/by-user/{user-id}/{exam-id}/video/generate</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">🔴</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>POST /telemetry/by-exam/{exam-id}/video/generate-all</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">🔴</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>GET /telemetry/jobs/video/{job-id}</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">🔴</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>GET /telemetry/jobs/video/{job-id}/download</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">🔴</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>POST /telemetry/by-session/{session-id}/screen/upload/alpha</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">🔴</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>POST /telemetry/by-session/{session-id}/screen/upload/beta</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">🟡</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>POST /exams/join/{pin}</code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect5">
+<h6 id="_command_socket_server"><a class="anchor" href="#_command_socket_server"></a>Command Socket (Server)</h6>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 12.5%;">
+<col style="width: 87.5%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">Status</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Command</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">🟢</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Connect</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">🔴</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Request screenshot</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">🟢</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Heartbeat (Ping/Pong)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect5">
+<h6 id="_command_socket_client"><a class="anchor" href="#_command_socket_client"></a>Command Socket (Client)</h6>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 12.5%;">
+<col style="width: 87.5%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">Status</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Command</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">🟡</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Connect</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">🟡</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Request screenshot</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock">🟢</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Heartbeat (Ping/Pong)</p></td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 <div class="sect4">
@@ -818,7 +963,8 @@ As Franklyn is still under heavy development, no interfaces, components and desi
 <pre class="rouge highlight"><code data-lang="json"><span class="p">{</span><span class="w">
     </span><span class="nl">"title"</span><span class="p">:</span><span class="w"> </span><span class="err">string</span><span class="p">,</span><span class="w">
     </span><span class="nl">"start"</span><span class="p">:</span><span class="w"> </span><span class="err">isodatetime</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"end"</span><span class="p">:</span><span class="w"> </span><span class="err">isodatetime</span><span class="w">
+    </span><span class="nl">"end"</span><span class="p">:</span><span class="w"> </span><span class="err">isodatetime</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"screencapture_interval_seconds"</span><span class="p">:</span><span class="w"> </span><span class="err">number</span><span class="w">
 </span><span class="p">}</span></code></pre>
 </div>
 </div>
@@ -852,9 +998,6 @@ As Franklyn is still under heavy development, no interfaces, components and desi
 </li>
 <li>
 <p><strong>Additional Notes</strong>: The <code>Location</code> header returns the full rest api path to the newly created exam</p>
-</li>
-<li>
-<p><strong>Status</strong>: Partial Implementation</p>
 </li>
 </ul>
 </div>
@@ -904,9 +1047,6 @@ As Franklyn is still under heavy development, no interfaces, components and desi
 </li>
 <li>
 <p><strong>Additional Notes</strong>: N/A</p>
-</li>
-<li>
-<p><strong>Status</strong>: Partial Implementation</p>
 </li>
 </ul>
 </div>
@@ -960,9 +1100,6 @@ As Franklyn is still under heavy development, no interfaces, components and desi
 <li>
 <p><strong>Additional Notes</strong>: N/A</p>
 </li>
-<li>
-<p><strong>Status</strong>: Partial Implementation</p>
-</li>
 </ul>
 </div>
 </div>
@@ -993,9 +1130,6 @@ As Franklyn is still under heavy development, no interfaces, components and desi
 </li>
 <li>
 <p><strong>Additional Notes</strong>: This method truly deletes an exam and is irrecoverable. Unlike other methods such as <code>deleteTelemetry</code> which only delete the data (e.g. screenshots) associated with the exam but not the exam itself.</p>
-</li>
-<li>
-<p><strong>Status</strong>: Partial Implementation</p>
 </li>
 </ul>
 </div>
@@ -1028,9 +1162,6 @@ As Franklyn is still under heavy development, no interfaces, components and desi
 <li>
 <p><strong>Additional Notes</strong>: Starting an exam does not disallow new examinees from registering</p>
 </li>
-<li>
-<p><strong>Status</strong>: Stubbed</p>
-</li>
 </ul>
 </div>
 </div>
@@ -1062,9 +1193,6 @@ As Franklyn is still under heavy development, no interfaces, components and desi
 <li>
 <p><strong>Additional Notes</strong>: N/A</p>
 </li>
-<li>
-<p><strong>Status</strong>: Stubbed</p>
-</li>
 </ul>
 </div>
 </div>
@@ -1095,43 +1223,6 @@ As Franklyn is still under heavy development, no interfaces, components and desi
 </li>
 <li>
 <p><strong>Additional Notes</strong>: N/A</p>
-</li>
-<li>
-<p><strong>Status</strong>: Stubbed</p>
-</li>
-</ul>
-</div>
-</div>
-<div class="sect5">
-<h6 id="_update_screencapture_interval"><a class="anchor" href="#_update_screencapture_interval"></a>Update screencapture interval</h6>
-<div class="ulist">
-<ul>
-<li>
-<p><strong>Path</strong>: <code>/exams/{id}/telemetry/{interval-seconds}</code></p>
-</li>
-<li>
-<p><strong>Method</strong>: <code>POST</code></p>
-</li>
-<li>
-<p><strong>Description</strong>:</p>
-</li>
-<li>
-<p><strong>Request format</strong>: <code>Path param</code></p>
-</li>
-<li>
-<p><strong>Request structure</strong>: <code>/exams/{id}/telementry/{interval-seconds}</code> where <code>{id}</code> is a valid numeric ID of an exam and <code>{interval-seconds}</code> is a valid number of seconds to wait before requesting the next screencapture from student-clients</p>
-</li>
-<li>
-<p><strong>Response format</strong>: N/A</p>
-</li>
-<li>
-<p><strong>Response structure</strong>: N/A</p>
-</li>
-<li>
-<p><strong>Additional Notes</strong>: N/A</p>
-</li>
-<li>
-<p><strong>Status</strong>: Not implemented</p>
 </li>
 </ul>
 </div>
@@ -1180,9 +1271,6 @@ As Franklyn is still under heavy development, no interfaces, components and desi
 <li>
 <p><strong>Additional Notes</strong>: N/A</p>
 </li>
-<li>
-<p><strong>Status</strong>: Partial implementation</p>
-</li>
 </ul>
 </div>
 </div>
@@ -1228,9 +1316,6 @@ As Franklyn is still under heavy development, no interfaces, components and desi
 <li>
 <p><strong>Additional Notes</strong>: N/A</p>
 </li>
-<li>
-<p><strong>Status</strong>: Not implemented</p>
-</li>
 </ul>
 </div>
 </div>
@@ -1269,9 +1354,6 @@ As Franklyn is still under heavy development, no interfaces, components and desi
 </li>
 <li>
 <p><strong>Additional Notes</strong>: A call to the video generation job will always return a job with status "ONGOING". The returned status code will be 202 (<code>ACCEPTED</code>) and the <code>Location header</code> will contain a full url to the job status endpoint for the newly created job</p>
-</li>
-<li>
-<p><strong>Status</strong>: Not implemented</p>
 </li>
 </ul>
 </div>
@@ -1312,9 +1394,6 @@ As Franklyn is still under heavy development, no interfaces, components and desi
 <li>
 <p><strong>Additional Notes</strong>: A call to the video generation job will always return a job with status "ONGOING". The returned status code will be 202 (<code>ACCEPTED</code>) and the <code>Location header</code> will contain a full url to the job status endpoint for the newly created job</p>
 </li>
-<li>
-<p><strong>Status</strong>: Not implemented</p>
-</li>
 </ul>
 </div>
 </div>
@@ -1354,9 +1433,6 @@ As Franklyn is still under heavy development, no interfaces, components and desi
 <li>
 <p><strong>Additional Notes</strong>: N/A</p>
 </li>
-<li>
-<p><strong>Status</strong>: Not implemented</p>
-</li>
 </ul>
 </div>
 </div>
@@ -1387,9 +1463,6 @@ As Franklyn is still under heavy development, no interfaces, components and desi
 </li>
 <li>
 <p><strong>Additional Notes</strong>: N/A</p>
-</li>
-<li>
-<p><strong>Status</strong>: Not implemented</p>
 </li>
 </ul>
 </div>
@@ -1455,9 +1528,6 @@ Currently, there is only one command type <code>CAPTURE_SCREEN</code>, however i
 <li>
 <p><strong>Additional Notes</strong>: N/A</p>
 </li>
-<li>
-<p><strong>Status</strong>: Not implemented</p>
-</li>
 </ul>
 </div>
 </div>
@@ -1465,13 +1535,6 @@ Currently, there is only one command type <code>CAPTURE_SCREEN</code>, however i
 <h6 id="_heartbeat_pingpong"><a class="anchor" href="#_heartbeat_pingpong"></a>Heartbeat (Ping/Pong)</h6>
 <div class="paragraph">
 <p>Besides requesting commands, the server periodically sends small <code>PING</code> packets and expects <code>PONG</code> responses. This is an exception to the rule, that the server does not accept its responses over the websocket tunnel. Since <code>PING</code>/<code>PONG</code> is implemented on a protocol level for <code>Websockets</code>, simplifying implementations for breaking "rules" is a tradeoff made here.</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Status: Not implemented</p>
-</li>
-</ul>
 </div>
 </div>
 </div>
@@ -1508,9 +1571,6 @@ Currently, there is only one command type <code>CAPTURE_SCREEN</code>, however i
 <li>
 <p><strong>Additional Notes</strong>: Alpha frames are complete images of the screen in a png format.</p>
 </li>
-<li>
-<p><strong>Status</strong>: Not implemented</p>
-</li>
 </ul>
 </div>
 </div>
@@ -1541,9 +1601,6 @@ Currently, there is only one command type <code>CAPTURE_SCREEN</code>, however i
 </li>
 <li>
 <p><strong>Additional Notes</strong>: Beta frames are not complete images of the screen. Instead, a beta frame is the difference (in terms of pixels and colors) from the last alpha frame. This type of frame used to save bandwidth while uploading screencaptures. Beta frames are also in the png image format.</p>
-</li>
-<li>
-<p><strong>Status</strong>: Not implemented</p>
 </li>
 </ul>
 </div>
@@ -1594,9 +1651,6 @@ e.g. <code><a href="http://localhost:8080/connect/a353a68b-26f2-4803-8abf-80d4bb
 <li>
 <p><strong>Additional Notes</strong>: This method idempotent, in the sense that it may be called multiple times and always returns the same connection string. This avoids duplicate student entries if a student-client is fully restarted.</p>
 </li>
-<li>
-<p><strong>Status</strong>: Partial Implementation</p>
-</li>
 </ul>
 </div>
 </div>
@@ -1620,7 +1674,7 @@ e.g. <code><a href="http://localhost:8080/connect/a353a68b-26f2-4803-8abf-80d4bb
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-10-11 07:32:16 UTC
+Last updated 2024-10-11 07:54:25 UTC
 </div>
 </div>
 </body>
