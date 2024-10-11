@@ -1,7 +1,7 @@
 = Youtrack-Diagram von stefnotch
 Schnalzenberger Arwed
 1.0, 2024-10-06: documentation
-ifndef::imagesdir[:imagesdir: ../images]
+ifndef::imagesdir[:imagesdir: images]
 :icons: font
 :sectnums:
 :toc: left

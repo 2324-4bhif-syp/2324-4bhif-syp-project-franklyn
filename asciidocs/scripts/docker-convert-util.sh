@@ -48,6 +48,7 @@ convertFilesToHTML() {
 
     docker run --rm \
       -v ${PWD}/$buildPath/docs:/documents \
+      -v ${PWD}/$buildPath/slides:/slides \
       asciidoctor/docker-asciidoctor:$asciidoctorVersion /bin/bash -c "asciidoctor \
       -r asciidoctor-diagram \
       -a icons=font \

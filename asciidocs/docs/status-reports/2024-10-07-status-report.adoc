@@ -1,7 +1,7 @@
 = Status Bericht des 07.10.2024
 Schnalzenberger Arwed
 1.0, 2024-10-07: status-report
-ifndef::imagesdir[:imagesdir: ../images]
+ifndef::imagesdir[:imagesdir: images]
 :icons: font
 :sectnums:
 :toc: left
@@ -21,7 +21,7 @@ ifndef::imagesdir[:imagesdir: ../images]
 .Architektur
 [%collapsible]
 ====
-plantuml::../plantuml/architecture.puml[]
+plantuml::../../slides/plantuml/architecture.puml[]
 ====
 
 == Aktueller Stand
