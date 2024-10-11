@@ -1,5 +1,5 @@
 use iced::{
-    Center, Element, Subscription, Task, Theme,
+    Center, Element, Subscription, Task, Theme, alignment,
     widget::{button, center, column, container, row, text, text_input},
 };
 
@@ -108,7 +108,13 @@ impl<'a> Openbox<'a> {
                 .width(300)
                 .padding(10);
 
-            let mut button = button(text("connect").height(40)).padding([0, 20]);
+            let mut button = button(
+                    text("connect").height(40)
+                        .align_y(alignment::Vertical::Center)
+                        .align_x(alignment::Horizontal::Center)
+                )
+                .width(300)
+                .padding([0, 20]);
 
             let pin = self.pin.parse::<u32>();
 
@@ -116,7 +122,7 @@ impl<'a> Openbox<'a> {
                 button = button.on_press(Message::Connect(pin.unwrap()));
             }
 
-            column![logo, pin_input, firstname_input, lastname_input, button]
+            column![column![logo].padding([50, 50]), pin_input, firstname_input, lastname_input, button]
                 .spacing(10)
                 .align_x(Center)
         } else {
