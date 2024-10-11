@@ -1,5 +1,5 @@
 import {inject, Injectable} from '@angular/core';
-import {HttpClient, HttpHeaders} from "@angular/common/http";
+import { HttpClient, HttpHeaders } from "@angular/common/http";
 import {Examinee, ServerMetrics} from "../model";
 import {environment} from "../../../env/environment";
 import {lastValueFrom} from "rxjs";
