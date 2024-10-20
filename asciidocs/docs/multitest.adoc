@@ -147,10 +147,10 @@ The interfaces below mostly use `JSON` for transferring data. The `JSON` format 
 | Status
 | Path
 
-| 🟡
+| 🟢
 | `POST /exams`
 
-| 🟡
+| 🟢
 | `GET /exams/{id}`
 
 | 🟡
