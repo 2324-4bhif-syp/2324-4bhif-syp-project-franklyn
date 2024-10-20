@@ -115,4 +115,41 @@ public class ExamResourceTest {
         assertThat(actualExam.getPlannedEnd())
                 .isCloseTo(createdExam.getPlannedEnd(), within(1, ChronoUnit.MINUTES));
     }
+
+    @Test
+    @Order(3)
+    void test_simpleGetAllExams_ok() {
+        // Arrange
+        // created Exam is taken from the post test with @Order(1)
+
+        // Act
+        Response response = given()
+                .basePath(BASE_URL)
+            .when()
+                .get();
+
+        // Assert
+        assertThat(response.statusCode())
+                .isEqualTo(RestResponse.StatusCode.OK);
+
+        Exam[] exams = response.then()
+                .log().body()
+                .extract().as(Exam[].class);
+
+        assertThat(exams)
+                .hasSize(1);
+
+        Exam actualExam = exams[0];
+
+        assertThat(actualExam)
+                .usingRecursiveComparison()
+                .ignoringFieldsOfTypes(LocalDateTime.class)
+                .isEqualTo(createdExam);
+
+        assertThat(actualExam.getPlannedStart())
+                .isCloseTo(createdExam.getPlannedStart(), within(1, ChronoUnit.MINUTES));
+
+        assertThat(actualExam.getPlannedEnd())
+                .isCloseTo(createdExam.getPlannedEnd(), within(1, ChronoUnit.MINUTES));
+    }
 }
