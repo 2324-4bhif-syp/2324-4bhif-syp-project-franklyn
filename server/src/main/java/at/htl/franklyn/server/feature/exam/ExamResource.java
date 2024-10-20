@@ -6,6 +6,7 @@ import at.htl.franklyn.server.feature.examinee.ExamineeService;
 import at.htl.franklyn.server.feature.telemetry.participation.ParticipationService;
 import io.quarkus.hibernate.reactive.panache.common.WithSession;
 import io.quarkus.hibernate.reactive.panache.common.WithTransaction;
+import io.quarkus.logging.Log;
 import io.smallrye.mutiny.Uni;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
@@ -152,9 +153,21 @@ public class ExamResource {
 
     @POST
     @WithTransaction
-    @Path("/start/{id}")
+    @Path("/{id}/start")
     public Uni<Response> startExam(@PathParam("id") long id) {
-        return null;
+        return examService.exists(id)
+                .chain(exists -> {
+                    if (!exists) {
+                        return Uni.createFrom().item(Response.status(Response.Status.NOT_FOUND).build());
+                    } else {
+                        return examRepository.findById(id)
+                                .chain(e -> examService.startExam(e))
+                                .onItem()
+                                .transform(startSuccessful -> startSuccessful
+                                        ? Response.ok().build()
+                                        : Response.status(Response.Status.BAD_REQUEST).build());
+                    }
+                });
     }
 
     @POST

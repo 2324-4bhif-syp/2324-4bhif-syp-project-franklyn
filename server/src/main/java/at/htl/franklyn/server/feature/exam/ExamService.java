@@ -2,11 +2,14 @@ package at.htl.franklyn.server.feature.exam;
 
 import at.htl.franklyn.server.common.Limits;
 import at.htl.franklyn.server.feature.examinee.ExamineeDto;
+import at.htl.franklyn.server.feature.telemetry.TelemetryJobManager;
+import io.quarkus.logging.Log;
 import io.smallrye.mutiny.Uni;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import org.hibernate.reactive.mutiny.Mutiny;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Random;
 
@@ -14,6 +17,9 @@ import java.util.Random;
 public class ExamService {
     @Inject
     ExamRepository examRepository;
+
+    @Inject
+    TelemetryJobManager telemetryJobManager;
 
     /**
      * Creates a new Exam from a Dto.
@@ -61,7 +67,25 @@ public class ExamService {
     }
 
     /**
-     * Checks wether the given pin belongs to an active exam, and thus is valid, or not
+     * Logically starts and exam. This includes starting telemetry collection and setting the state to ongoing
+     * @param e exam to be started
+     * @return boolean indication whether the exam could be started or not
+     */
+    public Uni<Boolean> startExam(Exam e) {
+        if (e.getState() != ExamState.CREATED) {
+            return Uni.createFrom().item(false);
+        }
+
+        return examRepository
+                .update("state = ?1, actualStart = ?2 where id = ?3",
+                        ExamState.ONGOING,
+                        LocalDateTime.now(),
+                        e.getId())
+                .chain(affectedRows -> telemetryJobManager.startTelemetryJob(e));
+    }
+
+    /**
+     * Checks whether the given pin belongs to an active exam, and thus is valid, or not
      * @param pin pin to check
      * @return true - pin is valid (belongs to an active exam) otherwise false
      */

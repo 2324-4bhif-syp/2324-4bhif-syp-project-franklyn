@@ -28,12 +28,13 @@ services:
     environment:
       POSTGRES_USER: app
       POSTGRES_PASSWORD: app
-      POSTGRES_DB: db
+      POSTGRES_MULTIPLE_DATABASES: db,quartz
     ports:
       - 5432:5432
     volumes:
       - /var/lib/franklyn/db:/var/lib/postgresql/data
       - /var/lib/franklyn/db-import:/import
+      - ./pg-init-scripts:/docker-entrypoint-initdb.d
     networks:
       - franklyn-net
 networks:

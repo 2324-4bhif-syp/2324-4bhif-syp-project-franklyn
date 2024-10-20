@@ -41,8 +41,9 @@ Content-Type: application/json
   "lastname": "Höller"
 }
 
-###
-
+### Start exam
+POST http://localhost:8080/exams/{{id}}/start
+Content-Type: application/json
 
 ### Old
 

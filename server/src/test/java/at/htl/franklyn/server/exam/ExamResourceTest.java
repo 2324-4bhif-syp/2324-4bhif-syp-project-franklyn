@@ -227,4 +227,38 @@ public class ExamResourceTest {
         assertThat(response.header("Location"))
                 .matches(".*connect/.*");
     }
+
+    @Test
+    @Order(6)
+    void test_simpleStartExam_ok() {
+        // Arrange
+        // created Exam is taken from the post test with @Order(1)
+
+        // Act
+        Response startResponse = given()
+                .basePath(BASE_URL)
+            .when()
+                .post(String.format("%s/start", createdExam.getId()));
+
+        Response response = given()
+                .basePath(BASE_URL)
+            .when()
+                .get(createdExam.getId().toString());
+
+        // Assert
+        assertThat(startResponse.statusCode())
+                .isEqualTo(RestResponse.StatusCode.OK);
+
+        assertThat(response.statusCode())
+                .isEqualTo(RestResponse.StatusCode.OK);
+
+        Exam actualExam = response.then()
+                .log().body()
+                .extract().as(Exam.class);
+
+        assertThat(actualExam.getActualStart())
+                .isNotNull();
+        assertThat(actualExam.getState())
+                .isEqualTo(ExamState.ONGOING);
+    }
 }
