@@ -1,12 +1,8 @@
-package at.htl.franklyn.server.services;
+package at.htl.franklyn.server.feature.exam;
 
-import at.htl.franklyn.server.control.ExamRepository;
 import at.htl.franklyn.server.control.Limits;
-import at.htl.franklyn.server.entity.Exam;
-import at.htl.franklyn.server.entity.ExamState;
-import at.htl.franklyn.server.entity.Examinee;
-import at.htl.franklyn.server.entity.dto.ExamDto;
 import at.htl.franklyn.server.entity.dto.ExamineeDto;
+import io.quarkus.logging.Log;
 import io.smallrye.mutiny.Uni;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -14,7 +10,6 @@ import org.hibernate.reactive.mutiny.Mutiny;
 
 import java.util.List;
 import java.util.Random;
-import java.util.Set;
 
 @ApplicationScoped
 public class ExamService {
@@ -39,6 +34,7 @@ public class ExamService {
                     exam.setTitle(examDto.title());
                     exam.setPlannedStart(examDto.start());
                     exam.setPlannedEnd(examDto.end());
+                    exam.setScreencaptureInterval(examDto.screencaptureIntervalSeconds());
 
                     // Initial exam state is always created
                     exam.setState(ExamState.CREATED);

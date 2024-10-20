@@ -1,4 +1,4 @@
-package at.htl.franklyn.server.entity;
+package at.htl.franklyn.server.feature.exam;
 
 
 public enum ExamState {

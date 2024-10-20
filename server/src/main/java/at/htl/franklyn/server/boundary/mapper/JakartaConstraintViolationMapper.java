@@ -9,7 +9,9 @@ import jakarta.ws.rs.ext.Provider;
 public class JakartaConstraintViolationMapper implements ExceptionMapper<ConstraintViolationException> {
     @Override
     public Response toResponse(ConstraintViolationException exception) {
-        return Response.status(Response.Status.BAD_REQUEST)
+        return Response
+                .status(Response.Status.BAD_REQUEST)
+                .entity(exception.getMessage())
                 .build();
     }
 }

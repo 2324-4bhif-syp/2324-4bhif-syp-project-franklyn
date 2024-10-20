@@ -7,6 +7,9 @@ public class Limits {
 
     public static final int EXAM_PIN_MIN_VALUE = 0;
     public static final int EXAM_PIN_MAX_VALUE = 999;
+
+    public static final int EXAM_MIN_CAPTURE_INTERVAL_SECONDS = 1;
+    public static final int EXAM_MAX_CAPTURE_INTERVAL_SECONDS = 10;
     // endregion Exam Entity
 
     // region Examinee Entity

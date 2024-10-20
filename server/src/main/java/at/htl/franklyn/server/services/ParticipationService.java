@@ -1,7 +1,7 @@
 package at.htl.franklyn.server.services;
 
 import at.htl.franklyn.server.control.ParticipationRepository;
-import at.htl.franklyn.server.entity.Exam;
+import at.htl.franklyn.server.feature.exam.Exam;
 import at.htl.franklyn.server.entity.Examinee;
 import at.htl.franklyn.server.entity.Participation;
 import io.smallrye.mutiny.Uni;

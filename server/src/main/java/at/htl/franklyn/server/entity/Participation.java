@@ -1,5 +1,6 @@
 package at.htl.franklyn.server.entity;
 
+import at.htl.franklyn.server.feature.exam.Exam;
 import jakarta.persistence.*;
 
 import java.util.UUID;

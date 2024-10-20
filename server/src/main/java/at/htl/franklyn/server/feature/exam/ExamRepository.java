@@ -1,6 +1,5 @@
-package at.htl.franklyn.server.control;
+package at.htl.franklyn.server.feature.exam;
 
-import at.htl.franklyn.server.entity.Exam;
 import at.htl.franklyn.server.entity.dto.ExamineeDto;
 import io.quarkus.hibernate.reactive.panache.PanacheRepository;
 import io.smallrye.mutiny.Uni;
@@ -11,7 +10,6 @@ import org.hibernate.reactive.mutiny.Mutiny;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @ApplicationScoped
 public class ExamRepository implements PanacheRepository<Exam> {

@@ -1,20 +1,13 @@
-package at.htl.franklyn.server.boundary;
+package at.htl.franklyn.server.feature.exam;
 
-import at.htl.franklyn.server.control.ExamRepository;
 import at.htl.franklyn.server.control.ParticipationRepository;
-import at.htl.franklyn.server.entity.Exam;
-import at.htl.franklyn.server.entity.Examinee;
-import at.htl.franklyn.server.entity.Participation;
-import at.htl.franklyn.server.entity.dto.ExamDto;
 import at.htl.franklyn.server.entity.dto.ExamineeDto;
-import at.htl.franklyn.server.services.ExamService;
 import at.htl.franklyn.server.services.ExamineeService;
 import at.htl.franklyn.server.services.ParticipationService;
 import io.quarkus.hibernate.reactive.panache.common.WithSession;
 import io.quarkus.hibernate.reactive.panache.common.WithTransaction;
 import io.smallrye.mutiny.Uni;
 import jakarta.inject.Inject;
-import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Context;
@@ -52,6 +45,7 @@ public class ExamResource {
                             .getAbsolutePathBuilder()
                             .path(e.getId().toString())
                             .build();
+
                     return Response
                             .created(uri)
                             .entity(e)

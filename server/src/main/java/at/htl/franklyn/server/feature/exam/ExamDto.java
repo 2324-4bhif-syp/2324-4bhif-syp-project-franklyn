@@ -1,12 +1,10 @@
-package at.htl.franklyn.server.entity.dto;
+package at.htl.franklyn.server.feature.exam;
 
 import at.htl.franklyn.server.control.Limits;
-import at.htl.franklyn.server.entity.Exam;
-import io.quarkus.logging.Log;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.*;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 public record ExamDto(
         @NotNull(message = "Title of exam can not be null")
@@ -26,7 +24,19 @@ public record ExamDto(
 
         @NotNull(message = "End timestamp can not be null!")
         @FutureOrPresent(message = "End for a new exam can not be in the past")
-        LocalDateTime end
+        LocalDateTime end,
+
+        @NotNull(message = "Screencapture interval can not be null")
+        @Min(
+                message = "Screencapture interval can not be less than " + Limits.EXAM_MIN_CAPTURE_INTERVAL_SECONDS,
+                value = Limits.EXAM_MIN_CAPTURE_INTERVAL_SECONDS
+        )
+        @Max(
+                message = "Screencapture interval can not be more than " + Limits.EXAM_MAX_CAPTURE_INTERVAL_SECONDS,
+                value = Limits.EXAM_MAX_CAPTURE_INTERVAL_SECONDS
+        )
+        @JsonProperty("screencapture_interval_seconds")
+        Long screencaptureIntervalSeconds
 ) {
     @AssertTrue(message = "Start timestamp can not be before end timestamp")
     public boolean isStartBeforeEnd() {
