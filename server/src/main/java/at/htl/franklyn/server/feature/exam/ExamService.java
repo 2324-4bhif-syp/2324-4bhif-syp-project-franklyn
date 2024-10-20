@@ -67,7 +67,7 @@ public class ExamService {
     }
 
     /**
-     * Logically starts and exam. This includes starting telemetry collection and setting the state to ongoing
+     * Logically starts an exam. This includes starting telemetry collection and setting the state to ongoing
      * @param e exam to be started
      * @return boolean indication whether the exam could be started or not
      */
@@ -82,6 +82,26 @@ public class ExamService {
                         LocalDateTime.now(),
                         e.getId())
                 .chain(affectedRows -> telemetryJobManager.startTelemetryJob(e));
+    }
+
+    /**
+     * Logically completes an exam. This includes stopping telemetry collection, disconnecting openbox clients
+     * and setting the state to done
+     * @param e exam to be completed
+     * @return boolean indicating whether the exam could be completed successfully
+     */
+    public Uni<Boolean> completeExam(Exam e) {
+        if (e.getState() != ExamState.ONGOING) {
+            return Uni.createFrom().item(false);
+        }
+
+        return examRepository
+                .update("state = ?1, actualEnd = ?2 where id = ?3",
+                        ExamState.DONE,
+                        LocalDateTime.now(),
+                        e.getId())
+                .chain(affectedRows -> telemetryJobManager.stopTelemetryJob(e));
+        // TODO: disconnect openbox clients
     }
 
     /**

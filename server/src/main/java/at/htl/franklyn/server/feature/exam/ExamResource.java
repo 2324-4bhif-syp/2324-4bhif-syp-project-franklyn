@@ -8,6 +8,7 @@ import io.quarkus.hibernate.reactive.panache.common.WithSession;
 import io.quarkus.hibernate.reactive.panache.common.WithTransaction;
 import io.quarkus.logging.Log;
 import io.smallrye.mutiny.Uni;
+import io.smallrye.mutiny.unchecked.Unchecked;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
@@ -163,18 +164,38 @@ public class ExamResource {
                         return examRepository.findById(id)
                                 .chain(e -> examService.startExam(e))
                                 .onItem()
-                                .transform(startSuccessful -> startSuccessful
-                                        ? Response.ok().build()
-                                        : Response.status(Response.Status.BAD_REQUEST).build());
+                                .transform(Unchecked.function(startSuccessful -> {
+                                    if (!startSuccessful) {
+                                        // Rollback
+                                        throw new BadRequestException();
+                                    }
+                                    return Response.ok().build();
+                                }));
                     }
                 });
     }
 
     @POST
     @WithTransaction
-    @Path("/complete/{id}")
+    @Path("/{id}/complete")
     public Uni<Response> completeExam(@PathParam("id") long id) {
-        return null;
+        return examService.exists(id)
+                .chain(exists -> {
+                    if (!exists) {
+                        return Uni.createFrom().item(Response.status(Response.Status.NOT_FOUND).build());
+                    } else {
+                        return examRepository.findById(id)
+                                .chain(e -> examService.completeExam(e))
+                                .onItem()
+                                .transform(Unchecked.function(completionSuccessful ->  {
+                                    if (!completionSuccessful) {
+                                        // Rollback
+                                        throw new BadRequestException();
+                                    }
+                                    return Response.ok().build();
+                                }));
+                    }
+                });
     }
 
     @POST

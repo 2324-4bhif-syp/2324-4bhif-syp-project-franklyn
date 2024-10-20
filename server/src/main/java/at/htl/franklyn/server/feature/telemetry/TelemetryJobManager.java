@@ -50,13 +50,15 @@ public class TelemetryJobManager {
     }
 
     public Uni<Boolean> stopTelemetryJob(Exam exam) {
+        boolean found;
         try {
-            quartz.deleteJob(new JobKey(getTelemetryJobIdentity(exam.getId())));
+            found = quartz.deleteJob(new JobKey(getTelemetryJobIdentity(exam.getId()), FRANKLYN_TELEMETRY_JOB_GROUP));
         } catch (SchedulerException e) {
+            Log.error("Could not stop telemetry job", e);
             return Uni.createFrom().item(false);
         }
 
-        return Uni.createFrom().item(true);
+        return Uni.createFrom().item(found);
     }
 
     public static class TelemetryJob implements Job {

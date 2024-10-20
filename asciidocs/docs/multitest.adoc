@@ -162,7 +162,7 @@ The interfaces below mostly use `JSON` for transferring data. The `JSON` format 
 | 🟡
 | `POST /exams/{id}/start`
 
-| 🔴
+| 🟡
 | `POST /exams/{id}/complete`
 
 | 🔴
