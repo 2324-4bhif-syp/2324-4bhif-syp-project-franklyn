@@ -48,7 +48,3 @@ values (true,
         '2024-10-17 10:20.120',
         (select p_id from f_participation where p_exam = currval('f_exam_seq'))
        );
-
-SELECT setval('f_examinee_seq', 100);
-SELECT setval('f_exam_seq', 100);
-select setval('f_connection_state_seq', 100);

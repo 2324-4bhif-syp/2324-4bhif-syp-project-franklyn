@@ -192,7 +192,7 @@ The interfaces below mostly use `JSON` for transferring data. The `JSON` format 
 | 🔴
 | `POST /telemetry/by-session/{session-id}/screen/upload/beta`
 
-| 🟡
+| 🟢
 | `POST /exams/join/{pin}`
 |===
 
@@ -538,7 +538,7 @@ The participate interface is a `REST` interface used by the student-client to es
 * *Method*: `POST`
 * *Description*: Allows student-clients to register for participation in an exam
 * *Request format*: `Path param` + `JSON`
-* *Request structure*: `/exams/{pin}` where `{pin}` is a valid 3 digit PIN of an exam. Additionally, the following body is required:
+* *Request structure*: `/exams/join/{pin}` where `{pin}` is a valid 3 digit PIN of an exam. Additionally, the following body is required:
 +
 [source, json]
 ----

@@ -7,8 +7,6 @@ import at.htl.franklyn.server.feature.examinee.ExamineeDto;
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
-import net.bytebuddy.asm.Advice;
-import org.assertj.core.api.Assertions;
 import org.assertj.core.api.recursive.comparison.RecursiveComparisonConfiguration;
 import org.jboss.resteasy.reactive.RestResponse;
 import org.junit.jupiter.api.MethodOrderer;
@@ -16,12 +14,9 @@ import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.Period;
 import java.time.temporal.ChronoUnit;
 
-import static io.restassured.RestAssured.config;
 import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.within;
@@ -30,6 +25,7 @@ import static org.assertj.core.api.Assertions.within;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class ExamResourceTest {
     private static final String BASE_URL = "exams";
+    private static final String JOIN_URL = "join";
 
     private static Exam createdExam;
 
@@ -204,5 +200,31 @@ public class ExamResourceTest {
                 .usingRecursiveComparison()
                 .ignoringFields("isConnected") // Potential race with cleanup job
                 .isEqualTo(expectedExaminee);
+    }
+
+    @Test
+    @Order(5)
+    void test_simpleJoinExamWithValidUser_ok() {
+        // Arrange
+        ExamineeDto examineeDto = new ExamineeDto(
+            "Test",
+            "User",
+            false // value of is_connected does not matter on connection and is ignored
+        );
+
+        // Act
+        Response response = given()
+                .contentType(ContentType.JSON)
+                .body(examineeDto)
+                .basePath(BASE_URL)
+            .when()
+                .post(String.format("%s/%3d", JOIN_URL, createdExam.getPin()));
+
+        // Assert
+        assertThat(response.statusCode())
+                .isEqualTo(RestResponse.StatusCode.CREATED);
+
+        assertThat(response.header("Location"))
+                .matches(".*connect/.*");
     }
 }
