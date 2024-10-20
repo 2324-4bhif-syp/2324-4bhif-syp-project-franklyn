@@ -15,9 +15,6 @@ public class ExamService {
     @Inject
     ExamRepository examRepository;
 
-    @Inject
-    Mutiny.SessionFactory sf;
-
     /**
      * Creates a new Exam from a Dto.
      * This business logic method assigns additional parameters which are not included in the dto.

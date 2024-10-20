@@ -3,18 +3,25 @@ package at.htl.franklyn.server.exam;
 import at.htl.franklyn.server.feature.exam.Exam;
 import at.htl.franklyn.server.feature.exam.ExamDto;
 import at.htl.franklyn.server.feature.exam.ExamState;
+import at.htl.franklyn.server.feature.examinee.ExamineeDto;
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
+import net.bytebuddy.asm.Advice;
+import org.assertj.core.api.Assertions;
+import org.assertj.core.api.recursive.comparison.RecursiveComparisonConfiguration;
 import org.jboss.resteasy.reactive.RestResponse;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Period;
 import java.time.temporal.ChronoUnit;
 
+import static io.restassured.RestAssured.config;
 import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.within;
@@ -121,6 +128,17 @@ public class ExamResourceTest {
     void test_simpleGetAllExams_ok() {
         // Arrange
         // created Exam is taken from the post test with @Order(1)
+        Exam expectedExam1 = new Exam(
+                LocalDateTime.of(2024, 10, 17, 10, 1),
+                LocalDateTime.of(2024, 10, 17, 12, 30),
+                null,
+                null,
+                "test",
+                123,
+                ExamState.ONGOING,
+                5L
+        );
+        expectedExam1.setId(1L);
 
         // Act
         Response response = given()
@@ -137,19 +155,54 @@ public class ExamResourceTest {
                 .extract().as(Exam[].class);
 
         assertThat(exams)
+                .hasSize(2);
+
+        RecursiveComparisonConfiguration configuration = RecursiveComparisonConfiguration.builder()
+                .withEqualsForType(
+                        (actualDate, expectedDate) ->
+                                ChronoUnit.MINUTES.between(actualDate, expectedDate) < 1, LocalDateTime.class)
+                .withIgnoredFields("actualStart", "actualEnd")
+                .withIgnoredFieldsOfTypes(LocalDateTime.class)
+                .withIgnoredFieldsMatchingRegexes(".*hibernate.*")
+                .build();
+
+        assertThat(exams)
+                .usingRecursiveComparison(configuration)
+                .isEqualTo(new Exam[] { expectedExam1, createdExam });
+    }
+
+    @Test
+    @Order(4)
+    void test_simpleGetExamineesOfExam_ok() {
+        // Arrange
+        ExamineeDto expectedExaminee = new ExamineeDto(
+                "Max",
+                "Mustermann",
+                true
+        );
+
+        // Act
+        Response response = given()
+                .basePath(BASE_URL)
+            .when()
+                .get(String.format("%d/examinees", 1)); // import sql creates exam with id 1
+
+        // Assert
+        assertThat(response.statusCode())
+                .isEqualTo(RestResponse.StatusCode.OK);
+
+        ExamineeDto[] examinees = response.then()
+                .log().body()
+                .extract().as(ExamineeDto[].class);
+
+        assertThat(examinees)
                 .hasSize(1);
 
-        Exam actualExam = exams[0];
+        ExamineeDto actualExaminee = examinees[0];
 
-        assertThat(actualExam)
+        assertThat(actualExaminee)
                 .usingRecursiveComparison()
-                .ignoringFieldsOfTypes(LocalDateTime.class)
-                .isEqualTo(createdExam);
-
-        assertThat(actualExam.getPlannedStart())
-                .isCloseTo(createdExam.getPlannedStart(), within(1, ChronoUnit.MINUTES));
-
-        assertThat(actualExam.getPlannedEnd())
-                .isCloseTo(createdExam.getPlannedEnd(), within(1, ChronoUnit.MINUTES));
+                .ignoringFields("isConnected") // Potential race with cleanup job
+                .isEqualTo(expectedExaminee);
     }
 }

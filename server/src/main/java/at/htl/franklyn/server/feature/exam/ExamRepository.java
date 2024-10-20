@@ -28,11 +28,19 @@ public class ExamRepository implements PanacheRepository<Exam> {
         return sf.withSession(session ->
                 session.createQuery(
                     """
-                    select new at.htl.franklyn.server.entity.dto.ExamineeDto(e.firstname, e.lastname, cs.isConnected)
+                    select new at.htl.franklyn.server.feature.examinee.ExamineeDto(
+                        e.firstname,
+                        e.lastname,
+                        cs.isConnected
+                    )
                     from Participation p join Examinee e on (p.examinee.id = e.id)
-                        join Exam ex on (p.exam.id = ex.id)
                         join ConnectionState cs on (p.id = cs.participation.id)
-                    where ex.id = ?1
+                    where p.exam.id = ?1
+                        and cs.pingTimestamp = (
+                            select max(c.pingTimestamp)
+                                from ConnectionState c
+                                where c.participation.id = p.id
+                        )
                     """, ExamineeDto.class)
                 .setParameter(1, id)
                 .getResultList()
