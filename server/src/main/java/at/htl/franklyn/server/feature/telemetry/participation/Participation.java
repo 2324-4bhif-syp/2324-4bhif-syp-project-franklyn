@@ -1,5 +1,6 @@
-package at.htl.franklyn.server.entity;
+package at.htl.franklyn.server.feature.telemetry.participation;
 
+import at.htl.franklyn.server.feature.examinee.Examinee;
 import at.htl.franklyn.server.feature.exam.Exam;
 import jakarta.persistence.*;
 

@@ -1,6 +1,6 @@
-package at.htl.franklyn.server.entity.dto;
+package at.htl.franklyn.server.feature.examinee;
 
-import at.htl.franklyn.server.control.Limits;
+import at.htl.franklyn.server.common.Limits;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

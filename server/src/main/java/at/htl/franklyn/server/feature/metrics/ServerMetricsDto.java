@@ -1,4 +1,4 @@
-package at.htl.franklyn.server.entity.dto;
+package at.htl.franklyn.server.feature.metrics;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

@@ -1,8 +1,7 @@
 package at.htl.franklyn.server.feature.exam;
 
-import at.htl.franklyn.server.control.Limits;
-import at.htl.franklyn.server.entity.dto.ExamineeDto;
-import io.quarkus.logging.Log;
+import at.htl.franklyn.server.common.Limits;
+import at.htl.franklyn.server.feature.examinee.ExamineeDto;
 import io.smallrye.mutiny.Uni;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;

@@ -1,4 +1,4 @@
-package at.htl.franklyn.server.services;
+package at.htl.franklyn.server.feature.metrics;
 
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.binder.system.DiskSpaceMetrics;

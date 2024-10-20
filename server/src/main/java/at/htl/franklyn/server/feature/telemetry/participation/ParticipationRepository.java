@@ -1,6 +1,5 @@
-package at.htl.franklyn.server.control;
+package at.htl.franklyn.server.feature.telemetry.participation;
 
-import at.htl.franklyn.server.entity.Participation;
 import io.quarkus.hibernate.reactive.panache.PanacheRepositoryBase;
 import io.smallrye.mutiny.Uni;
 import jakarta.enterprise.context.ApplicationScoped;

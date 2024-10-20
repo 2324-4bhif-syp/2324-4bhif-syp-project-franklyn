@@ -1,6 +1,5 @@
-package at.htl.franklyn.server.control;
+package at.htl.franklyn.server.feature.telemetry.image;
 
-import at.htl.franklyn.server.entity.Image;
 import io.quarkus.hibernate.reactive.panache.PanacheRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 

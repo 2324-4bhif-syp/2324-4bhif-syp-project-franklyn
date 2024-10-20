@@ -1,4 +1,4 @@
-package at.htl.franklyn.server.boundary.mapper;
+package at.htl.franklyn.server.common;
 
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.ext.ExceptionMapper;

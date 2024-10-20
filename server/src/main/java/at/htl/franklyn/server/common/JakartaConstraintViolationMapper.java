@@ -1,4 +1,4 @@
-package at.htl.franklyn.server.boundary.mapper;
+package at.htl.franklyn.server.common;
 
 import jakarta.validation.ConstraintViolationException;
 import jakarta.ws.rs.core.Response;

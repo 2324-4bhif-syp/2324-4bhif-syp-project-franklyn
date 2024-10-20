@@ -1,6 +1,5 @@
-package at.htl.franklyn.server.control;
+package at.htl.franklyn.server.feature.examinee;
 
-import at.htl.franklyn.server.entity.Examinee;
 import io.quarkus.hibernate.reactive.panache.PanacheRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 

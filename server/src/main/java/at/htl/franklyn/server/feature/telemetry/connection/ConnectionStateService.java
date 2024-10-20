@@ -1,10 +1,6 @@
-package at.htl.franklyn.server.services;
+package at.htl.franklyn.server.feature.telemetry.connection;
 
-import at.htl.franklyn.server.control.ConnectionStateRepository;
-import at.htl.franklyn.server.control.ParticipationRepository;
-import at.htl.franklyn.server.entity.ConnectionState;
-import at.htl.franklyn.server.entity.Participation;
-import io.quarkus.logging.Log;
+import at.htl.franklyn.server.feature.telemetry.participation.ParticipationRepository;
 import io.smallrye.mutiny.Uni;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;

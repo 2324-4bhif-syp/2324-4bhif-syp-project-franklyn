@@ -1,9 +1,9 @@
 package at.htl.franklyn.server.feature.exam;
 
-import at.htl.franklyn.server.control.ParticipationRepository;
-import at.htl.franklyn.server.entity.dto.ExamineeDto;
-import at.htl.franklyn.server.services.ExamineeService;
-import at.htl.franklyn.server.services.ParticipationService;
+import at.htl.franklyn.server.feature.telemetry.participation.ParticipationRepository;
+import at.htl.franklyn.server.feature.examinee.ExamineeDto;
+import at.htl.franklyn.server.feature.examinee.ExamineeService;
+import at.htl.franklyn.server.feature.telemetry.participation.ParticipationService;
 import io.quarkus.hibernate.reactive.panache.common.WithSession;
 import io.quarkus.hibernate.reactive.panache.common.WithTransaction;
 import io.smallrye.mutiny.Uni;

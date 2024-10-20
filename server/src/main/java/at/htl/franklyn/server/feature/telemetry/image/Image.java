@@ -1,6 +1,7 @@
-package at.htl.franklyn.server.entity;
+package at.htl.franklyn.server.feature.telemetry.image;
 
-import at.htl.franklyn.server.control.Limits;
+import at.htl.franklyn.server.common.Limits;
+import at.htl.franklyn.server.feature.telemetry.participation.Participation;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

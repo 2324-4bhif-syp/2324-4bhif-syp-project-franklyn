@@ -1,7 +1,7 @@
-package at.htl.franklyn.server.boundary;
+package at.htl.franklyn.server.feature.telemetry;
 
-import at.htl.franklyn.server.services.ConnectionStateService;
-import at.htl.franklyn.server.services.ParticipationService;
+import at.htl.franklyn.server.feature.telemetry.connection.ConnectionStateService;
+import at.htl.franklyn.server.feature.telemetry.participation.ParticipationService;
 import io.quarkus.hibernate.reactive.panache.common.WithSession;
 import io.quarkus.hibernate.reactive.panache.common.WithTransaction;
 import io.quarkus.logging.Log;
@@ -14,7 +14,7 @@ import jakarta.inject.Inject;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 @WebSocket(path = "/connect/{participationId}")
-public class ExamineeSocket {
+public class ExamineeCommandSocket {
     @Inject
     ConnectionStateService stateService;
 

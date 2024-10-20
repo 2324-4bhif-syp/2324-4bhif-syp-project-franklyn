@@ -1,11 +1,11 @@
-package at.htl.franklyn.server.entity;
+package at.htl.franklyn.server.feature.telemetry.connection;
 
+import at.htl.franklyn.server.feature.telemetry.participation.Participation;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PastOrPresent;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 @Entity
 @Table(name = "F_CONNECTION_STATE")

@@ -1,8 +1,5 @@
-package at.htl.franklyn.server.services;
+package at.htl.franklyn.server.feature.examinee;
 
-import at.htl.franklyn.server.control.ExamineeRepostiory;
-import at.htl.franklyn.server.entity.Examinee;
-import io.quarkus.logging.Log;
 import io.smallrye.mutiny.Uni;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;

@@ -1,9 +1,7 @@
-package at.htl.franklyn.server.services;
+package at.htl.franklyn.server.feature.telemetry.participation;
 
-import at.htl.franklyn.server.control.ParticipationRepository;
 import at.htl.franklyn.server.feature.exam.Exam;
-import at.htl.franklyn.server.entity.Examinee;
-import at.htl.franklyn.server.entity.Participation;
+import at.htl.franklyn.server.feature.examinee.Examinee;
 import io.smallrye.mutiny.Uni;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;

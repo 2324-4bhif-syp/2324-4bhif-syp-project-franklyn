@@ -1,4 +1,4 @@
-package at.htl.franklyn.server.control;
+package at.htl.franklyn.server.common;
 
 public class Limits {
     // region Exam Entity
