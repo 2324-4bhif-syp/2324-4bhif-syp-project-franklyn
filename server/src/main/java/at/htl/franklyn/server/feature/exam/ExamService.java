@@ -10,6 +10,7 @@ import jakarta.inject.Inject;
 import org.hibernate.reactive.mutiny.Mutiny;
 
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.List;
 import java.util.Random;
 
@@ -71,15 +72,15 @@ public class ExamService {
      * @param e exam to be started
      * @return boolean indication whether the exam could be started or not
      */
-    public Uni<Boolean> startExam(Exam e) {
+    public Uni<Void> startExam(Exam e) {
         if (e.getState() != ExamState.CREATED) {
-            return Uni.createFrom().item(false);
+            return Uni.createFrom().failure(new IllegalStateException("Invalid exam state for startExam"));
         }
 
         return examRepository
                 .update("state = ?1, actualStart = ?2 where id = ?3",
                         ExamState.ONGOING,
-                        LocalDateTime.now(),
+                        LocalDateTime.now(ZoneOffset.UTC),
                         e.getId())
                 .chain(affectedRows -> telemetryJobManager.startTelemetryJob(e));
     }
@@ -90,15 +91,15 @@ public class ExamService {
      * @param e exam to be completed
      * @return boolean indicating whether the exam could be completed successfully
      */
-    public Uni<Boolean> completeExam(Exam e) {
+    public Uni<Void> completeExam(Exam e) {
         if (e.getState() != ExamState.ONGOING) {
-            return Uni.createFrom().item(false);
+            return Uni.createFrom().failure(new IllegalStateException("Invalid exam state for completeExam"));
         }
 
         return examRepository
                 .update("state = ?1, actualEnd = ?2 where id = ?3",
                         ExamState.DONE,
-                        LocalDateTime.now(),
+                        LocalDateTime.now(ZoneOffset.UTC),
                         e.getId())
                 .chain(affectedRows -> telemetryJobManager.stopTelemetryJob(e));
         // TODO: disconnect openbox clients

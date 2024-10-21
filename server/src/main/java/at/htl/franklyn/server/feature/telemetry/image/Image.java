@@ -1,6 +1,7 @@
 package at.htl.franklyn.server.feature.telemetry.image;
 
 import at.htl.franklyn.server.common.Limits;
+import at.htl.franklyn.server.feature.exam.ExamState;
 import at.htl.franklyn.server.feature.telemetry.participation.Participation;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -41,16 +42,22 @@ public class Image {
             min = Limits.IMAGE_PATH_LENGTH_MIN,
             max = Limits.IMAGE_PATH_LENGTH_MAX
     )
-    @Column(name = "I_PATH", nullable = true, length = Limits.IMAGE_PATH_LENGTH_MAX)
+    @Column(name = "I_PATH", nullable = false, length = Limits.IMAGE_PATH_LENGTH_MAX)
     private String path;
+
+    @NotNull(message = "Frame type can not be null")
+    @Column(name = "I_FRAME_TYPE", nullable = false)
+    @Enumerated(EnumType.ORDINAL)
+    private FrameType frameType;
 
     public Image() {
     }
 
-    public Image(LocalDateTime captureTimestamp, Participation participation, String path) {
+    public Image(LocalDateTime captureTimestamp, Participation participation, String path, FrameType frameType) {
         this.captureTimestamp = captureTimestamp;
         this.participation = participation;
         this.path = path;
+        this.frameType = frameType;
     }
 
     public Long getId() {
@@ -61,28 +68,48 @@ public class Image {
         this.id = id;
     }
 
-    public LocalDateTime getCaptureTimestamp() {
+    public @NotNull(message = "Image capture timestamp can not be null") @PastOrPresent(message = "Can not persist image captured in the future") LocalDateTime getCaptureTimestamp() {
         return captureTimestamp;
     }
 
-    public void setCaptureTimestamp(LocalDateTime captureTimestamp) {
+    public void setCaptureTimestamp(@NotNull(message = "Image capture timestamp can not be null") @PastOrPresent(message = "Can not persist image captured in the future") LocalDateTime captureTimestamp) {
         this.captureTimestamp = captureTimestamp;
     }
 
-    public Participation getParticipation() {
+    public @NotNull(message = "Participation can not be null") Participation getParticipation() {
         return participation;
     }
 
-    public void setParticipation(Participation participation) {
+    public void setParticipation(@NotNull(message = "Participation can not be null") Participation participation) {
         this.participation = participation;
     }
 
-    public String getPath() {
+    public @NotBlank(message = "Path to image can not be blank") @Size(
+            message = "Image path must have a length between "
+                    + Limits.IMAGE_PATH_LENGTH_MIN + " and "
+                    + Limits.IMAGE_PATH_LENGTH_MAX + " characters",
+            min = Limits.IMAGE_PATH_LENGTH_MIN,
+            max = Limits.IMAGE_PATH_LENGTH_MAX
+    ) String getPath() {
         return path;
     }
 
-    public void setPath(String path) {
+    public void setPath(@NotBlank(message = "Path to image can not be blank") @Size(
+            message = "Image path must have a length between "
+                    + Limits.IMAGE_PATH_LENGTH_MIN + " and "
+                    + Limits.IMAGE_PATH_LENGTH_MAX + " characters",
+            min = Limits.IMAGE_PATH_LENGTH_MIN,
+            max = Limits.IMAGE_PATH_LENGTH_MAX
+    ) String path) {
         this.path = path;
+    }
+
+    public @NotNull(message = "Frame type can not be null") FrameType getFrameType() {
+        return frameType;
+    }
+
+    public void setFrameType(@NotNull(message = "Frame type can not be null") FrameType frameType) {
+        this.frameType = frameType;
     }
 
     @Override
@@ -92,6 +119,7 @@ public class Image {
                 ", captureTimestamp=" + captureTimestamp +
                 ", participation=" + participation +
                 ", path='" + path + '\'' +
+                ", frameType=" + frameType +
                 '}';
     }
 }

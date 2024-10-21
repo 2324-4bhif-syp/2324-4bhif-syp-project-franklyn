@@ -41,6 +41,11 @@ Content-Type: application/json
   "lastname": "Höller"
 }
 
+> {%
+    client.global.set("session", response.headers.valueOf("Location").split("/").reverse()[0])
+    console.log(client.global.get("session"));
+%}
+
 ### Start exam
 POST http://localhost:8080/exams/{{id}}/start
 Content-Type: application/json
@@ -49,23 +54,22 @@ Content-Type: application/json
 POST http://localhost:8080/exams/{{id}}/complete
 Content-Type: application/json
 
-### Old
+### Upload alpha
+POST http://localhost:8080/telemetry/by-session/{{session}}/screen/upload/alpha
+Content-Type: multipart/form-data; boundary=WebAppBoundary
 
-### GET all examinees
-GET http://localhost:8080/examinees
+--WebAppBoundary
+Content-Disposition: form-data; name="image"; filename="alpha-frame.png"
 
-### Reset state (delte screenshot folder, clear examinees)
-POST http://localhost:8080/state/reset
+< ../src/test/resources/alpha-frame.png
+--WebAppBoundary--
 
-### Get System metrics
-GET http://localhost:8080/state/system-metrics
-Content-Type: */*
+### Upload beta
+POST http://localhost:8080/telemetry/by-session/{{session}}/screen/upload/beta
+Content-Type: multipart/form-data; boundary=WebAppBoundary
 
-### Join Exam
-POST http://localhost:8080/exams/join/{{pin}}
-Content-Type: application/json
+--WebAppBoundary
+Content-Disposition: form-data; name="image"; filename="beta-frame.png"
 
-{
-  "firstname": "Juli",
-  "lastname": "Schlue"
-}
+< ../src/test/resources/beta-frame.png
+--WebAppBoundary--

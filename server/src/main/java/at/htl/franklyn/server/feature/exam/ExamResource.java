@@ -163,14 +163,8 @@ public class ExamResource {
                     } else {
                         return examRepository.findById(id)
                                 .chain(e -> examService.startExam(e))
-                                .onItem()
-                                .transform(Unchecked.function(startSuccessful -> {
-                                    if (!startSuccessful) {
-                                        // Rollback
-                                        throw new BadRequestException();
-                                    }
-                                    return Response.ok().build();
-                                }));
+                                .onFailure().transform(BadRequestException::new)
+                                .onItem().transform(t -> Response.ok().build());
                     }
                 });
     }
@@ -186,14 +180,9 @@ public class ExamResource {
                     } else {
                         return examRepository.findById(id)
                                 .chain(e -> examService.completeExam(e))
+                                .onFailure().transform(BadRequestException::new)
                                 .onItem()
-                                .transform(Unchecked.function(completionSuccessful ->  {
-                                    if (!completionSuccessful) {
-                                        // Rollback
-                                        throw new BadRequestException();
-                                    }
-                                    return Response.ok().build();
-                                }));
+                                .transform(x -> Response.ok().build());
                     }
                 });
     }

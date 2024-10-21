@@ -186,10 +186,10 @@ The interfaces below mostly use `JSON` for transferring data. The `JSON` format 
 | 🔴
 | `GET /telemetry/jobs/video/{job-id}/download`
 
-| 🔴
+| 🟡
 | `POST /telemetry/by-session/{session-id}/screen/upload/alpha`
 
-| 🔴
+| 🟡
 | `POST /telemetry/by-session/{session-id}/screen/upload/beta`
 
 | 🟢

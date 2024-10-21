@@ -26,7 +26,7 @@ public class TelemetryJobManager {
         return String.format("%s%d", FRANKLYN_TELEMETRY_TRIGGER_PREFIX, examId);
     }
 
-    public Uni<Boolean> startTelemetryJob(Exam exam) {
+    public Uni<Void> startTelemetryJob(Exam exam) {
         JobDetail job = JobBuilder.newJob(TelemetryJob.class)
                 .withIdentity(getTelemetryJobIdentity(exam.getId()), FRANKLYN_TELEMETRY_JOB_GROUP)
                 .usingJobData(FRANKLYN_TELEMETRY_JOB_EXAM_ID_JOB_DATA_KEY, exam.getId())
@@ -43,22 +43,22 @@ public class TelemetryJobManager {
             quartz.scheduleJob(job, trigger);
         } catch (SchedulerException e) {
             Log.error("Could not create telemetry job", e);
-            return Uni.createFrom().item(false);
+            return Uni.createFrom().failure(e);
         }
 
-        return Uni.createFrom().item(true);
+        return Uni.createFrom().voidItem();
     }
 
-    public Uni<Boolean> stopTelemetryJob(Exam exam) {
+    public Uni<Void> stopTelemetryJob(Exam exam) {
         boolean found;
         try {
             found = quartz.deleteJob(new JobKey(getTelemetryJobIdentity(exam.getId()), FRANKLYN_TELEMETRY_JOB_GROUP));
         } catch (SchedulerException e) {
             Log.error("Could not stop telemetry job", e);
-            return Uni.createFrom().item(false);
+            return Uni.createFrom().failure(e);
         }
 
-        return Uni.createFrom().item(found);
+        return Uni.createFrom().voidItem();
     }
 
     public static class TelemetryJob implements Job {

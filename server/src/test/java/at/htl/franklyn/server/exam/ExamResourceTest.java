@@ -4,6 +4,7 @@ import at.htl.franklyn.server.feature.exam.Exam;
 import at.htl.franklyn.server.feature.exam.ExamDto;
 import at.htl.franklyn.server.feature.exam.ExamState;
 import at.htl.franklyn.server.feature.examinee.ExamineeDto;
+import io.quarkus.logging.Log;
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
@@ -14,8 +15,11 @@ import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 
+import java.io.File;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.Arrays;
+import java.util.Objects;
 
 import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -28,6 +32,7 @@ public class ExamResourceTest {
     private static final String JOIN_URL = "join";
 
     private static Exam createdExam;
+    private static String userSession;
 
     @Test
     @Order(1)
@@ -226,6 +231,9 @@ public class ExamResourceTest {
 
         assertThat(response.header("Location"))
                 .matches(".*connect/.*");
+
+        String[] parts = response.header("Location").split("/");
+        userSession = parts[parts.length - 1];
     }
 
     @Test
@@ -262,8 +270,50 @@ public class ExamResourceTest {
                 .isEqualTo(ExamState.ONGOING);
     }
 
+    // TODO: Move somewhere else?
     @Test
     @Order(7)
+    void test_simpleUploadAlpha_ok() {
+        // Arrange
+        ClassLoader classLoader = getClass().getClassLoader();
+        File file = new File(Objects.requireNonNull(classLoader.getResource("/alpha-frame.png")).getFile());
+
+        // Act
+        Response response = given()
+                .contentType(ContentType.MULTIPART)
+                .basePath("/telemetry")
+                .multiPart("image", file)
+            .when()
+                .post(String.format("/by-session/%s/screen/upload/alpha", userSession));
+
+        // Assert
+        assertThat(response.statusCode())
+                .isEqualTo(RestResponse.StatusCode.OK);
+    }
+
+    // TODO: Move somewhere else?
+    @Test
+    @Order(8)
+    void test_simpleUploadBeta_ok() {
+        // Arrange
+        ClassLoader classLoader = getClass().getClassLoader();
+        File file = new File(Objects.requireNonNull(classLoader.getResource("beta-frame.png")).getFile());
+
+        // Act
+        Response response = given()
+                .contentType(ContentType.MULTIPART)
+                .basePath("/telemetry")
+                .multiPart("image", file)
+                .when()
+                .post(String.format("/by-session/%s/screen/upload/beta", userSession));
+
+        // Assert
+        assertThat(response.statusCode())
+                .isEqualTo(RestResponse.StatusCode.OK);
+    }
+
+    @Test
+    @Order(9)
     void test_simpleCompleteExam_ok() {
         // Arrange
         // created Exam is taken from the post test with @Order(1)
