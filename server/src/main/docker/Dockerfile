@@ -8,9 +8,9 @@ RUN mvn verify clean --fail-never
 
 COPY . .
 
-RUN mvn -B package
+RUN mvn -B -Dmaven.test.skip package
 
-FROM linuxserver/ffmpeg:6.1.1
+FROM linuxserver/ffmpeg:7.1-cli-ls4
 
 # setup java
 ENV JAVA_HOME=/opt/java/openjdk

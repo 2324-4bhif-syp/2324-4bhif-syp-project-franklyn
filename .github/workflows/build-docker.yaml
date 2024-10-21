@@ -10,10 +10,11 @@ on:
       - main
       - develop
   workflow_dispatch:
+
 jobs:
   build-server-image:
     permissions: write-all
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
       - name: Check out repository code
         uses: actions/checkout@v4
@@ -46,7 +47,7 @@ jobs:
 
   build-instructor-client-image:
     permissions: write-all
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
       - name: Check out repository code
         uses: actions/checkout@v4
@@ -69,7 +70,7 @@ jobs:
       - name: Setup node
         uses: actions/setup-node@v4
         with:
-          node-version: '21'
+          node-version: '22'
           cache: 'npm'
           cache-dependency-path: 'instructor-client/package-lock.json'
 

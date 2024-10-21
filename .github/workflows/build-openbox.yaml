@@ -13,7 +13,6 @@ on:
       - main
   workflow_dispatch:
 
-
 jobs:
   build-openbox:
     runs-on: ubuntu-22.04

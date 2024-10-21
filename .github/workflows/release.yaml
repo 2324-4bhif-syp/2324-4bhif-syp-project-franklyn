@@ -1,28 +1,15 @@
-name: Build and release
-run-name: ${{ github.actor }} is releasing the newest version.
+name: Release changelog
+run-name: ${{ github.actor }} is releasing the newest changelog.
 on:
   push:
     branches: [main]
 jobs:
   build-and-release-franklyn:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     permissions:
       contents: write
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-java@v4
-        with:
-          distribution: 'temurin'
-          java-version: '21'
-          cache: 'maven'
-
-      - run: java --version
-
-      - name: Build with Maven
-        run: |
-          chmod +x ./cicd/build-server.sh
-          ./cicd/build-server.sh
-
       - name: Get the git commits since the last tag
         run: |
           git pull --unshallow
@@ -32,6 +19,6 @@ jobs:
       - name: Release the build
         run: |
           tag="$(date +"%Y.%m.%d")-$(git rev-parse --short HEAD)"
-          gh release create $tag ./dist/*/*.jar --title "franklyn $tag" --notes-file release-notes.txt --prerelease
+          gh release create $tag --title "franklyn $tag" --notes-file release-notes.txt --prerelease
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
