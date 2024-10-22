@@ -1,0 +1,24 @@
+name: Release changelog
+run-name: ${{ github.actor }} is releasing the newest changelog.
+on:
+  push:
+    branches: [main]
+jobs:
+  build-and-release-franklyn:
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Get the git commits since the last tag
+        run: |
+          git pull --unshallow
+          echo "$(git log $(git describe --tags --abbrev=0)..HEAD | git shortlog)" | sed 's/^ \+/- /'  > release-notes.txt
+          cat release-notes.txt
+
+      - name: Release the build
+        run: |
+          tag="$(date +"%Y.%m.%d")-$(git rev-parse --short HEAD)"
+          gh release create $tag --title "franklyn $tag" --notes-file release-notes.txt --prerelease
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

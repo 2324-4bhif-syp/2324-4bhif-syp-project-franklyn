@@ -20,22 +20,18 @@ endif::[]
 * Ermöglicht praxisnahes Arbeiten bei Leistungsfeststellungen
 * Besonders: Recherche im Internet
 ** z.B. Stack Overflow, Dokumentation
-* Gleichzeitige Gewissheit für Lehrpersonen
-** einhalten von Regeln
-*** keine Kommunikation zwischen den Schülern
-*** kein Kopieren von fertigen Programmen/Lösungen
+* Gleichzeit: Gewissheit für Lehrpersonen, dass
+** Regeln eingehalten werden
+*** keine Kommunikation zwischen den Schülern stattfindet
+*** keine fertigen Programme/Lösungen kopiert werden
 
 [.font-xx-large]
-=== Sprint 10: Änderungen
-* Migrieren des Instructor-clients auf SSOT
-* Erster Openbox Prototyp in Rust
-* Multithreaded Erstellung von Videos
-* WIP: Mandantenfähigkeit
+=== Änderungen
+* Dokumentation des bisher Erledigten
+* Spezifikation der Schnittstellen der Mehrtestfähigkeit
+* Aufbereitung YouTrack
 
 === Live Demo
-
-=== ERD
-plantuml::./plantuml/erd.puml[]
 
 === Architektur
 plantuml::./plantuml/architecture.puml[]

@@ -1,9 +1,75 @@
-### GET all examinees
-GET http://localhost:8080/examinees
+### Create new Exam
+POST http://localhost:8080/exams
+Content-Type: application/json
 
-### Reset state (delte screenshot folder, clear examinees)
-POST http://localhost:8080/state/reset
+{
+  "title": "WMC Test02",
+  "start": "2030-03-18T12:20:00",
+  "end": "2030-03-18T16:30:00",
+  "screencapture_interval_seconds": 5
+}
 
-### Get System metrics
-GET http://localhost:8080/state/system-metrics
-Content-Type: */*
+> {%
+client.global.set("pin", response.body.pin)
+client.global.set("id", response.body.id)
+console.log(client.global.get("pin"));
+console.log(client.global.get("id"));
+%}
+
+### Get Exam by id
+GET http://localhost:8080/exams/{{id}}
+Accept: application/json
+
+### Get all exams
+GET http://localhost:8080/exams
+Accept: application/json
+
+### Delete exam by id
+DELETE http://localhost:8080/exams/{{id}}
+Accept: application/json
+
+### Get examinees of exam
+GET http://localhost:8080/exams/{{id}}/examinees
+Accept: application/json
+
+### Join Exam
+POST http://localhost:8080/exams/join/{{pin}}
+Content-Type: application/json
+
+{
+  "firstname": "Franz",
+  "lastname": "Höller"
+}
+
+> {%
+    client.global.set("session", response.headers.valueOf("Location").split("/").reverse()[0])
+    console.log(client.global.get("session"));
+%}
+
+### Start exam
+POST http://localhost:8080/exams/{{id}}/start
+Content-Type: application/json
+
+### Complete exam
+POST http://localhost:8080/exams/{{id}}/complete
+Content-Type: application/json
+
+### Upload alpha
+POST http://localhost:8080/telemetry/by-session/{{session}}/screen/upload/alpha
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+
+--WebAppBoundary
+Content-Disposition: form-data; name="image"; filename="alpha-frame.png"
+
+< ../src/test/resources/alpha-frame.png
+--WebAppBoundary--
+
+### Upload beta
+POST http://localhost:8080/telemetry/by-session/{{session}}/screen/upload/beta
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+
+--WebAppBoundary
+Content-Disposition: form-data; name="image"; filename="beta-frame.png"
+
+< ../src/test/resources/beta-frame.png
+--WebAppBoundary--

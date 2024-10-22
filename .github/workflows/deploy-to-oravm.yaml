@@ -6,31 +6,15 @@ on:
   workflow_run:
     workflows: [ "Build docker images" ]
     branches:
-      - main
-      - feat/openbox-rs
+      - develop
     types:
       - completed
   workflow_dispatch:
 
 jobs:
-  download-openbox:
-    name: Download openbox from artifacts
-    runs-on: ubuntu-22.04
-
-    steps:
-      - name: Download All Artifacts
-        uses: actions/download-artifact@v4
-        with:
-          path: builds
-          pattern: openbox-*
-          merge-multiple: true
-      - run: |
-          pwd
-          ls
-
   build-deploy-franklyn:
     name: Build and deploy Franklyn
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     needs: download-openbox
 
     if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
@@ -55,8 +39,10 @@ jobs:
           ssh -i $SSH_KEY_PATH $SSH_USER@$SSH_HOST "sudo cp -f project-franklyn/nginx/nginx.conf /etc/nginx/nginx.conf"
           ssh -i $SSH_KEY_PATH $SSH_USER@$SSH_HOST "sudo cp -f project-franklyn/nginx/index.html /var/www/html/"
           
-          # ssh -i $SSH_KEY_PATH $SSH_USER@$SSH_HOST "cd project-franklyn && ./cicd/build-openbox.sh"
-          # ssh -i $SSH_KEY_PATH $SSH_USER@$SSH_HOST "sudo cp -f project-franklyn/dist/openbox/franklyn-student-client.jar /var/www/downloads/"
+          # TODO
+          # Use actions/download-artifact@v4 
+          # in combination with https://docs.github.com/en/rest/actions/workflow-runs?apiVersion=2022-11-28#list-workflow-runs-for-a-workflow
+          # To download latest openbox artifact and upload them to the oravm
           
           ssh -i $SSH_KEY_PATH $SSH_USER@$SSH_HOST "sudo systemctl restart nginx.service"
         shell: bash

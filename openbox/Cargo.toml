@@ -9,18 +9,18 @@ description = "Openbox client"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-reqwest = { version = "0.12.4", features = ["multipart"] }
-xcap = "0.0.9"
-image = "0.25.1"
-iced = { version = "0.12", features = ["tokio"] }
-fastwebsockets = { version = "0.7.1", features = ["upgrade"] }
+reqwest = { version = "0.12.8", features = ["multipart"] }
+xcap = "0.0.13"
+image = "0.25.2"
 hyper = { version = "1", features = ["http1", "server", "client"] }
 hyper-util = { version = "0.1.0", features = ["tokio"] }
 http-body-util = { version = "0.1.0" }
-bytes = "1.4.0"
-tokio = { version = "1.37.0", features = ["full", "macros"] }
-anyhow = "1.0.82"
-futures = "0.3.30"
+tokio = { version = "1.40.0", features = ["full", "macros"] }
+anyhow = "1.0.89"
+futures = "0.3.31"
+fastwebsockets = { version = "0.8.0", features = ["upgrade"] }
+iced = { version = "0.13.1", features = ["tokio"] }
+bytes = "1.7.2"
 
 [profile.release-opt]
 inherits = "release"

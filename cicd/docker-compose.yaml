@@ -1,7 +1,7 @@
 services:
   franklyn-server:
     container_name: franklyn-server
-    image: ghcr.io/2324-4bhif-syp/2324-4bhif-syp-project-franklyn/franklyn-server:dev
+    image: ghcr.io/2324-4bhif-syp/2324-4bhif-syp-project-franklyn/franklyn-server:latest
     restart: unless-stopped
     ports:
       - 8080:8080
@@ -12,12 +12,29 @@ services:
 
   franklyn-instructor-client:
     container_name: franklyn-instructor-client
-    image: ghcr.io/2324-4bhif-syp/2324-4bhif-syp-project-franklyn/franklyn-instructor-client:dev
+    image: ghcr.io/2324-4bhif-syp/2324-4bhif-syp-project-franklyn/franklyn-instructor-client:latest
     restart: unless-stopped
     depends_on:
       - franklyn-server
     ports:
       - 8088:80
+    networks:
+      - franklyn-net
+
+  franklyn-db:
+    container_name: franklyn-db
+    image: postgres:17.0-alpine3.20
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: app
+      POSTGRES_PASSWORD: app
+      POSTGRES_MULTIPLE_DATABASES: db,quartz
+    ports:
+      - 5432:5432
+    volumes:
+      - /var/lib/franklyn/db:/var/lib/postgresql/data
+      - /var/lib/franklyn/db-import:/import
+      - ./pg-init-scripts:/docker-entrypoint-initdb.d
     networks:
       - franklyn-net
 networks:
