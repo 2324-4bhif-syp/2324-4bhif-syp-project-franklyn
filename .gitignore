@@ -4,3 +4,4 @@ target/
 Cargo.lock
 keys/
 server/old
+.mvn
