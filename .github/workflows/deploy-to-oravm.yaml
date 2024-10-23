@@ -15,7 +15,6 @@ jobs:
   build-deploy-franklyn:
     name: Build and deploy Franklyn
     runs-on: ubuntu-24.04
-    needs: download-openbox
 
     if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
     steps:
