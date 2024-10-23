@@ -20,8 +20,8 @@ public class Limits {
     public static final int EXAMINEE_LASTNAME_LENGTH_MAX = 50;
     // endregion Examinee Entity
 
-    // region Image Entity
-    public static final int IMAGE_PATH_LENGTH_MIN = 1; // 4095 = Linux path limit
-    public static final int IMAGE_PATH_LENGTH_MAX = 4095; // 4095 = Linux path limit
-    // endregion Image Entity
+    // region Filesystem
+    public static final int FILE_PATH_LENGTH_MIN = 1; // 4095 = Linux path limit
+    public static final int PATH_LENGTH_MAX = 4095; // 4095 = Linux path limit
+    // endregion Filesystem
 }

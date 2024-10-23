@@ -1,11 +1,14 @@
 package at.htl.franklyn.server.feature.telemetry.participation;
 
+import at.htl.franklyn.server.feature.exam.Exam;
 import io.quarkus.hibernate.reactive.panache.PanacheRepositoryBase;
+import io.smallrye.mutiny.Multi;
 import io.smallrye.mutiny.Uni;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import org.hibernate.reactive.mutiny.Mutiny;
 
+import java.util.List;
 import java.util.UUID;
 
 @ApplicationScoped
@@ -24,5 +27,9 @@ public class ParticipationRepository implements PanacheRepositoryBase<Participat
                 .getResultList()
                 .onItem().transform(i -> i.stream().findFirst().orElse(null))
         );
+    }
+
+    public Uni<List<Participation>> getParticipationsOfExam(Exam e) {
+        return find("exam.id = ?1", e.getId()).list();
     }
 }

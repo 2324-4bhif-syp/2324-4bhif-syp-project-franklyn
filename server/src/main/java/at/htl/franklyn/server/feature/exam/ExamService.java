@@ -3,12 +3,19 @@ package at.htl.franklyn.server.feature.exam;
 import at.htl.franklyn.server.common.Limits;
 import at.htl.franklyn.server.feature.examinee.ExamineeDto;
 import at.htl.franklyn.server.feature.telemetry.TelemetryJobManager;
+import at.htl.franklyn.server.feature.telemetry.connection.ConnectionStateRepository;
+import at.htl.franklyn.server.feature.telemetry.image.ImageRepository;
+import at.htl.franklyn.server.feature.telemetry.image.ImageService;
+import at.htl.franklyn.server.feature.telemetry.participation.ParticipationRepository;
 import io.quarkus.logging.Log;
+import io.smallrye.mutiny.Multi;
 import io.smallrye.mutiny.Uni;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import org.hibernate.reactive.mutiny.Mutiny;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.List;
@@ -21,6 +28,15 @@ public class ExamService {
 
     @Inject
     TelemetryJobManager telemetryJobManager;
+
+    @Inject
+    ParticipationRepository participationRepository;
+
+    @Inject
+    ConnectionStateRepository connectionStateRepository;
+
+    @Inject
+    ImageService imageService;
 
     /**
      * Creates a new Exam from a Dto.
@@ -103,6 +119,25 @@ public class ExamService {
                         e.getId())
                 .chain(affectedRows -> telemetryJobManager.stopTelemetryJob(e));
         // TODO: disconnect openbox clients
+    }
+
+    /**
+     * Deletes all telemetry stored for the given exam.
+     * This effectively deletes all participations associated with an exam
+     * and in turn all data associated with a participation (Images, ConnectionState, ...)
+     * @param e Exam to delete telemetry for
+     * @return Uni<Void> or Exception on failure to delete
+     */
+    public Uni<Void> deleteTelemetry(Exam e) {
+        return participationRepository
+                .getParticipationsOfExam(e)
+                .onItem().transformToMulti(p -> Multi.createFrom().iterable(p))
+                .onItem().transformToUniAndMerge(p -> {
+                    return connectionStateRepository.deleteStatesOfParticipation(p)
+                        .chain(v -> imageService.deleteAllFramesOfParticipation(p));
+                })
+                .collect().asList()
+                .replaceWithVoid();
     }
 
     /**

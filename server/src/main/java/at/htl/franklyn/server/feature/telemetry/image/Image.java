@@ -1,7 +1,6 @@
 package at.htl.franklyn.server.feature.telemetry.image;
 
 import at.htl.franklyn.server.common.Limits;
-import at.htl.franklyn.server.feature.exam.ExamState;
 import at.htl.franklyn.server.feature.telemetry.participation.Participation;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -37,12 +36,12 @@ public class Image {
     @NotBlank(message = "Path to image can not be blank")
     @Size(
             message = "Image path must have a length between "
-                    + Limits.IMAGE_PATH_LENGTH_MIN + " and "
-                    + Limits.IMAGE_PATH_LENGTH_MAX + " characters",
-            min = Limits.IMAGE_PATH_LENGTH_MIN,
-            max = Limits.IMAGE_PATH_LENGTH_MAX
+                    + Limits.FILE_PATH_LENGTH_MIN + " and "
+                    + Limits.PATH_LENGTH_MAX + " characters",
+            min = Limits.FILE_PATH_LENGTH_MIN,
+            max = Limits.PATH_LENGTH_MAX
     )
-    @Column(name = "I_PATH", nullable = false, length = Limits.IMAGE_PATH_LENGTH_MAX)
+    @Column(name = "I_PATH", nullable = false, length = Limits.PATH_LENGTH_MAX)
     private String path;
 
     @NotNull(message = "Frame type can not be null")
@@ -86,20 +85,20 @@ public class Image {
 
     public @NotBlank(message = "Path to image can not be blank") @Size(
             message = "Image path must have a length between "
-                    + Limits.IMAGE_PATH_LENGTH_MIN + " and "
-                    + Limits.IMAGE_PATH_LENGTH_MAX + " characters",
-            min = Limits.IMAGE_PATH_LENGTH_MIN,
-            max = Limits.IMAGE_PATH_LENGTH_MAX
+                    + Limits.FILE_PATH_LENGTH_MIN + " and "
+                    + Limits.PATH_LENGTH_MAX + " characters",
+            min = Limits.FILE_PATH_LENGTH_MIN,
+            max = Limits.PATH_LENGTH_MAX
     ) String getPath() {
         return path;
     }
 
     public void setPath(@NotBlank(message = "Path to image can not be blank") @Size(
             message = "Image path must have a length between "
-                    + Limits.IMAGE_PATH_LENGTH_MIN + " and "
-                    + Limits.IMAGE_PATH_LENGTH_MAX + " characters",
-            min = Limits.IMAGE_PATH_LENGTH_MIN,
-            max = Limits.IMAGE_PATH_LENGTH_MAX
+                    + Limits.FILE_PATH_LENGTH_MIN + " and "
+                    + Limits.PATH_LENGTH_MAX + " characters",
+            min = Limits.FILE_PATH_LENGTH_MIN,
+            max = Limits.PATH_LENGTH_MAX
     ) String path) {
         this.path = path;
     }

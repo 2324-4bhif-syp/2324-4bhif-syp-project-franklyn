@@ -1,8 +1,11 @@
 package at.htl.franklyn.server.feature.telemetry.participation;
 
+import at.htl.franklyn.server.common.Limits;
 import at.htl.franklyn.server.feature.examinee.Examinee;
 import at.htl.franklyn.server.feature.exam.Exam;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 import java.util.UUID;
 

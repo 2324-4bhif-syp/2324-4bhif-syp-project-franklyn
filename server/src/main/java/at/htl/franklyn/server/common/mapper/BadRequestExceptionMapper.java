@@ -1,4 +1,4 @@
-package at.htl.franklyn.server.common;
+package at.htl.franklyn.server.common.mapper;
 
 import jakarta.ws.rs.BadRequestException;
 import jakarta.ws.rs.core.Response;

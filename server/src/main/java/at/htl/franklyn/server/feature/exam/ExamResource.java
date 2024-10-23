@@ -31,9 +31,6 @@ public class ExamResource {
     ExamRepository examRepository;
 
     @Inject
-    ParticipationRepository participationRepository;
-
-    @Inject
     ParticipationService participationService;
 
     @POST
@@ -187,10 +184,16 @@ public class ExamResource {
                 });
     }
 
-    @POST
+    @DELETE
     @WithTransaction
-    @Path("/deleteTelemetry/{id}")
+    @Path("/{id}/telemetry")
     public Uni<Response> deleteTelemetryOfExam(@PathParam("id") long id) {
-        return null;
+        return examRepository
+                .findById(id)
+                .onItem().ifNull().failWith(NotFoundException::new)
+                .chain(e -> examService.deleteTelemetry(e))
+                .onFailure().transform(BadRequestException::new)
+                .onItem()
+                .transform(v -> Response.noContent().build());
     }
 }

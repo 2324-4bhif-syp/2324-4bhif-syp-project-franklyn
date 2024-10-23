@@ -165,7 +165,7 @@ The interfaces below mostly use `JSON` for transferring data. The `JSON` format 
 | 🟡
 | `POST /exams/{id}/complete`
 
-| 🔴
+| 🟡
 | `DELETE /exams/{id}/telementry`
 
 | 🟢

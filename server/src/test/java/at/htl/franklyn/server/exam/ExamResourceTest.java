@@ -345,4 +345,20 @@ public class ExamResourceTest {
         assertThat(actualExam.getState())
                 .isEqualTo(ExamState.DONE);
     }
+
+    @Test
+    @Order(10)
+    void test_simpleDeleteTelemetryOfExam_ok() {
+        // Arrange
+
+        // Act
+        Response response = given()
+                .basePath(BASE_URL)
+            .when()
+                .delete(String.format("%s/telemetry", createdExam.getId()));
+
+        // Assert
+        assertThat(response.statusCode())
+                .isEqualTo(RestResponse.StatusCode.NO_CONTENT);
+    }
 }

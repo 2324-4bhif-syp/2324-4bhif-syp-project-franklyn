@@ -1,9 +1,11 @@
 package at.htl.franklyn.server.feature.telemetry.image;
 
+import at.htl.franklyn.server.feature.telemetry.participation.Participation;
 import at.htl.franklyn.server.feature.telemetry.participation.ParticipationRepository;
 import io.quarkus.logging.Log;
 import io.smallrye.mutiny.Uni;
 import io.smallrye.mutiny.unchecked.Unchecked;
+import io.vertx.mutiny.core.Vertx;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
@@ -29,11 +31,20 @@ public class ImageService {
 
     @Inject
     ImageRepository imageRepository;
+    @Inject
+    Vertx vertx;
+
+    private Path getScreenshotFolderPath(UUID session) {
+        return Paths.get(
+                screenshotsPath,
+                session.toString()
+        );
+    }
 
     public Uni<Void> saveFrameOfSession(UUID session, InputStream frame, FrameType type) {
+        // TODO: Maybe use session path instead of building it again?
         final File imageFile = Paths.get(
-                screenshotsPath,
-                session.toString(),
+                getScreenshotFolderPath(session).toAbsolutePath().toString(),
                 String.format("%d.%s", System.currentTimeMillis(), IMG_FORMAT)
         ).toAbsolutePath().toFile();
 
@@ -121,5 +132,12 @@ public class ImageService {
                     );
                 }))
                 .replaceWithVoid();
+    }
+
+    public Uni<Void> deleteAllFramesOfParticipation(Participation p) {
+        // TODO: does deleteRecursive throw when directory does not exist?
+        return vertx.fileSystem()
+                .deleteRecursive(getScreenshotFolderPath(p.getId()).toString(), true)
+                .chain(v -> imageRepository.deleteImagesOfParticipation(p));
     }
 }
