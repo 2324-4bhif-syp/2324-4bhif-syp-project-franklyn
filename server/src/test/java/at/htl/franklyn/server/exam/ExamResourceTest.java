@@ -361,4 +361,20 @@ public class ExamResourceTest {
         assertThat(response.statusCode())
                 .isEqualTo(RestResponse.StatusCode.NO_CONTENT);
     }
+
+    @Test
+    @Order(11)
+    void test_simpleDeleteExam_ok() {
+        // Arrange
+
+        // Act
+        Response response = given()
+                .basePath(BASE_URL)
+            .when()
+                .delete(createdExam.getId().toString());
+
+        // Assert
+        assertThat(response.statusCode())
+                .isEqualTo(RestResponse.StatusCode.NO_CONTENT);
+    }
 }

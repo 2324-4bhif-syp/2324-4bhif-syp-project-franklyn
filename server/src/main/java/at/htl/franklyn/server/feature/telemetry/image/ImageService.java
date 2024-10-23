@@ -135,9 +135,15 @@ public class ImageService {
     }
 
     public Uni<Void> deleteAllFramesOfParticipation(Participation p) {
-        // TODO: does deleteRecursive throw when directory does not exist?
+        String folderPath = getScreenshotFolderPath(p.getId()).toString();
         return vertx.fileSystem()
-                .deleteRecursive(getScreenshotFolderPath(p.getId()).toString(), true)
-                .chain(v -> imageRepository.deleteImagesOfParticipation(p));
+                .exists(folderPath)
+                .onItem().transformToUni(exists -> {
+                    if (exists) {
+                        return vertx.fileSystem().deleteRecursive(folderPath, true);
+                    }
+                    return Uni.createFrom().voidItem();
+                })
+                .onItem().transformToUni(v -> imageRepository.deleteImagesOfParticipation(p));
     }
 }

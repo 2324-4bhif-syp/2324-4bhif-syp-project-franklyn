@@ -18,6 +18,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -131,12 +132,21 @@ public class ExamService {
     public Uni<Void> deleteTelemetry(Exam e) {
         return participationRepository
                 .getParticipationsOfExam(e)
-                .onItem().transformToMulti(p -> Multi.createFrom().iterable(p))
-                .onItem().transformToUniAndMerge(p -> {
-                    return connectionStateRepository.deleteStatesOfParticipation(p)
-                        .chain(v -> imageService.deleteAllFramesOfParticipation(p));
+                .onItem().transformToUni(p -> {
+                    List<Uni<Void>> results = new ArrayList<>();
+                    for (var participation : p) {
+                        results.add(
+                                connectionStateRepository.deleteStatesOfParticipation(participation)
+                                        .onItem()
+                                        .transformToUni(v -> imageService.deleteAllFramesOfParticipation(participation))
+                        );
+                    }
+
+                    // Uni.join().all(...) can only be called with non-empty lists
+                    return !results.isEmpty()
+                            ? Uni.join().all(results).andCollectFailures()
+                            : Uni.createFrom().voidItem();
                 })
-                .collect().asList()
                 .replaceWithVoid();
     }
 

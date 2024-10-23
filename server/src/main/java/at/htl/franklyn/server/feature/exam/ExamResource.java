@@ -80,18 +80,18 @@ public class ExamResource {
     @Path("{id}")
     @WithTransaction
     public Uni<Response> deleteExamById(@PathParam("id") long id) {
-        return examRepository.deleteById(id)
-                .onItem().transform(deleted -> {
-                    if (deleted) {
-                        return Response
-                                .noContent()
-                                .build();
-                    } else {
-                        return Response
-                                .status(Response.Status.NOT_FOUND)
-                                .build();
-                    }
-                });
+        return examRepository
+                .findById(id)
+                .onItem().ifNull().failWith(NotFoundException::new)
+                .onFailure().transform(e -> e) // TODO does this work for mapping NotFoundException early before rethrowing BR? // TODO does this work for mapping NotFoundException early before rethrowing BR?
+                .onItem().transformToUni(e -> examService.deleteTelemetry(e).replaceWith(e))
+                .onItem().transformToUni(e -> examRepository.deleteById(id))
+                .onFailure().transform(e -> {
+                    Log.error(e);
+                    e.printStackTrace();
+                    return new BadRequestException(e);
+                })
+                .onItem().transform(v -> Response.noContent().build());
     }
 
     @GET
