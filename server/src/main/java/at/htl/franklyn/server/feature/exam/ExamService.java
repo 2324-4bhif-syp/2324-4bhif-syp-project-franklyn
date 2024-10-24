@@ -139,6 +139,7 @@ public class ExamService {
                                 connectionStateRepository.deleteStatesOfParticipation(participation)
                                         .onItem()
                                         .transformToUni(v -> imageService.deleteAllFramesOfParticipation(participation))
+                                        .onItem().transformToUni(v -> participationRepository.delete(participation))
                         );
                     }
 

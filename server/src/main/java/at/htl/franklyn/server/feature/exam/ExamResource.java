@@ -83,12 +83,12 @@ public class ExamResource {
         return examRepository
                 .findById(id)
                 .onItem().ifNull().failWith(NotFoundException::new)
-                .onFailure().transform(e -> e) // TODO does this work for mapping NotFoundException early before rethrowing BR? // TODO does this work for mapping NotFoundException early before rethrowing BR?
                 .onItem().transformToUni(e -> examService.deleteTelemetry(e).replaceWith(e))
                 .onItem().transformToUni(e -> examRepository.deleteById(id))
                 .onFailure().transform(e -> {
-                    Log.error(e);
-                    e.printStackTrace();
+                    if (e instanceof NotFoundException) {
+                        return e;
+                    }
                     return new BadRequestException(e);
                 })
                 .onItem().transform(v -> Response.noContent().build());
@@ -192,7 +192,12 @@ public class ExamResource {
                 .findById(id)
                 .onItem().ifNull().failWith(NotFoundException::new)
                 .chain(e -> examService.deleteTelemetry(e))
-                .onFailure().transform(BadRequestException::new)
+                .onFailure().transform(e -> {
+                    if (e instanceof NotFoundException) {
+                        return e;
+                    }
+                    return new BadRequestException(e);
+                })
                 .onItem()
                 .transform(v -> Response.noContent().build());
     }

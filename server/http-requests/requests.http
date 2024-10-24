@@ -73,3 +73,11 @@ Content-Disposition: form-data; name="image"; filename="beta-frame.png"
 
 < ../src/test/resources/beta-frame.png
 --WebAppBoundary--
+
+### Delete exam telemetry
+DELETE http://localhost:8080/exams/{{id}}/telemetry
+Content-Type: application/json
+
+### Delete exam
+DELETE http://localhost:8080/exams/{{id}}
+Content-Type: application/json
