@@ -4,7 +4,6 @@ import at.htl.franklyn.server.feature.exam.Exam;
 import at.htl.franklyn.server.feature.exam.ExamDto;
 import at.htl.franklyn.server.feature.exam.ExamState;
 import at.htl.franklyn.server.feature.examinee.ExamineeDto;
-import io.quarkus.logging.Log;
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
@@ -18,7 +17,6 @@ import org.junit.jupiter.api.TestMethodOrder;
 import java.io.File;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
-import java.util.Arrays;
 import java.util.Objects;
 
 import static io.restassured.RestAssured.given;
@@ -27,7 +25,7 @@ import static org.assertj.core.api.Assertions.within;
 
 @QuarkusTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class ExamResourceTest {
+public class ExamLifecycleTest {
     private static final String BASE_URL = "exams";
     private static final String JOIN_URL = "join";
 
