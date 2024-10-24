@@ -21,6 +21,7 @@ futures = "0.3.31"
 fastwebsockets = { version = "0.8.0", features = ["upgrade"] }
 iced = { version = "0.13.1", features = ["tokio"] }
 bytes = "1.7.2"
+log = "0.4.22"
 
 [profile.release-opt]
 inherits = "release"

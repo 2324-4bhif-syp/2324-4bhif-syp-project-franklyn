@@ -2,6 +2,8 @@ use iced::{
     Center, Element, Subscription, Task, Theme, alignment,
     widget::{button, center, column, container, row, text, text_input},
 };
+use image::RgbaImage;
+use openbox::ws::Event;
 
 const _PROD_URL: &str = "franklyn3.htl-leonding.ac.at:8080";
 const _DEV_URL: &str = "localhost:8080";
@@ -31,6 +33,7 @@ struct Openbox<'a> {
 
     connection: ConnectionState,
     server_address: &'a str,
+    old_image: Option<RgbaImage>,
 }
 
 impl<'a> Openbox<'a> {
@@ -42,7 +45,8 @@ impl<'a> Openbox<'a> {
                 lastname: String::new(),
 
                 connection: ConnectionState::Idle,
-                server_address: _DEV_URL,
+                server_address: _PROD_URL,
+                old_image: None,
             },
             Task::none(),
         )
@@ -66,19 +70,23 @@ impl<'a> Openbox<'a> {
                 self.lastname = lastname;
                 Task::none()
             }
-            Message::Ev(_) => Task::none(),
+            Message::Ev(Event::UpdateImage(new_image)) =>{
+                self.old_image = Some(new_image);
+                Task::none()
+            },
             Message::Connect(pin) => {
                 self.connection = ConnectionState::Reconnecting(pin);
 
                 Task::none()
             }
+            _ => Task::none(),
         }
     }
 
     fn subscription(&self) -> Subscription<Message> {
         match self.connection {
             ConnectionState::Reconnecting(pin) => {
-                openbox::ws::subscribe(self.server_address.to_string(), pin, self.to_username())
+                openbox::ws::subscribe(self.server_address.to_string(), pin, self.to_username(), self.old_image.clone())
                     .map(Message::Ev)
             }
             ConnectionState::Disconnected => Subscription::none(),

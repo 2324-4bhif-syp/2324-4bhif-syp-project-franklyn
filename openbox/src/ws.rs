@@ -13,10 +13,11 @@ use hyper::upgrade::Upgraded;
 use hyper::Request;
 use hyper_util::rt::TokioIo;
 
-use image::ImageFormat;
+use image::{ImageFormat, Rgba, RgbaImage};
 use reqwest::multipart::{Form, Part};
 
 use fastwebsockets::{handshake, FragmentCollector, Frame, OpCode};
+use log::info;
 
 struct SpawnExecutor;
 
@@ -38,6 +39,7 @@ pub enum State {
 #[derive(Debug, Clone)]
 pub enum Event {
     Nothing,
+    UpdateImage(RgbaImage),
 }
 
 pub async fn connect(
@@ -60,7 +62,7 @@ pub async fn connect(
     Ok(FragmentCollector::new(ws))
 }
 
-pub fn subscribe(server_address: String, pin: u32, username: String) -> Subscription<Event> {
+pub fn subscribe(server_address: String, pin: u32, username: String, mut current_image: Option<RgbaImage>) -> Subscription<Event> {
     let connection_cloj = stream::channel(100, move |mut output| async move {
         let mut state = State::Disconnected;
 
@@ -79,8 +81,15 @@ pub fn subscribe(server_address: String, pin: u32, username: String) -> Subscrip
                     }
                 },
                 State::Connected(ws) => {
-                    handle_message(&server_address, &username, ws).await;
-                    let _ = output.send(Event::Nothing).await;
+                    let new_image = handle_message(&server_address, &username, ws, current_image.as_ref()).await;
+
+                    if let Some(image) = new_image {
+                        println!("here");
+                        current_image = Some(image);
+                    }
+                    else {
+                        let _ = output.send(Event::Nothing).await;
+                    }
                 }
             }
         }
@@ -94,7 +103,8 @@ pub async fn handle_message(
     server_address: &str,
     username: &str,
     ws: &mut FragmentCollector<TokioIo<Upgraded>>,
-) {
+    current_image: Option<&RgbaImage>,
+) -> Option<RgbaImage> {
     let msg = match ws.read_frame().await {
         Ok(msg) => msg,
         Err(e) => {
@@ -102,7 +112,7 @@ pub async fn handle_message(
             ws.write_frame(Frame::close_raw(vec![].into()))
                 .await
                 .unwrap();
-            return;
+            return None;
         }
     };
 
@@ -121,6 +131,9 @@ pub async fn handle_message(
                 .write_to(&mut std::io::Cursor::new(&mut buf), ImageFormat::Png)
                 .unwrap();
 
+            // assume same resolution
+            let path_ending = compare_image(current_image, image);
+
             let file_part = Part::bytes(buf)
                 .file_name("image.png")
                 .mime_str("image/png")
@@ -128,13 +141,55 @@ pub async fn handle_message(
 
             reqwest::Client::new()
                 .post(&format!(
-                    "http://{server_address}/screenshot/{username}/alpha"
+                    "http://{server_address}/screenshot/{username}/{}", path_ending.0
                 ))
                 .multipart(Form::new().part("image", file_part))
                 .send()
                 .await
                 .unwrap();
+
+            // if we got a new alpha frame set current image to new image
+            if path_ending.0 == "alpha" {
+                return Some(path_ending.1);
+            }
+
+            None
         }
-        _ => (),
+        _ => None,
     }
 }
+
+pub fn compare_image(current_image: Option<&RgbaImage>, new_image: RgbaImage) -> (&'static str, RgbaImage) {
+
+    let Some(image) = current_image else { println!("this alpha"); return  ("alpha", new_image)};
+
+    let mut counter = 0;
+
+    let width = image.width();
+    let height = image.height();
+
+    let mut output_image = RgbaImage::from_pixel(width, height, Rgba([0, 0, 0, 0]));
+
+    for x in 0..width {
+        for y in 0..height {
+            let alpha_rgb = image.get_pixel(x, y);
+            let beta_rgb = new_image.get_pixel(x, y);
+
+            if alpha_rgb != beta_rgb {
+                counter += 1;
+                output_image.put_pixel(x, y, beta_rgb.clone());
+            }
+        }
+    }
+
+    // if more than half of the frame is different make it the new alpha frame
+    if counter > width * height / 2 {
+        println!(" that alpha");
+        return ("alpha", new_image);
+    }
+
+    println!("dif");
+
+    ("beta", output_image)
+}
+
