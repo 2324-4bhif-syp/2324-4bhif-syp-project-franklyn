@@ -1,11 +1,20 @@
 package at.htl.franklyn.server.feature.telemetry;
 
 import at.htl.franklyn.server.feature.exam.Exam;
+import at.htl.franklyn.server.feature.telemetry.command.ExamineeCommandSocket;
+import at.htl.franklyn.server.feature.telemetry.image.FrameType;
+import at.htl.franklyn.server.feature.telemetry.participation.ParticipationRepository;
 import io.quarkus.logging.Log;
+import io.quarkus.vertx.core.runtime.context.VertxContextSafetyToggle;
+import io.smallrye.mutiny.Multi;
 import io.smallrye.mutiny.Uni;
+import io.vertx.core.Vertx;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import io.smallrye.common.vertx.VertxContext;
+import org.hibernate.reactive.mutiny.Mutiny;
 import org.quartz.*;
+import io.vertx.core.Context;
 
 @ApplicationScoped
 public class TelemetryJobManager {
@@ -58,21 +67,47 @@ public class TelemetryJobManager {
             return Uni.createFrom().failure(e);
         }
 
-        return Uni.createFrom().voidItem();
+        return found
+                ? Uni.createFrom().voidItem()
+                : Uni.createFrom().failure(new RuntimeException("Could not complete Exam. No job active"));
     }
 
     public static class TelemetryJob implements Job {
-
         @Inject
         ExamineeCommandSocket commandSocket;
+
+        @Inject
+        ParticipationRepository participationRepository;
+
+        @Inject
+        Mutiny.SessionFactory sf;
+
+        @Inject
+        Vertx vertx;
 
         @Override
         public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
             JobDataMap dataMap = jobExecutionContext.getJobDetail().getJobDataMap();
+            long examId = dataMap.getLong(FRANKLYN_TELEMETRY_JOB_EXAM_ID_JOB_DATA_KEY);
 
-            // TODO: request screenshots
-            Log.infof("Requesting screenshots of examinees in exam id = %d",
-                    dataMap.getLong(FRANKLYN_TELEMETRY_JOB_EXAM_ID_JOB_DATA_KEY));
+            Context context = VertxContext.getOrCreateDuplicatedContext(vertx);
+            VertxContextSafetyToggle.setContextSafe(context, true);
+            context.runOnContext(event -> {
+                sf.withSession(session -> {
+                    return participationRepository
+                            .getParticipationsOfExam(examId)
+                            .toMulti()
+                            .flatMap(list -> Multi.createFrom().iterable(list))
+                            .onItem().transformToUniAndConcatenate(participation ->
+                                    commandSocket.requestFrame(participation.getId(), FrameType.UNSPECIFIED)
+                                            .onFailure().recoverWithNull())
+                            // Chain must stay on same thread to avoid killing hibernate or else we get a
+                            // "Detected use of the reactive Session from a different Thread"
+                            .emitOn(r -> context.runOnContext(ignored -> r.run()))
+                            .toUni();
+                })
+                .subscribe().with(ignored -> {});
+            });
         }
     }
 }

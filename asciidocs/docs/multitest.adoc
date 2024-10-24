@@ -205,7 +205,7 @@ The interfaces below mostly use `JSON` for transferring data. The `JSON` format 
 | 🟢
 | Connect
 
-| 🔴
+| 🟢
 | Request screenshot
 
 | 🟢
@@ -497,12 +497,12 @@ NOTE: Currently, there is only one command type `CAPTURE_SCREEN`, however in the
 {
   "type": "CAPTURE_SCREEN",
   "payload": {
-    "frame_type": "ALPHA" | "BETA"
+    "frame_type": "ALPHA" | "BETA" | "UNSPECIFIED"
   }
 }
 ----
 * *Expected Response*: `POST` request to the telemetry endpoint for the given frametype. I.e. `/telemetry/by-session/{session-id}/screen/upload/alpha` for alpha frames and `/telemetry/by-session/{session-id}/screen/upload/beta` for beta frames
-* *Additional Notes*: N/A
+* *Additional Notes*: If `frame_type` is set to unspecified, it is up to the student-client (openbox) to choose which frame is appropriate for the current situation. If a specific frame type is specified the client MUST follow this command.
 
 ====== Heartbeat (Ping/Pong)
 Besides requesting commands, the server periodically sends small `PING` packets and expects `PONG` responses. This is an exception to the rule, that the server does not accept its responses over the websocket tunnel. Since `PING`/`PONG` is implemented on a protocol level for `Websockets`, simplifying implementations for breaking "rules" is a tradeoff made here.

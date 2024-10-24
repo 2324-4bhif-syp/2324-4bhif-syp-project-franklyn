@@ -1,6 +1,9 @@
-package at.htl.franklyn.server.feature.telemetry;
+package at.htl.franklyn.server.feature.telemetry.command;
 
+import at.htl.franklyn.server.feature.telemetry.command.screenshot.RequestScreenshotCommand;
+import at.htl.franklyn.server.feature.telemetry.command.screenshot.RequestScreenshotPayload;
 import at.htl.franklyn.server.feature.telemetry.connection.ConnectionStateService;
+import at.htl.franklyn.server.feature.telemetry.image.FrameType;
 import at.htl.franklyn.server.feature.telemetry.participation.ParticipationService;
 import io.quarkus.hibernate.reactive.panache.common.WithSession;
 import io.quarkus.hibernate.reactive.panache.common.WithTransaction;
@@ -10,8 +13,12 @@ import io.quarkus.websockets.next.*;
 import io.smallrye.mutiny.Multi;
 import io.smallrye.mutiny.Uni;
 import io.vertx.core.buffer.Buffer;
+import jakarta.enterprise.context.control.ActivateRequestContext;
 import jakarta.inject.Inject;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
+
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 @WebSocket(path = "/connect/{participationId}")
 public class ExamineeCommandSocket {
@@ -30,6 +37,9 @@ public class ExamineeCommandSocket {
     @ConfigProperty(name = "websocket.client-timeout-seconds")
     int clientTimeoutSeconds;
 
+    // Key: Session Id, Value: ConnectionId
+    private final ConcurrentHashMap<String, String> connections = new ConcurrentHashMap<>();
+
     @OnOpen
     @WithSession
     public Uni<Void> onOpen() {
@@ -37,8 +47,10 @@ public class ExamineeCommandSocket {
         return participationService.exists(participationId)
                 .onItem().invoke(exists -> {
                     if (exists) {
+                        connections.put(participationId, connection.id());
                         Log.infof("%s has connected.", participationId);
                     } else {
+                        // TODO: Close connection for unauthorized people?
                         Log.warnf("An invalid participation id was sent (%s). Is someone tampering with the client?",
                                 participationId);
                     }
@@ -51,6 +63,7 @@ public class ExamineeCommandSocket {
     public Uni<Void> onClose() {
         String participationId = connection.pathParam("participationId");
         Log.infof("%s has lost connection.", participationId);
+        connections.remove(participationId);
         return stateService.insertConnected(participationId, false);
     }
 
@@ -66,7 +79,6 @@ public class ExamineeCommandSocket {
     @WithTransaction
     public Uni<Void> onPongMessage(Buffer data) {
         String participationId = connection.pathParam("participationId");
-
         return stateService.insertConnected(participationId, true);
     }
 
@@ -101,5 +113,24 @@ public class ExamineeCommandSocket {
                 })
                 .onItem().transformToUniAndConcatenate(a -> a)
                 .toUni();
+    }
+
+    public Uni<Void> requestFrame(UUID participationId, FrameType type) {
+        return Uni.createFrom()
+                .item(connections.get(participationId.toString()))
+                .onItem().ifNull()
+                .failWith(() -> {
+                    return new IllegalArgumentException(String.format("%s is not connected", participationId));
+                })
+                .onItem().transform(connId -> openConnections.findByConnectionId(connId).orElse(null))
+                .onItem().ifNull()
+                .failWith(() -> {
+                    return new IllegalArgumentException(String.format("%s is not connected", participationId));
+                })
+                .onItem()
+                .transformToUni(conn ->
+                            conn.sendText(new RequestScreenshotCommand(new RequestScreenshotPayload(type)))
+                            .onFailure().invoke(e -> Log.error("Send failed:", e))
+                );
     }
 }

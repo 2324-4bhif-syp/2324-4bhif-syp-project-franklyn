@@ -1,5 +1,6 @@
 package at.htl.franklyn.server.feature.telemetry.image;
 
+import at.htl.franklyn.server.feature.telemetry.command.ExamineeCommandSocket;
 import at.htl.franklyn.server.feature.telemetry.participation.Participation;
 import at.htl.franklyn.server.feature.telemetry.participation.ParticipationRepository;
 import io.quarkus.logging.Log;
@@ -31,6 +32,10 @@ public class ImageService {
 
     @Inject
     ImageRepository imageRepository;
+
+    @Inject
+    ExamineeCommandSocket commandSocket;
+
     @Inject
     Vertx vertx;
 
@@ -42,7 +47,6 @@ public class ImageService {
     }
 
     public Uni<Void> saveFrameOfSession(UUID session, InputStream frame, FrameType type) {
-        // TODO: Maybe use session path instead of building it again?
         final File imageFile = Paths.get(
                 getScreenshotFolderPath(session).toAbsolutePath().toString(),
                 String.format("%d.%s", System.currentTimeMillis(), IMG_FORMAT)
@@ -89,7 +93,11 @@ public class ImageService {
                                 )
                                 .firstResult()
                                 .onItem().ifNull().failWith(Unchecked.supplier(() -> {
-                                    // TODO: request new alpha frame
+                                    // Request new alpha frame so the next client frame can be processed
+                                    commandSocket
+                                            .requestFrame(session, FrameType.ALPHA)
+                                            .subscribe()
+                                            .with(v -> Log.warnf("No alpha frame found for %s. A new one has been requested", session));
                                     throw new IllegalStateException("Can not store beta frame without previous alpha");
                                 }))
                                 .onItem()

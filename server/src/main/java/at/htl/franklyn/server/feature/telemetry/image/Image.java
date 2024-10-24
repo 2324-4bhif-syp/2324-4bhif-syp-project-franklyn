@@ -3,10 +3,7 @@ package at.htl.franklyn.server.feature.telemetry.image;
 import at.htl.franklyn.server.common.Limits;
 import at.htl.franklyn.server.feature.telemetry.participation.Participation;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.PastOrPresent;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 
 import java.time.LocalDateTime;
 
@@ -48,6 +45,13 @@ public class Image {
     @Column(name = "I_FRAME_TYPE", nullable = false)
     @Enumerated(EnumType.ORDINAL)
     private FrameType frameType;
+
+    // region additional validation
+    @AssertTrue(message = "Frame Type can not be UNSPECIFIED when saving")
+    public boolean isFrameTypeSpecified() {
+        return frameType != FrameType.UNSPECIFIED;
+    }
+    // endregion
 
     public Image() {
     }

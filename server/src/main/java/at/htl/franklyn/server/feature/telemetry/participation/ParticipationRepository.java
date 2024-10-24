@@ -29,7 +29,11 @@ public class ParticipationRepository implements PanacheRepositoryBase<Participat
         );
     }
 
+    public Uni<List<Participation>> getParticipationsOfExam(long examId) {
+        return find("exam.id = ?1", examId).list();
+    }
+
     public Uni<List<Participation>> getParticipationsOfExam(Exam e) {
-        return find("exam.id = ?1", e.getId()).list();
+        return getParticipationsOfExam(e.getId());
     }
 }
