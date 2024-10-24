@@ -71,11 +71,7 @@ jobs:
     runs-on: windows-2022
     steps:
       - uses: actions/checkout@master
-      - uses: actions-rs/toolchain
-        with:
-          profile: minimal
-          toolchain: stable
-          override: true
+      - uses: hecrj/setup-rust-action@v2
       - name: Add target for Windows
         run: rustup target add x86_64-pc-windows-msvc
       - name: Build openbox binary
