@@ -7,7 +7,7 @@
 <meta name="generator" content="Asciidoctor 2.0.20">
 <meta name="author" content="Arwed Schnalzenberger">
 <link rel="icon" type="image/png" href="themes/favicon.png">
-<title>Sechstes Sprint-Planning 2024-01-30</title>
+<title>02. Mehrtestfähigkeit Sprint-Planning 2024-10-25</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /*! Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
@@ -438,22 +438,17 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </head>
 <body class="article toc2 toc-left">
 <div id="header">
-<h1>Sechstes Sprint-Planning 2024-01-30</h1>
+<h1>02. Mehrtestfähigkeit Sprint-Planning 2024-10-25</h1>
 <div class="details">
 <span id="author" class="author">Arwed Schnalzenberger</span><br>
 <span id="revnumber">version 1.0,</span>
-<span id="revdate">2024-01-30</span>
+<span id="revdate">2024-10-25</span>
 <br><span id="revremark">sprint planning</span>
 </div>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
-<li><a href="#_besprochene_themen">1. Besprochene Themen</a>
-<ul class="sectlevel2">
-<li><a href="#_5_sprint">1.1. 5. Sprint</a></li>
-<li><a href="#_6_sprint">1.2. 6. Sprint</a></li>
-</ul>
-</li>
+<li><a href="#_besprochene_themen">1. Besprochene Themen</a></li>
 <li><a href="#_vereinbarungen_und_entscheidungen">2. Vereinbarungen und Entscheidungen</a></li>
 </ul>
 </div>
@@ -462,7 +457,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p><span class="icon"><a class="image" href="https://raw.githubusercontent.com/htl-leonding-college/asciidoctor-docker-template/master/asciidocs/2024-01-30.adoc"><i class="fa fa-file-text-o"></i></a></span> ‏ ‏ ‎
+<p><span class="icon"><a class="image" href="https://raw.githubusercontent.com/htl-leonding-college/asciidoctor-docker-template/master/asciidocs/2024-10-25.adoc"><i class="fa fa-file-text-o"></i></a></span> ‏ ‏ ‎
 <span class="icon"><a class="image" href="https://github.com/htl-leonding-college/asciidoctor-docker-template"><i class="fa fa-github-square"></i></a></span> ‏ ‏ ‎
 <span class="icon"><a class="image" href="https://htl-leonding.github.io/"><i class="fa fa-home"></i></a></span></p>
 </div>
@@ -518,11 +513,11 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">von-bis</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Di. 30.01.2024, 3. und 5. EH</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Di. 25.10.2024, X. EH</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Dauer</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">45 min</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">XX min</p></td>
 </tr>
 </tbody>
 </table>
@@ -531,66 +526,34 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="sect1">
 <h2 id="_besprochene_themen"><a class="anchor" href="#_besprochene_themen"></a>1. Besprochene Themen</h2>
 <div class="sectionbody">
-<div class="sect2">
-<h3 id="_5_sprint"><a class="anchor" href="#_5_sprint"></a>1.1. 5. Sprint</h3>
 <div class="ulist">
 <ul>
 <li>
-<p>keine "Textwüsten" bei Präsentationen</p>
+<p>Ideen:</p>
 <div class="ulist">
 <ul>
 <li>
-<p>Folie mit dem erledigtem später einfach noch einmal herzeigen</p>
+<p>Adaptive Anpassung der Frequenz mit welcher Bilder gemacht werden.</p>
+</li>
+<li>
+<p>Client sollte schon selber die Diffs berechnen.</p>
 </li>
 </ul>
 </div>
 </li>
 <li>
-<p>Architekturproblem mit dem Oravm deployment. Lösung:</p>
+<p>Aufteilung:</p>
 <div class="ulist">
 <ul>
 <li>
-<p>Frontend holt die Bilder von Server und Server holt Bilder von Openbox über Websocket.</p>
-</li>
-<li>
-<p>Oder wir arbeiten einfach mit http</p>
-</li>
-</ul>
-</div>
-</li>
-<li>
-<p>Wichtiges bei der Projektarbeit/Projektentwicklung:</p>
+<p>Zwei fokussieren sich auf die "Mehrtestimplementierung" (sollte nicht daran leiden)</p>
 <div class="ulist">
 <ul>
 <li>
-<p>Dokumentation was man gemacht hat und wie man es gemacht hat.</p>
+<p>Woanders deployen</p>
 </li>
 <li>
-<p>Als Auftraggeber möchte ich wissen, wie viel ist zu tun, was wurde getan und wer hat es gemacht.</p>
-</li>
-</ul>
-</div>
-</li>
-<li>
-<p>Vielleicht klein nebenbei irgendwo Openbox bei der "Student Client"-Message hinzufügen.</p>
-</li>
-</ul>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_6_sprint"><a class="anchor" href="#_6_sprint"></a>1.2. 6. Sprint</h3>
-<div class="ulist">
-<ul>
-<li>
-<p>Frankyln Client mit kubernetes</p>
-<div class="ulist">
-<ul>
-<li>
-<p>Ubuntu Server von sysadmin namens Franklyn 3</p>
-<div class="ulist">
-<ul>
-<li>
-<p>as soon as possible</p>
+<p>Aichinger + Schludermann</p>
 </li>
 </ul>
 </div>
@@ -599,78 +562,10 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </li>
 <li>
-<p>im Patrol mode auf dem Instructor client einstellen können, wie oft die videos gemacht werden.</p>
-</li>
-<li>
-<p>Wann weiß er, dass er aufhören soll.</p>
-<div class="ulist">
-<ul>
-<li>
-<p>Festlegung von Zeit + mögliche Verlängerung von Tests</p>
-</li>
-<li>
-<p>Oder Button, den der Lehrer betätigen kann, der den Test beenden kann.</p>
+<p><strong>Sprint bis:</strong>
+**</p>
 </li>
 </ul>
-</div>
-</li>
-<li>
-<p>Schüler und/oder Lehrer müssen informiert werden, wenn Franklyn ausfällt.</p>
-</li>
-<li>
-<p>Log mit allen wichtigen Dinge</p>
-<div class="ulist">
-<ul>
-<li>
-<p>Einloggen</p>
-</li>
-<li>
-<p>Verlust der Connection</p>
-</li>
-<li>
-<p>Ausloggen</p>
-</li>
-</ul>
-</div>
-</li>
-<li>
-<p><a href="https://github.com/quarkusio/" class="bare">https://github.com/quarkusio/</a></p>
-<div class="ulist">
-<ul>
-<li>
-<p>Roadmap</p>
-<div class="ulist">
-<ul>
-<li>
-<p>Ist eine Übersicht über die Funktionalitäten des Projekts in zeitlicher Abhängigkeit.</p>
-</li>
-<li>
-<p>"Bis zu diesem Termin möchte ich das haben."</p>
-</li>
-</ul>
-</div>
-</li>
-<li>
-<p>Können wir machen. Vielleicht auch anstatt von Youtrack.</p>
-</li>
-<li>
-<p>Wie können wir unseren Job so machen, dass der Professor sieht, wer was alles erledigt hat.</p>
-</li>
-</ul>
-</div>
-</li>
-<li>
-<p>Sprintdauer</p>
-<div class="ulist">
-<ul>
-<li>
-<p>13.02.2024</p>
-</li>
-</ul>
-</div>
-</li>
-</ul>
-</div>
 </div>
 </div>
 </div>
@@ -692,11 +587,6 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </tr>
 </thead>
 <tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">TODO</p></td>
-<td class="tableblock halign-left valign-top"></td>
-<td class="tableblock halign-left valign-top"></td>
-</tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">TODO</p></td>
 <td class="tableblock halign-left valign-top"></td>
