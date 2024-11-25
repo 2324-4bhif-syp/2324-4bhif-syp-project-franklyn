@@ -850,7 +850,7 @@ As Franklyn is still under heavy development, no interfaces, components and desi
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>GET /telemetry/by-user/{user-id}/{exam-id}/screen/download</code></p></td>
 </tr>
 <tr>
-<td class="tableblock halign-center valign-top"><p class="tableblock">🔴</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">🟡</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>POST /telemetry/by-user/{user-id}/{exam-id}/video/generate</code></p></td>
 </tr>
 <tr>
@@ -858,7 +858,7 @@ As Franklyn is still under heavy development, no interfaces, components and desi
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>POST /telemetry/by-exam/{exam-id}/video/generate-all</code></p></td>
 </tr>
 <tr>
-<td class="tableblock halign-center valign-top"><p class="tableblock">🔴</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">🟡</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>GET /telemetry/jobs/video/{job-id}</code></p></td>
 </tr>
 <tr>
@@ -866,11 +866,11 @@ As Franklyn is still under heavy development, no interfaces, components and desi
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>GET /telemetry/jobs/video/{job-id}/download</code></p></td>
 </tr>
 <tr>
-<td class="tableblock halign-center valign-top"><p class="tableblock">🟡</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">🟢</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>POST /telemetry/by-session/{session-id}/screen/upload/alpha</code></p></td>
 </tr>
 <tr>
-<td class="tableblock halign-center valign-top"><p class="tableblock">🟡</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">🟢</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>POST /telemetry/by-session/{session-id}/screen/upload/beta</code></p></td>
 </tr>
 <tr>
@@ -932,7 +932,7 @@ As Franklyn is still under heavy development, no interfaces, components and desi
 <td class="tableblock halign-left valign-top"><p class="tableblock">Request screenshot</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-center valign-top"><p class="tableblock">🔴</p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock">🟢</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Request disconnect</p></td>
 </tr>
 <tr>
@@ -994,7 +994,7 @@ As Franklyn is still under heavy development, no interfaces, components and desi
   </span><span class="nl">"actual_start"</span><span class="p">:</span><span class="w"> </span><span class="err">isodatetime</span><span class="w"> </span><span class="err">|</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
   </span><span class="nl">"actual_end"</span><span class="p">:</span><span class="w"> </span><span class="err">isodatetime</span><span class="w"> </span><span class="err">|</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
   </span><span class="nl">"title"</span><span class="p">:</span><span class="w"> </span><span class="err">string</span><span class="p">,</span><span class="w">
-  </span><span class="nl">"pin"</span><span class="p">:</span><span class="w"> </span><span class="err">number</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"pin"</span><span class="p">:</span><span class="w"> </span><span class="err">string</span><span class="p">,</span><span class="w">
   </span><span class="nl">"screencapture_interval_seconds"</span><span class="p">:</span><span class="w"> </span><span class="err">number</span><span class="p">,</span><span class="w">
   </span><span class="nl">"state"</span><span class="p">:</span><span class="w"> </span><span class="s2">"CREATED"</span><span class="w"> </span><span class="err">|</span><span class="w"> </span><span class="s2">"ONGOING"</span><span class="w"> </span><span class="err">|</span><span class="w"> </span><span class="s2">"DONE"</span><span class="w"> </span><span class="err">|</span><span class="w"> </span><span class="s2">"DELETED"</span><span class="p">,</span><span class="w">
   </span><span class="nl">"registered_students_num"</span><span class="p">:</span><span class="w"> </span><span class="err">number</span><span class="w">
@@ -1044,7 +1044,7 @@ As Franklyn is still under heavy development, no interfaces, components and desi
   </span><span class="nl">"actual_start"</span><span class="p">:</span><span class="w"> </span><span class="err">isodatetime</span><span class="w"> </span><span class="err">|</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
   </span><span class="nl">"actual_end"</span><span class="p">:</span><span class="w"> </span><span class="err">isodatetime</span><span class="w"> </span><span class="err">|</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
   </span><span class="nl">"title"</span><span class="p">:</span><span class="w"> </span><span class="err">string</span><span class="p">,</span><span class="w">
-  </span><span class="nl">"pin"</span><span class="p">:</span><span class="w"> </span><span class="err">number</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"pin"</span><span class="p">:</span><span class="w"> </span><span class="err">string</span><span class="p">,</span><span class="w">
   </span><span class="nl">"screencapture_interval_seconds"</span><span class="p">:</span><span class="w"> </span><span class="err">number</span><span class="p">,</span><span class="w">
   </span><span class="nl">"state"</span><span class="p">:</span><span class="w"> </span><span class="s2">"CREATED"</span><span class="w"> </span><span class="err">|</span><span class="w"> </span><span class="s2">"ONGOING"</span><span class="w"> </span><span class="err">|</span><span class="w"> </span><span class="s2">"DONE"</span><span class="w"> </span><span class="err">|</span><span class="w"> </span><span class="s2">"DELETED"</span><span class="p">,</span><span class="w">
   </span><span class="nl">"registered_students_num"</span><span class="p">:</span><span class="w"> </span><span class="err">number</span><span class="w">
@@ -1095,7 +1095,7 @@ As Franklyn is still under heavy development, no interfaces, components and desi
       </span><span class="nl">"actual_start"</span><span class="p">:</span><span class="w"> </span><span class="err">isodatetime</span><span class="w"> </span><span class="err">|</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
       </span><span class="nl">"actual_end"</span><span class="p">:</span><span class="w"> </span><span class="err">isodatetime</span><span class="w"> </span><span class="err">|</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
       </span><span class="nl">"title"</span><span class="p">:</span><span class="w"> </span><span class="err">string</span><span class="p">,</span><span class="w">
-      </span><span class="nl">"pin"</span><span class="p">:</span><span class="w"> </span><span class="err">number</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"pin"</span><span class="p">:</span><span class="w"> </span><span class="err">string</span><span class="p">,</span><span class="w">
       </span><span class="nl">"screencapture_interval_seconds"</span><span class="p">:</span><span class="w"> </span><span class="err">number</span><span class="p">,</span><span class="w">
       </span><span class="nl">"state"</span><span class="p">:</span><span class="w"> </span><span class="s2">"CREATED"</span><span class="w"> </span><span class="err">|</span><span class="w"> </span><span class="s2">"ONGOING"</span><span class="w"> </span><span class="err">|</span><span class="w"> </span><span class="s2">"DONE"</span><span class="w"> </span><span class="err">|</span><span class="w"> </span><span class="s2">"DELETED"</span><span class="p">,</span><span class="w">
       </span><span class="nl">"registered_students_num"</span><span class="p">:</span><span class="w"> </span><span class="err">number</span><span class="w">
@@ -1364,7 +1364,7 @@ As Franklyn is still under heavy development, no interfaces, components and desi
 </div>
 </li>
 <li>
-<p><strong>Additional Notes</strong>: A call to the video generation job will always return a job with status "ONGOING". The returned status code will be 202 (<code>ACCEPTED</code>) and the <code>Location header</code> will contain a full url to the job status endpoint for the newly created job</p>
+<p><strong>Additional Notes</strong>: A valid call to the video generation job will always return a job with status "ONGOING". The returned status code will be 202 (<code>ACCEPTED</code>) and the <code>Location header</code> will contain a full url to the job status endpoint for the newly created job</p>
 </li>
 </ul>
 </div>
@@ -1700,7 +1700,7 @@ e.g. <code><a href="http://localhost:8080/connect/a353a68b-26f2-4803-8abf-80d4bb
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-11-08 07:05:27 UTC
+Last updated 2024-11-25 07:23:07 UTC
 </div>
 </div>
 </body>
