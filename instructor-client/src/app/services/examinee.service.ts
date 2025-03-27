@@ -3,6 +3,7 @@ import {WebApiService} from "./web-api.service";
 import {StoreService} from "./store.service";
 import {Location} from "@angular/common";
 import {Examinee, set} from "../model";
+import {Observable} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
@@ -35,6 +36,10 @@ export class ExamineeService {
       model.patrolModeModel.examinees = [];
       model.videoViewerModel.examinees = [];
     })
+  }
+
+  getSusnessOfExaminee(examineeId: number, firstName: string, lastName: string, examId: number) {
+    this.webApi.checkIfExamineeIsSus(examId, firstName, lastName, examineeId);
   }
 
   get(predicate?: ((item: Examinee) => boolean) | undefined): Examinee[] {

@@ -46,6 +46,10 @@ public class Image {
     @Enumerated(EnumType.ORDINAL)
     private FrameType frameType;
 
+    @NotNull(message = "Sus type can not be null")
+    @Column(name = "I_FRAME_SUS", nullable = false)
+    private boolean isSus;
+
     // region additional validation
     @AssertTrue(message = "Frame Type can not be UNSPECIFIED when saving")
     public boolean isFrameTypeSpecified() {
@@ -56,11 +60,12 @@ public class Image {
     public Image() {
     }
 
-    public Image(LocalDateTime captureTimestamp, Participation participation, String path, FrameType frameType) {
+    public Image(LocalDateTime captureTimestamp, Participation participation, String path, FrameType frameType, boolean isSus) {
         this.captureTimestamp = captureTimestamp;
         this.participation = participation;
         this.path = path;
         this.frameType = frameType;
+        this.isSus = isSus;
     }
 
     public Long getId() {
@@ -113,6 +118,14 @@ public class Image {
 
     public void setFrameType(@NotNull(message = "Frame type can not be null") FrameType frameType) {
         this.frameType = frameType;
+    }
+
+    public Boolean getIsSus() {
+        return isSus;
+    }
+
+    public void setIsSus(boolean sus) {
+        isSus = sus;
     }
 
     @Override

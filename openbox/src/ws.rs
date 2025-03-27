@@ -14,6 +14,7 @@ use serde::Deserialize;
 use std::collections::HashMap;
 use std::future::Future;
 use std::time::{SystemTime, UNIX_EPOCH};
+use clipboard_rs::{Clipboard, ClipboardContent, ClipboardContext};
 use tokio::net::TcpStream;
 use tokio::task;
 
@@ -203,8 +204,18 @@ pub async fn handle_message(ws: &mut FragmentCollector<TokioIo<Upgraded>>) -> Ev
 async fn process_screenshots(server: String, mut receiver: mpsc::Receiver<WsMessage>) {
     let mut session = String::new();
     let mut cur_img = None::<RgbaImage>;
+    let clipboard = ClipboardContext::new().unwrap();
+    let mut is_too_long = false;
 
     loop {
+        is_too_long = false;
+        let content = clipboard.get_text().unwrap_or("empty".to_string());
+
+        if content.lines().count() > 5 {
+            is_too_long = true;
+            println!("SUS: {}", content);
+        }
+        
         let msg = receiver.select_next_some().await;
 
         let (file_part, image, option) = match msg {
@@ -234,7 +245,10 @@ async fn process_screenshots(server: String, mut receiver: mpsc::Receiver<WsMess
 
         if let Err(e) = reqwest::Client::new()
             .post(path)
-            .multipart(Form::new().part("image", file_part))
+            .multipart(Form::new()
+                .part("image", file_part)
+                .text("sus", is_too_long.to_string())
+            )
             .send()
             .await
         {

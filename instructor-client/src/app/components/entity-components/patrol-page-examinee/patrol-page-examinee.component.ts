@@ -22,6 +22,20 @@ export class PatrolPageExamineeComponent {
   @Input() examinee: Examinee | undefined;
   @Input() showImage: boolean = false;
 
+  ngOnInit() {
+    setInterval(() => {
+      console.log("checking clipboard!");
+      if (typeof this.examId === "number" && this.examinee !== undefined) {
+        this.examineeSvc.getSusnessOfExaminee(
+          this.examinee.id,
+          this.examinee.firstname,
+          this.examinee.lastname,
+          this.examId
+        );
+      }
+    }, 5000);
+  }
+
   protected readonly isFullScreen = this.store.pipe(
     map(state => state.patrolModeModel.isFullScreen),
     distinctUntilChanged()

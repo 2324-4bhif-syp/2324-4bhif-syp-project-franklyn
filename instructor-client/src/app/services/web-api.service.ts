@@ -100,6 +100,32 @@ export class WebApiService {
       });
   }
 
+  checkIfExamineeIsSus(
+    examId: number,
+    firstName: string,
+    lastName: string,
+    examineeId: number
+  ): void {
+    this.httpClient.get(
+      `${environment.serverBaseUrl}/telemetry/by-user/${examineeId}/${examId}/screen/susness`,
+      {headers: this.headers})
+      .subscribe({
+        "next": (isSus) => {
+          if (!isSus)
+            return;
+
+          this.toastSvc.addToast(
+            "ALARM",
+            `Examinee ${firstName} ${lastName} has copied too much!`,
+            "info"
+          );
+        },
+        "error": (err) => {
+          console.error(err);
+        },
+      });
+  }
+
   getAllJobsForExam(curExamId: number) {
     this.httpClient.get<JobDto[]>(
       `${environment.serverBaseUrl}/exams/${curExamId}/videojobs`,

@@ -53,7 +53,7 @@ public class ImageService {
         );
     }
 
-    public Uni<Void> saveFrameOfSession(UUID session, InputStream frame, FrameType type) {
+    public Uni<Void> saveFrameOfSession(UUID session, InputStream frame, FrameType type, boolean isSus) {
         final File imageFile = Paths.get(
                 getScreenshotFolderPath(session).toAbsolutePath().toString(),
                 String.format("%d.%s", System.currentTimeMillis(), IMG_FORMAT)
@@ -84,7 +84,8 @@ public class ImageService {
                             LocalDateTime.now(),
                             participation,
                             imageFile.getAbsolutePath(),
-                            type
+                            type,
+                            isSus
                     );
                     return imageRepository.persist(image).replaceWithVoid();
                 })
@@ -171,5 +172,12 @@ public class ImageService {
                 .getImageByExamAndUser(examId, userId)
                 .onItem().ifNull().failWith(new IllegalStateException("No image found to send."))
                 .onItem().transformToUni(image -> vertx.fileSystem().readFile(image.getPath()));
+    }
+
+    public Uni<Boolean> getSusnessOfImage(long examId, long userId) {
+        return imageRepository
+                .getImageByExamAndUser(examId, userId)
+                .onItem().ifNull().failWith(new IllegalStateException("No image found to send."))
+                .onItem().transform(Image::getIsSus);
     }
 }
