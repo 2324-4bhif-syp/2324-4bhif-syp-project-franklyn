@@ -38,10 +38,6 @@ export class ExamineeService {
     })
   }
 
-  getSusnessOfExaminee(examineeId: number, firstName: string, lastName: string, examId: number) {
-    this.webApi.checkIfExamineeIsSus(examId, firstName, lastName, examineeId);
-  }
-
   get(predicate?: ((item: Examinee) => boolean) | undefined): Examinee[] {
     if (predicate) return this.get().filter(predicate);
     return this.store.value.patrolModeModel.examinees;

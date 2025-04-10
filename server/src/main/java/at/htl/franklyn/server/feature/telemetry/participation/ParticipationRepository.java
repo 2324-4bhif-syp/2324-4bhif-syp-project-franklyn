@@ -33,4 +33,8 @@ public class ParticipationRepository implements PanacheRepositoryBase<Participat
     public Uni<List<Participation>> getParticipationsOfExam(Exam e) {
         return getParticipationsOfExam(e.getId());
     }
+
+    public Uni<Participation> findByIdWitExaminee(UUID sessionID) {
+        return find("from Participation p left join fetch p.examinee where p.id = ?1", sessionID).firstResult();
+    }
 }

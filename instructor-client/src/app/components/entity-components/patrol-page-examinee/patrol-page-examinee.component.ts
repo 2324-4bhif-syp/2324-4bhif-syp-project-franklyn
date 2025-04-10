@@ -1,10 +1,11 @@
-import {Component, HostListener, inject, Input} from '@angular/core';
+import {Component, HostListener, inject, Input, OnInit} from '@angular/core';
 import {ExamineeService} from "../../../services/examinee.service";
 import {StoreService} from "../../../services/store.service";
 import {Examinee, set} from "../../../model";
 import {environment} from "../../../../../env/environment";
 import {distinctUntilChanged, map} from "rxjs";
 import {AsyncPipe} from "@angular/common";
+import {ToastService} from "../../../services/toast.service";
 
 @Component({
     selector: 'app-patrol-page-examinee',
@@ -14,26 +15,20 @@ import {AsyncPipe} from "@angular/common";
     templateUrl: './patrol-page-examinee.component.html',
     styleUrl: './patrol-page-examinee.component.css'
 })
-export class PatrolPageExamineeComponent {
+export class PatrolPageExamineeComponent implements OnInit {
   protected examineeSvc = inject(ExamineeService);
   protected store = inject(StoreService).store;
+  private readonly toastSvc = inject(ToastService);
 
   @Input() examId: number | undefined;
   @Input() examinee: Examinee | undefined;
   @Input() showImage: boolean = false;
 
   ngOnInit() {
-    setInterval(() => {
-      console.log("checking clipboard!");
-      if (typeof this.examId === "number" && this.examinee !== undefined) {
-        this.examineeSvc.getSusnessOfExaminee(
-          this.examinee.id,
-          this.examinee.firstname,
-          this.examinee.lastname,
-          this.examId
-        );
-      }
-    }, 5000);
+    const eventSource = new EventSource(`${environment.serverBaseUrl}/telemetry/stream`);
+    eventSource.onmessage = (event) => {
+      this.toastSvc.addToast("Title", `${event.data} hat zu viel kopiert!`, "error");
+    };
   }
 
   protected readonly isFullScreen = this.store.pipe(

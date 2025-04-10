@@ -1,20 +1,22 @@
 package at.htl.franklyn.server.feature.telemetry;
 
 import at.htl.franklyn.server.common.ExceptionFilter;
+import at.htl.franklyn.server.feature.examinee.ExamineeRepostiory;
 import at.htl.franklyn.server.feature.telemetry.image.FrameType;
 import at.htl.franklyn.server.feature.telemetry.image.ImageService;
+import at.htl.franklyn.server.feature.telemetry.participation.ParticipationRepository;
 import at.htl.franklyn.server.feature.telemetry.video.*;
 import io.quarkus.hibernate.reactive.panache.common.WithSession;
 import io.quarkus.hibernate.reactive.panache.common.WithTransaction;
 import io.quarkus.logging.Log;
+import io.smallrye.mutiny.Multi;
 import io.smallrye.mutiny.Uni;
+import io.smallrye.mutiny.subscription.BackPressureStrategy;
+import io.smallrye.mutiny.subscription.MultiEmitter;
 import io.smallrye.mutiny.unchecked.Unchecked;
 import io.vertx.core.file.OpenOptions;
-import io.vertx.core.json.JsonObject;
 import io.vertx.mutiny.core.Vertx;
-import io.vertx.mutiny.core.buffer.Buffer;
 import jakarta.inject.Inject;
-import jakarta.json.JsonString;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
@@ -23,10 +25,8 @@ import jakarta.ws.rs.core.UriInfo;
 import org.jboss.resteasy.reactive.PartType;
 import org.jboss.resteasy.reactive.RestForm;
 
-import java.io.File;
 import java.io.InputStream;
 import java.nio.file.Paths;
-import java.rmi.StubNotFoundException;
 import java.util.NoSuchElementException;
 import java.util.UUID;
 
@@ -42,7 +42,15 @@ public class TelemetryResource {
     VideoJobService videoJobService;
 
     @Inject
+    ExamineeRepostiory examineeRepostiory;
+
+    @Inject
     Vertx vertx;
+
+    private static MultiEmitter<? super String> emitter;
+    private static final Multi<String> stream = Multi.createFrom().emitter(e -> {
+        emitter = e;
+    }, BackPressureStrategy.BUFFER);
 
     @POST
     @Path("/by-session/{sessionId}/screen/upload/alpha")
@@ -69,6 +77,17 @@ public class TelemetryResource {
                     return new WebApplicationException(
                             "Unable to save frame", Response.Status.BAD_REQUEST
                     );
+                })
+                .invoke(() -> {
+                    if (isTooLong) {
+                        examineeRepostiory.getExamineeWithSessionId(UUID.fromString(sessionId))
+                                .onItem()
+                                .transform(u -> String.format("%s %s",
+                                        u.getFirstname(),
+                                        u.getLastname()
+                                ))
+                                .subscribe().with(name -> emitter.emit(name));
+                    }
                 })
                 .onItem().transform(v -> Response.ok().build());
     }
@@ -98,46 +117,18 @@ public class TelemetryResource {
                             "Unable to save frame", Response.Status.BAD_REQUEST
                     );
                 })
+                .invoke(() -> {
+                    if (isTooLong) {
+                        examineeRepostiory.getExamineeWithSessionId(UUID.fromString(sessionId))
+                                .onItem()
+                                .transform(u -> String.format("%s %s",
+                                        u.getFirstname(),
+                                        u.getLastname()
+                                ))
+                                .subscribe().with(name -> emitter.emit(name));
+                    }
+                })
                 .onItem().transform(v -> Response.ok().build());
-    }
-
-    @GET
-    @Path("/by-user/{userId}/{examId}/screen/susness")
-    @Produces(MediaType.APPLICATION_JSON) // Hardcoded since MediaType enum does not have image/png
-    @WithSession
-    public Uni<Response> getSusnessOfFrame(
-            @PathParam("userId") Long userId,
-            @PathParam("examId") Long examId
-    ) {
-
-        return Uni.createFrom()
-                .item(userId)
-                .onItem().ifNull().failWith(
-                        new WebApplicationException(
-                                "Missing userId",
-                                Response.Status.BAD_REQUEST
-                        )
-                )
-                .replaceWith(examId)
-                .onItem().ifNull().failWith(
-                        new WebApplicationException(
-                                "Missing examId",
-                                Response.Status.BAD_REQUEST
-                        )
-                )
-                .chain(isSus -> imageService.getSusnessOfImage(examId, userId))
-                .onItem().transform(isSus -> Response.ok(isSus).build())
-                .onFailure(IllegalStateException.class).transform(e -> new WebApplicationException(
-                        "No available screenshot found",
-                        Response.Status.NOT_FOUND
-                ))
-                .onFailure(ExceptionFilter.NO_WEBAPP).transform(e -> {
-                    Log.warnf("Could not load screenshot for user: %d | exam: %d", userId, examId);
-                    return new WebApplicationException(
-                            "Could not load screenshot for user",
-                            Response.Status.BAD_REQUEST
-                    );
-                });
     }
 
     @GET
@@ -148,26 +139,6 @@ public class TelemetryResource {
             @PathParam("userId") Long userId,
             @PathParam("examId") Long examId
     ) {
-        /*
-        return Uni.combine().all().unis(
-            imageService.getSusnessOfImage(examId, userId),
-            imageService.loadLatestFrameOfUser(examId, userId)
-        )
-        .asTuple()
-        .map(tuple -> {
-            Buffer buffer = tuple.getItem2();
-            Boolean isSus = tuple.getItem1();
-
-            return buffer;
-        })
-        .onItem().transform(imageDto -> Response.ok("imageDto").build())
-        .onFailure(IllegalStateException.class).transform(e ->
-                new WebApplicationException("No available screenshot found", Response.Status.NOT_FOUND)
-        )
-        .onFailure(ExceptionFilter.NO_WEBAPP).transform(e -> {
-            Log.warnf("Could not load screenshot for user: %d | exam: %d", userId, examId);
-            return new WebApplicationException("Could not load screenshot for user", Response.Status.BAD_REQUEST);
-        });*/
 
         return Uni.createFrom()
                 .item(userId)
@@ -373,5 +344,13 @@ public class TelemetryResource {
                             .header("Location", location)
                             .build();
                 });
+    }
+
+    @GET
+    @Path("/stream")
+    @Produces(MediaType.SERVER_SENT_EVENTS)
+    public Multi<String> sendNotification() {
+        Log.info("send notification");
+        return stream;
     }
 }

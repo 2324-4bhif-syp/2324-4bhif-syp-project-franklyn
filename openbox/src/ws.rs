@@ -14,7 +14,7 @@ use serde::Deserialize;
 use std::collections::HashMap;
 use std::future::Future;
 use std::time::{SystemTime, UNIX_EPOCH};
-use clipboard_rs::{Clipboard, ClipboardContent, ClipboardContext};
+use clipboard_rs::{Clipboard, ClipboardContext};
 use tokio::net::TcpStream;
 use tokio::task;
 
@@ -205,15 +205,16 @@ async fn process_screenshots(server: String, mut receiver: mpsc::Receiver<WsMess
     let mut session = String::new();
     let mut cur_img = None::<RgbaImage>;
     let clipboard = ClipboardContext::new().unwrap();
-    let mut is_too_long = false;
+    let mut clipboard_content = "init".to_string();
 
     loop {
-        is_too_long = false;
+        let mut is_too_long = false;
         let content = clipboard.get_text().unwrap_or("empty".to_string());
 
-        if content.lines().count() > 5 {
+        if content.lines().count() > 5 && content != clipboard_content {
             is_too_long = true;
-            println!("SUS: {}", content);
+            clipboard_content = content;
+            println!("SUS: {}", clipboard_content);
         }
         
         let msg = receiver.select_next_some().await;
